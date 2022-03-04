@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Col, Divider, Layout, Row } from 'antd'
+import { Col, Divider, Empty, Layout, Row } from 'antd'
+import { FileImageOutlined } from '@ant-design/icons'
 import { useGetRandomRecipesQuery } from '../../redux/services/recipes'
 import cn from 'classnames'
 
@@ -24,17 +25,21 @@ const RandomRecipe = () => {
         {Array(randomRecipe.recipes[0]).map((recipe) => (
           <Col span={16} key={recipe.id} className={style.col}>
             <div className={style.random_recipe__content}>
-              <img
-                src={recipe.image}
-                alt="#"
-                className={style.random_recipe__photo}
-              />
+              {recipe.image ? (
+                <img
+                  src={recipe.image}
+                  alt={recipe.title}
+                  className={style.random_recipe__photo}
+                />
+              ) : (
+                <Empty image={<FileImageOutlined style={{ fontSize: '35px'}} />} />
+              )}
               <div className={cn(style.random_recipe__info, style.info)}>
                 <span className={style.info__tag}>
                   ready in {recipe.readyInMinutes} minutes
                 </span>
                 <h2 className={style.info__title}>{recipe.title}</h2>
-                <Divider className={style.devider} />
+                <Divider className={style.divider} />
                 <span className={style.info__author}>
                   By {recipe.creditsText}
                 </span>

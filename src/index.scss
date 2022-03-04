@@ -13,6 +13,8 @@ h2 {
 
 :root {
   --main-font: 'Mukta', sans-serif;
+  --main-color: #e27d60;
+  --title-color: #41b3a3;
 }
 
 @mixin textNoWrap {
@@ -41,12 +43,12 @@ h2 {
     font-size: 1em;
     font-weight: 300;
     letter-spacing: 1px;
-    color: #e27d60;
+    color: var(--main-color);
     font-family: var(--main-font);
   }
 }
 
-.devider {
+@mixin divider {
   margin: 10px auto 10px auto !important;
   min-width: 0 !important;
   width: 5rem !important;

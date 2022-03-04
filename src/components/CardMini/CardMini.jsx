@@ -22,7 +22,7 @@ const CardMini = ({ content }) => {
                 ready in {recipe.readyInMinutes} minutes
               </span>
               <h2 className={style.info__title}>{recipe.title}</h2>
-              <Divider className={style.devider} />
+              <Divider className={style.divider} />
               <span className={style.info__author}>
                 By {recipe.creditsText}
               </span>

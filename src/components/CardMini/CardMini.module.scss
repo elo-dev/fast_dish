@@ -23,6 +23,6 @@
   @include info_content;
 }
 
-.recipe_col {
-  margin-bottom: 150px;
+.divider{
+  @include divider;
 }

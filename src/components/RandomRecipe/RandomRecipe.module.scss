@@ -1,7 +1,7 @@
 @import '../../index.scss';
 
 .random_recipe {
-  background-color: white;
+  background-color: white !important;
   &__content {
     display: flex;
     justify-content: center;
@@ -31,6 +31,10 @@
 
 .info {
   @include info_content;
+}
+
+.divider{
+  @include divider;
 }
 
 .col{

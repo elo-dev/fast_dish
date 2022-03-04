@@ -12,7 +12,13 @@ export const recipes = createApi({
     getRandomRecipes: builder.query({
       query: () => createRequest(`random/?number=3&apiKey=${API_KEY}`),
     }),
+    getRecipesByCuisine: builder.query({
+      query: (country) =>
+        createRequest(
+          `complexSearch?cuisine=${country}&addRecipeInformation=true&addRecipeNutrition=true&number=10&apiKey=${API_KEY}`
+        ),
+    }),
   }),
 })
 
-export const { useGetRandomRecipesQuery } = recipes
+export const { useGetRandomRecipesQuery, useGetRecipesByCuisineQuery } = recipes
