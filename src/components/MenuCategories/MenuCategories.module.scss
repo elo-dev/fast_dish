@@ -1,0 +1,27 @@
+.menu_categories {
+  background-color: white !important;
+  &__card {
+    width: 15rem;
+    cursor: pointer;
+    &:hover {
+      background-color: rgba(204, 204, 204, 0.2);
+    }
+  }
+}
+
+.card {
+  &__wrapper{
+    padding: 0 5px;
+  }
+  &__img {
+    height: 15rem;
+    object-fit: cover;
+    object-position: center center;
+  }
+  &__title{
+    text-align: center;
+    color: var(--main-color) !important;
+    text-transform: uppercase;
+    margin: 0 !important;
+  }
+}

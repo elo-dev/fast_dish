@@ -1,89 +1,38 @@
-import React, { useEffect, useState } from 'react'
-import { Carousel, Col, Layout, Row, Spin, Typography } from 'antd'
+import React from 'react'
+import { Carousel, Col, Layout, Row, Typography } from 'antd'
 import cn from 'classnames'
 
-import style from './CuisineCarouselRecipes.module.scss'
 import SelectCountry from './SelectCountry/SelectCountry'
-import { useGetRecipesByCuisineQuery } from '../../redux/services/recipes'
+
+import style from './CuisineCarouselRecipes.module.scss'
 
 const { Title } = Typography
 
-const CuisineCarouselRecipes = () => {
-  const [countryCuisines, setCountryCuisines] = useState('European')
-  const [recipes, setRecipes] = useState([])
-
-  const handleChange = (country) => {
-    setCountryCuisines(country)
-  }
-
-  const { data: recipesResponse, isLoading } =
-    useGetRecipesByCuisineQuery(countryCuisines)
-
-  useEffect(() => {
-    createRecipeObj()
-  }, [recipesResponse])
-
-  const createRecipeObj = () => {
-    const recipe = recipesResponse?.results.map((recipe) => {
-      const nutrients = recipe.nutrition.nutrients.filter(
-        (nutrient) =>
-          nutrient.name === 'Calories' ||
-          nutrient.name === 'Fat' ||
-          nutrient.name === 'Sugar'
-      )
-
-      const objNutrients = nutrients.reduce(
-        (acc, curr) => ((acc[curr.name] = curr), acc),
-        {}
-      )
-
-      return {
-        id: recipe.id,
-        title: recipe.title,
-        image: recipe.image,
-        healthScore: recipe.healthScore,
-        readyInMinutes: recipe.readyInMinutes,
-        nutrients: objNutrients,
-      }
-    })
-
-    setRecipes(recipe)
-  }
-
-  const settings = {
-    dots: false,
-    draggable: true,
-    infinite: true,
-    // autoplay: true,
-    autoplaySpeed: 3000,
-    speed: 800,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    pauseOnHover: true,
-  }
-
-  function getTimeFromMins(mins) {
-    let hours = Math.trunc(mins / 60)
-    let minutes = mins % 60
-    return hours + 'h. ' + minutes + 'm.'
-  }
-
-  if (isLoading) return <Spin />
-
+const CarouselRecipes = ({
+  recipes,
+  settings,
+  transformTime,
+  changeCountry,
+  isFilter = false,
+  sectionTitle,
+  countryCuisines
+}) => {
   return (
     <Layout className={style.cusines_recipes}>
       <Row className={style.cusines_recipes__header}>
         <Col span={12}>
           <Title className={style.header__title} level={1}>
-            Сuisines
+            {sectionTitle}
           </Title>
         </Col>
-        <Col span={12} className={style.select_wrapper}>
-          <SelectCountry
-            countryCuisines={countryCuisines}
-            handleChange={handleChange}
-          />
-        </Col>
+        {isFilter && (
+          <Col span={12} className={style.select_wrapper}>
+            <SelectCountry
+              countryCuisines={countryCuisines}
+              handleChange={changeCountry}
+            />
+          </Col>
+        )}
       </Row>
       <Row>
         <Col span={24}>
@@ -110,7 +59,7 @@ const CuisineCarouselRecipes = () => {
                         <span className={style.time}>
                           Ready in{' '}
                           {recipe.readyInMinutes > 59
-                            ? getTimeFromMins(recipe.readyInMinutes)
+                            ? transformTime(recipe.readyInMinutes)
                             : recipe.readyInMinutes}{' '}
                           minutes
                         </span>
@@ -147,4 +96,4 @@ const CuisineCarouselRecipes = () => {
   )
 }
 
-export default CuisineCarouselRecipes
+export default CarouselRecipes

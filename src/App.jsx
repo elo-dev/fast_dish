@@ -1,21 +1,25 @@
-import { Divider, Layout } from 'antd'
+import { Layout } from 'antd'
+import { Route, Routes } from 'react-router'
 
 import MainHeader from './components/Header/Header'
-import RandomRecipe from './components/RandomRecipe/RandomRecipe'
-import SearchRecipeBanner from './components/SearchRecipeBanner/SearchRecipeBanner'
+
+import Home from './Pages/Home/Home'
+import { RecipesByCategoryContainer } from './Pages/RecipesByCategory/RecipesByCategoryContainer'
 
 import style from './App.module.scss'
-import CuisineCarouselRecipes from './components/CuisineCarouselRecipes/CuisineCarouselRecipes'
 
 function App() {
   return (
     <Layout className={style.main_layout}>
       <MainHeader />
-      <SearchRecipeBanner />
       <main className={style.main_content}>
-        <RandomRecipe />
-        <Divider className={style.main_content__divider} />
-        <CuisineCarouselRecipes />
+        <Routes>
+          <Route element={<Home />} path="/" />
+          <Route
+            element={<RecipesByCategoryContainer />}
+            path="category/:category"
+          />
+        </Routes>
       </main>
     </Layout>
   )

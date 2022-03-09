@@ -1,0 +1,12 @@
+@import '../../index.scss';
+
+.divider {
+  @include divider;
+  margin: 50px 0 !important;
+  width: 100% !important;
+}
+
+.home_page{
+  width: 63rem;
+  margin: 2rem auto 0 auto;
+}
