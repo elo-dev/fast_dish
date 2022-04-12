@@ -4,6 +4,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: var(--main-font);
 }
 
 h1,
@@ -15,6 +16,7 @@ h2 {
   --main-font: 'Mukta', sans-serif;
   --main-color: #e27d60;
   --title-color: #41b3a3;
+  --border-color: #E8A87C;
 }
 
 @mixin textNoWrap {

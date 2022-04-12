@@ -1,0 +1,97 @@
+.dish_recipe {
+  margin: 7rem auto 0 auto;
+  background-color: white !important;
+  &__header_info {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+  &__header_image {
+    .image {
+      width: 100%;
+      height: 35rem;
+      object-fit: cover;
+    }
+  }
+}
+
+.header {
+  .header_info {
+    &__wrapper {
+      text-align: center;
+    }
+    &__title {
+      margin-bottom: 20px !important;
+      font-size: 3em !important;
+    }
+    &__time {
+      color: rgba(128, 128, 128, 0.8);
+    }
+    &__healthScore {
+      letter-spacing: 1px;
+      font-size: 1.2em;
+      font-weight: 400;
+    }
+    &__price {
+      font-size: 1.2em;
+    }
+    &__isVegan {
+      font-size: 1.2em;
+      color: var(--main-color);
+    }
+  }
+}
+
+.body {
+  margin: 5rem auto 0 auto;
+  width: 63rem !important;
+}
+
+.recipe_ingridients {
+  &__wrapper {
+    &:not(:last-child) {
+      margin-bottom: 1rem;
+    }
+  }
+  &__text {
+    font-size: 1.2em;
+  }
+  &__servings {
+    font-size: 1.2em;
+    background-color: var(--main-color);
+    padding: 5px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+}
+
+.recipe_steps {
+  &__wrapper {
+    &:not(:last-child) {
+      margin-bottom: 2rem;
+    }
+  }
+  &__text {
+    font-weight: 400;
+    font-size: 1.2em;
+  }
+}
+
+.recipe_info {
+  &__text {
+    font-size: 1.2em;
+    font-weight: 300;
+  }
+}
+
+.recipe_nutrition {
+  &__name {
+    font-size: 1.2em;
+    font-weight: 300;
+  }
+  &__amount {
+    color: grey;
+    margin-left: 10px;
+  }
+}

@@ -9,6 +9,7 @@ import {
 } from '@ant-design/icons'
 
 import style from './Header.module.scss'
+import { Link } from 'react-router-dom'
 
 const { Header } = Layout
 const { Title, Text } = Typography
@@ -41,9 +42,11 @@ const MainHeader = () => {
           </Dropdown>
         </Col>
         <Col span={12} className={style.header__title}>
-          <Title className={style.title} level={1}>
-            Fast Dish
-          </Title>
+          <Link to="/">
+            <Title className={style.title} level={1}>
+              Fast Dish
+            </Title>
+          </Link>
         </Col>
         <Col span={6}>
           <Space>

@@ -38,6 +38,9 @@ export const recipes = createApi({
           `complexSearch?type=${mealType}&diet=${diet}${moreRecipeInfo}&${recipeNutrition}&number=10&apiKey=${API_KEY}`
         ),
     }),
+    getSimilarRecipes: builder.query({
+      query: (id) => createRequest(`${id}/similar?number=4&apiKey=${API_KEY}`),
+    }),
   }),
 })
 
@@ -47,4 +50,5 @@ export const {
   useGetLowCaloriesRecipesQuery,
   useGetFastRecipesQuery,
   useGetDietRecipesQuery,
+  useGetSimilarRecipesQuery,
 } = recipes

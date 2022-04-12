@@ -7,6 +7,7 @@ import Home from './Pages/Home/Home'
 import { RecipesByCategoryContainer } from './Pages/RecipesByCategory/RecipesByCategoryContainer'
 
 import style from './App.module.scss'
+import DishRecipe from './Pages/DishRecipe/DishRecipe'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             element={<RecipesByCategoryContainer />}
             path="category/:category"
           />
+          <Route element={<DishRecipe />} path=":id" />
         </Routes>
       </main>
     </Layout>

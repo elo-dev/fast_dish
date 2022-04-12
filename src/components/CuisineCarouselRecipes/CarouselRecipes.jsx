@@ -1,5 +1,6 @@
 import React from 'react'
 import { Carousel, Col, Layout, Row, Typography } from 'antd'
+import { Link } from 'react-router-dom'
 import cn from 'classnames'
 
 import SelectCountry from './SelectCountry/SelectCountry'
@@ -15,7 +16,7 @@ const CarouselRecipes = ({
   changeCountry,
   isFilter = false,
   sectionTitle,
-  countryCuisines
+  countryCuisines,
 }) => {
   return (
     <Layout className={style.cusines_recipes}>
@@ -38,56 +39,66 @@ const CarouselRecipes = ({
         <Col span={24}>
           <Carousel {...settings}>
             {recipes?.map((recipe) => (
-              <div className={style.cusines_recipes__wrapper} key={recipe.id}>
-                <div className={style.cusines_recipes__card}>
-                  <div>
-                    <img
-                      className={style.cusines_recipes__image}
-                      src={recipe.image}
-                      alt={recipe.title}
-                    />
-                  </div>
-                  <div className={cn(style.cusines_recipes__body, style.body)}>
-                    <Row className={style.body__header}>
-                      <Col span={24}>
-                        <span className={style.tag}>
-                          Health Score: {recipe.healthScore}/100
-                        </span>
-                        <Title className={style.title} level={2}>
-                          {recipe.title}
-                        </Title>
-                        <span className={style.time}>
-                          Ready in{' '}
-                          {recipe.readyInMinutes > 59
-                            ? transformTime(recipe.readyInMinutes)
-                            : recipe.readyInMinutes}{' '}
-                          minutes
-                        </span>
-                      </Col>
-                    </Row>
-                    <Row className={style.body__footer}>
-                      <Col span={8}>
-                        <span className={style.nutrient_name}>
-                          {recipe.nutrients.Calories.name}:
-                        </span>
-                        <p>{recipe.nutrients.Calories.amount}</p>
-                      </Col>
-                      <Col span={8}>
-                        <span className={style.nutrient_name}>
-                          {recipe.nutrients.Fat.name}:
-                        </span>
-                        <p>{recipe.nutrients.Fat.amount}</p>
-                      </Col>
-                      <Col span={8}>
-                        <span className={style.nutrient_name}>
-                          {recipe.nutrients.Sugar.name}:
-                        </span>
-                        <p>{recipe.nutrients.Sugar.amount}</p>
-                      </Col>
-                    </Row>
+              <Link to={`/${recipe.id}`} key={recipe.id}>
+                <div className={style.cusines_recipes__wrapper}>
+                  <div className={style.cusines_recipes__card}>
+                    <div>
+                      <img
+                        className={style.cusines_recipes__image}
+                        src={recipe.image}
+                        alt={recipe.title}
+                      />
+                    </div>
+                    <div
+                      className={cn(style.cusines_recipes__body, style.body)}
+                    >
+                      <Row className={style.body__header}>
+                        <Col span={24}>
+                          <span className={style.tag}>
+                            Health Score: {recipe.healthScore}/100
+                          </span>
+                          <Title className={style.title} level={2}>
+                            {recipe.title}
+                          </Title>
+                          <span className={style.time}>
+                            Ready in{' '}
+                            {recipe.readyInMinutes > 59
+                              ? transformTime(recipe.readyInMinutes)
+                              : recipe.readyInMinutes}{' '}
+                            minutes
+                          </span>
+                        </Col>
+                      </Row>
+                      <Row className={style.body__footer}>
+                        <Col span={8}>
+                          <span className={style.nutrient_name}>
+                            {recipe.nutrients.Calories.name}:
+                          </span>
+                          <p className={style.nutrient_amount}>
+                            {recipe.nutrients.Calories.amount}
+                          </p>
+                        </Col>
+                        <Col span={8}>
+                          <span className={style.nutrient_name}>
+                            {recipe.nutrients.Fat.name}:
+                          </span>
+                          <p className={style.nutrient_amount}>
+                            {recipe.nutrients.Fat.amount}
+                          </p>
+                        </Col>
+                        <Col span={8}>
+                          <span className={style.nutrient_name}>
+                            {recipe.nutrients.Sugar.name}:
+                          </span>
+                          <p className={style.nutrient_amount}>
+                            {recipe.nutrients.Sugar.amount}
+                          </p>
+                        </Col>
+                      </Row>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </Carousel>
         </Col>

@@ -17,7 +17,7 @@ const RecipesByCategory = ({
   lowCaloriesRecipes,
   fastRecipes,
   vegetarianRecipes,
-  getTimeFromMins
+  getTimeFromMins,
 }) => {
   return (
     <Layout className={style.recipesByCategory}>

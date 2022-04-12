@@ -36,12 +36,15 @@
     margin-bottom: 3rem;
     height: 8rem;
   }
-  &__footer{
+  &__footer {
     text-align: center;
-    .nutrient_name{
-      font-family: var(--main-font);
+    .nutrient_name {
+      font-family: var(--main-font) !important;
       font-size: 1.2em;
-      color: var(--main-color);
+      color: var(--main-color) !important;
+    }
+    .nutrient_amount {
+      color: black !important;
     }
   }
   .tag {
