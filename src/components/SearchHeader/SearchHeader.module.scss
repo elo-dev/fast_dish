@@ -1,0 +1,63 @@
+@import '../../index.scss';
+
+.header {
+  &__wrapper {
+    background-color: var(--main-color);
+    padding: 1.5rem 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+}
+
+.input {
+  width: 50% !important;
+  padding: 10px !important;
+  font-size: 1.1em;
+  font-weight: 600;
+}
+
+.btnAddOrRemoveIngredients {
+  background: none !important;
+  border: 0 !important;
+  cursor: pointer;
+  font-family: var(--main-font);
+  font-size: 1.1em;
+  text-transform: uppercase;
+}
+
+.filters {
+  background-color: #555;
+  display: flex;
+  justify-content: space-around;
+  padding: 0.5rem 0;
+
+  &__item {
+    text-transform: uppercase;
+    font-family: var(--main-font);
+    font-size: 1.1em;
+    color: rgb(182, 182, 182);
+  }
+}
+
+.tags {
+  background-color: var(--main-color);
+  &__wrapper {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  &__item {
+    margin-bottom: 1rem !important;
+    color: white !important;
+    font-size: 1.1em !important;
+    font-family: var(--main-font);
+    background-color: black !important;
+    border: none !important;
+    padding: 5px 10px !important;
+  }
+  &__item > span {
+    color: white !important;
+    font-size: 1em;
+    margin-left: 5px !important;
+  }
+}
