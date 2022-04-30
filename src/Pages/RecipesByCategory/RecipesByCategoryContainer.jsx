@@ -5,7 +5,7 @@ import {
   useGetDietRecipesQuery,
   useGetFastRecipesQuery,
   useGetLowCaloriesRecipesQuery,
-} from '../../redux/services/recipes'
+} from '../../redux-query/services/recipes'
 
 import useCreateRecipeObj from '../../hooks/useCreateRecipeObj'
 

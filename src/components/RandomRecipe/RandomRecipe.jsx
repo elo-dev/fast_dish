@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Col, Divider, Empty, Layout, Row } from 'antd'
 import { FileImageOutlined } from '@ant-design/icons'
-import { useGetRandomRecipesQuery } from '../../redux/services/recipes'
+import { useGetRandomRecipesQuery } from '../../redux-query/services/recipes'
 import cn from 'classnames'
 
 import style from './RandomRecipe.module.scss'

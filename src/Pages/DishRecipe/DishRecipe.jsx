@@ -4,8 +4,8 @@ import cn from 'classnames'
 import { useParams } from 'react-router'
 import HTMLParser from 'html-react-parser'
 
-import { useGetRecipeByIdQuery } from '../../redux/services/recipe'
-import { useGetSimilarRecipesQuery } from '../../redux/services/recipes'
+import { useGetRecipeByIdQuery } from '../../redux-query/services/recipe'
+import { useGetSimilarRecipesQuery } from '../../redux-query/services/recipes'
 
 import style from './DishRecipe.module.scss'
 

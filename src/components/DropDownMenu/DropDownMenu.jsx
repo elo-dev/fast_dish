@@ -1,11 +1,10 @@
 import React from 'react'
-import { Row, Col, Checkbox } from 'antd'
+import { Checkbox } from 'antd'
 
 import style from './DropDownMenu.module.scss'
 
-const DropDownMenu = ({ menuItems, setList, menuOptions, setItem }) => {
+const DropDownMenu = ({ menuItems, setList, menuOptions }) => {
   const onChange = (item) => {
-    // setItem(item)
     setList(item)
   }
 
@@ -13,8 +12,8 @@ const DropDownMenu = ({ menuItems, setList, menuOptions, setItem }) => {
     <Checkbox.Group
       options={menuOptions}
       value={menuItems}
-      className={style.checkbox_group}
       onChange={onChange}
+      className={style.checkbox_group}
     />
   )
 }

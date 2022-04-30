@@ -1,125 +1,90 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Col, Input, Row, Typography, Dropdown, Tag } from 'antd'
 import { DownOutlined } from '@ant-design/icons'
 
-import cn from 'classnames'
+import useDebounce from '../../hooks/useDebounce'
 
-import style from './SearchHeader.module.scss'
+import {
+  cuisines,
+  dietaryConcerns,
+  dishType,
+  equipment,
+} from '../../data/filters/index'
+
+import {
+  addItem,
+  clearFilters,
+  removeTagItem,
+} from '../../redux-query/toolkitSlice/filterSlice'
+
+import { addQuery } from '../../redux-query/toolkitSlice/querySlice'
+
+import cn from 'classnames'
 
 import DropDownMenu from '../../components/DropDownMenu/DropDownMenu'
 
+import style from './SearchHeader.module.scss'
+
 const { Title } = Typography
 
-const dishType = [
-  'main course',
-  'side dish',
-  'dessert',
-  'appetizer',
-  'salad',
-  'bread',
-  'breakfast',
-  'soup',
-  'beverage',
-  'sauce',
-  'marinade',
-  'fingerfood',
-  'snack',
-  'drink',
-]
-
-const cuisines = [
-  'African',
-  'American',
-  'British',
-  'Cajun',
-  'Caribbean',
-  'Chinese',
-  'Eastern European',
-  'European',
-  'French',
-  'German',
-  'Greek',
-  'Indian',
-  'Irish',
-  'Italian',
-  'Japanese',
-  'Jewish',
-  'Korean',
-  'Latin American',
-  'Mediterranean',
-  'Mexican',
-  'Middle Eastern',
-  'Nordic',
-  'Southern',
-  'Spanish',
-  'Thai',
-  'Vietnamese',
-]
-
-const dietaryConcerns = [
-  'Gluten Free',
-  'Ketogenic',
-  'Vegetarian',
-  'Ovo-Vegetarian',
-  'Vegan',
-  'Pescetarian',
-  'Paleo',
-  'Primal',
-]
-
-const equipment = [
-  'Hand mixer',
-  'Pan',
-  'Mixing bowl',
-  'Dutch oven',
-  'Microwave',
-  'Ladle',
-  'Rolling pin',
-  'Meat grinder',
-  'Multicooker',
-  'Toaster',
-  'Double boiler',
-]
-
 const SearchHeader = () => {
-  const [list, setList] = useState({
-    cuisinesItems: [],
-    dishTypeItems: [],
-    dietaryConcernsItem: [],
-    equipmentItems: [],
-  })
+  const filters = useSelector((state) => state.filter.filters)
+  const dispatch = useDispatch()
+
+  const arrDropDownMenu = [
+    {
+      label: 'cuisine',
+      menuItems: filters.cuisinesItems,
+      menuOptions: cuisines,
+    },
+    {
+      label: 'dish type',
+      menuItems: filters.dishTypeItems,
+      menuOptions: dishType,
+    },
+    {
+      label: 'dietary concerns',
+      menuItems: filters.dietaryConcernsItem,
+      menuOptions: dietaryConcerns,
+    },
+    {
+      label: 'equipment',
+      menuItems: filters.equipmentItems,
+      menuOptions: equipment,
+    },
+  ]
 
   const [tags, setTags] = useState([])
+  const [searchValue, setSearchValue] = useState('')
+
+  const debouncedSearchTerm = useDebounce(searchValue, 700)
+
+  useEffect(() => {
+    if (debouncedSearchTerm) {
+      dispatch(addQuery(debouncedSearchTerm))
+    } else {
+      dispatch(addQuery(''))
+    }
+  }, [debouncedSearchTerm])
 
   useEffect(() => {
     const concatTags = [
-      ...list.cuisinesItems,
-      ...list.dishTypeItems,
-      ...list.dietaryConcernsItem,
-      ...list.equipmentItems,
+      ...filters.cuisinesItems,
+      ...filters.dishTypeItems,
+      ...filters.dietaryConcernsItem,
+      ...filters.equipmentItems,
     ]
     setTags(concatTags)
-  }, [list])
+  }, [filters])
 
   const removeTag = (tag) => {
-    setList((prevState) => ({
-      ...list,
-      cuisinesItems: prevState.cuisinesItems.filter((el) => el != tag),
-      dishTypeItems: prevState.dishTypeItems.filter((el) => el != tag),
-      dietaryConcernsItem: prevState.dietaryConcernsItem.filter((el) => el != tag),
-      equipmentItems: prevState.equipmentItems.filter((el) => el != tag),
-    }))
-    setTags((prevState) => prevState.filter((el) => el != tag))
+    dispatch(removeTagItem(tag))
   }
 
   const removeAllTags = () => {
-    setList({
-      cuisinesItems: [],
-      dietaryConcernsItem: [],
-      dishTypeItems: [],
-      equipmentItems: [],
-    })
+    dispatch(clearFilters())
   }
 
   return (
@@ -131,7 +96,12 @@ const SearchHeader = () => {
               <Link to="/">
                 <Title level={1}>Fast Dish</Title>
               </Link>
-              <Input placeholder="Find a Recipe" className={style.input} />
+              <Input
+                placeholder="Find a Recipe"
+                className={style.input}
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+              />
               <button className={style.btnAddOrRemoveIngredients}>
                 Include/Exclude ingredients
               </button>
@@ -156,81 +126,33 @@ const SearchHeader = () => {
           </Col>
           <Col span={24}>
             <div className={style.filters}>
-              <Dropdown
-                overlay={
-                  <DropDownMenu
-                    menuItems={list.cuisinesItems}
-                    menuOptions={cuisines}
-                    setList={(val) => setList({ ...list, cuisinesItems: val })}
-                  />
-                }
-              >
-                <a
-                  className={cn('ant-dropdown-link', style.filters__item)}
-                  onClick={(e) => e.preventDefault()}
-                >
-                  cuisine <DownOutlined />
-                </a>
-              </Dropdown>
-              <Dropdown
-                overlay={
-                  <DropDownMenu
-                    menuItems={list.dishTypeItems}
-                    menuOptions={dishType}
-                    setList={(val) => setList({ ...list, dishTypeItems: val })}
-                  />
-                }
-              >
-                <a
-                  className={cn('ant-dropdown-link', style.filters__item)}
-                  onClick={(e) => e.preventDefault()}
-                >
-                  dish type <DownOutlined />
-                </a>
-              </Dropdown>
-              <Dropdown
-                overlay={
-                  <DropDownMenu
-                    menuItems={list.dietaryConcernsItem}
-                    menuOptions={dietaryConcerns}
-                    setList={(val) =>
-                      setList({ ...list, dietaryConcernsItem: val })
+              {arrDropDownMenu.map(
+                ({ label, menuItems, menuOptions }, index) => (
+                  <Dropdown
+                    key={index}
+                    overlay={
+                      <DropDownMenu
+                        menuItems={menuItems}
+                        menuOptions={menuOptions}
+                        setList={(val) =>
+                          dispatch(addItem({ filterName: label, val }))
+                        }
+                      />
                     }
-                  />
-                }
-              >
-                <a
-                  className={cn('ant-dropdown-link', style.filters__item)}
-                  onClick={(e) => e.preventDefault()}
-                >
-                  dietary concerns <DownOutlined />
-                </a>
-              </Dropdown>
-              <Dropdown
-                overlay={
-                  <DropDownMenu
-                    menuItems={list.equipmentItems}
-                    menuOptions={equipment}
-                    setList={(val) => setList({ ...list, equipmentItems: val })}
-                  />
-                }
-              >
-                <a
-                  className={cn('ant-dropdown-link', style.filters__item)}
-                  onClick={(e) => e.preventDefault()}
-                >
-                  equipment <DownOutlined />
-                </a>
-              </Dropdown>
+                  >
+                    <a
+                      className={cn('ant-dropdown-link', style.filters__item)}
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      {label} <DownOutlined />
+                    </a>
+                  </Dropdown>
+                )
+              )}
             </div>
           </Col>
         </Row>
       </header>
-      {/* <Row gutter={16}>
-        <Col span={24}>
-          <div></div>
-        </Col>
-      </Row> */}
     </>
   )
 }

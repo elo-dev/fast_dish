@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Col, Input, Layout, Row, Typography } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
 import style from './SearchRecipeBanner.module.scss'
-import { useGetRandomImageQuery } from '../../redux/services/randomImage'
+import { useGetRandomImageQuery } from '../../redux-query/services/randomImage'
 import SearchInput from '../SearchInput/SearchInput'
 
 const { Title } = Typography

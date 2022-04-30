@@ -1,4 +1,13 @@
 .search {
   background-color: rgb(27, 27, 27) !important;
-  height: 100vh !important;
+  min-height: 100vh !important;
+  &__container {
+    margin: 3rem auto;
+    width: 1170px;
+  }
+  &__matchResults {
+    color: white;
+    font-size: 1.3em;
+    font-weight: 300;
+  }
 }
