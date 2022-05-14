@@ -114,6 +114,15 @@ const SearchHeader = ({ recipe }) => {
     setSearchParams(updatedSearchParams)
   }
 
+  useEffect(() => {
+    searchParams.forEach((value, key) => {
+      if (!value.length) {
+        searchParams.delete(key)
+        setSearchParams(searchParams)
+      }
+    })
+  }, [searchParams])
+
   const removeAllTags = () => {
     dispatch(clearFilters())
     setSearchParams({})
@@ -151,13 +160,6 @@ const SearchHeader = ({ recipe }) => {
     }
   }
 
-  const deleteParam = (param) => {
-    if (searchParams.getAll(param).includes('')) {
-      searchParams.delete(param)
-      setSearchParams(searchParams)
-    }
-  }
-
   const updateFiltersSearchParams = (paramKey, newValue) => {
     const isParamExist = searchParams.getAll(paramKey).includes(newValue)
 
@@ -172,7 +174,6 @@ const SearchHeader = ({ recipe }) => {
       )
       setSearchParams(updatedSearchParams)
     }
-    deleteParam(paramKey)
   }
 
   return (
