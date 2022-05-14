@@ -3,9 +3,10 @@ import { Checkbox } from 'antd'
 
 import style from './DropDownMenu.module.scss'
 
-const DropDownMenu = ({ menuItems, setList, menuOptions }) => {
+const DropDownMenu = ({ menuItems, setList, menuOptions, setSearchParams }) => {
   const onChange = (item) => {
     setList(item)
+    setSearchParams(item)
   }
 
   return (

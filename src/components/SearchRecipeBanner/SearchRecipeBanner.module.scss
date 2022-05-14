@@ -1,14 +1,14 @@
 .banner {
-  margin-top: 64px;
+  margin-top: 4rem;
   justify-content: center;
   text-align: center;
   max-height: 500px;
-  &__image{
+  &__image {
     height: 500px;
     object-fit: cover;
     object-position: center center;
   }
-  &__body{
+  &__body {
     position: absolute;
     width: 100%;
   }
@@ -37,7 +37,7 @@
   font-size: 25px;
 }
 
-.search_form{
+.search_form {
   cursor: pointer;
   margin: 0 auto;
   width: 500px;

@@ -5,12 +5,14 @@ import RandomRecipe from '../../components/RandomRecipe/RandomRecipe'
 import CuisineCarouselRecipesContainer from '../../components/CuisineCarouselRecipes/CuisineCarouselRecipesContainer'
 import MenuCategories from '../../components/MenuCategories/MenuCategories'
 import SearchRecipeBanner from '../../components/SearchRecipeBanner/SearchRecipeBanner'
+import MainHeader from '../../components/Header/Header'
 
 import style from './Home.module.scss'
 
 const Home = () => {
   return (
     <>
+      <MainHeader />
       <SearchRecipeBanner />
       <div className={style.home_page}>
         <RandomRecipe />

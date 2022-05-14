@@ -11,7 +11,6 @@
 }
 
 .input {
-  width: 50% !important;
   padding: 10px !important;
   font-size: 1.1em;
   font-weight: 600;
@@ -22,7 +21,7 @@
   border: 0 !important;
   cursor: pointer;
   font-family: var(--main-font);
-  font-size: 1.1em;
+  font-size: 1.1em !important;
   text-transform: uppercase;
 }
 
@@ -60,4 +59,9 @@
     font-size: 1em;
     margin-left: 5px !important;
   }
+}
+
+.input_icon {
+  opacity: 0.6;
+  font-size: 1.5em;
 }

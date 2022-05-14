@@ -7,6 +7,8 @@ import HTMLParser from 'html-react-parser'
 import { useGetRecipeByIdQuery } from '../../redux-query/services/recipe'
 import { useGetSimilarRecipesQuery } from '../../redux-query/services/recipes'
 
+import MainHeader from '../../components/Header/Header'
+
 import style from './DishRecipe.module.scss'
 
 const { Title, Text } = Typography
@@ -15,6 +17,8 @@ const { Meta } = Card
 const DishRecipe = () => {
   const { id } = useParams()
 
+  console.log(id)
+
   const { data: recipeInfo, isLoading: isLoadingRecipeById } =
     useGetRecipeByIdQuery(id)
   const { data: recipeSimilar, isLoadingSimilarRecipes } =
@@ -22,10 +26,9 @@ const DishRecipe = () => {
 
   if (isLoadingRecipeById) return <Spin />
 
-  console.log(recipeInfo)
-
   return (
     <Layout className={style.dish_recipe}>
+      <MainHeader />
       <Row className={style.header}>
         <Col span={12}>
           <div

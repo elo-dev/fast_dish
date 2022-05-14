@@ -39,7 +39,7 @@ const CarouselRecipes = ({
         <Col span={24}>
           <Carousel {...settings}>
             {recipes?.map((recipe) => (
-              <Link to={`/${recipe.id}`} key={recipe.id}>
+              <Link to={`/recipe/${recipe.id}`} key={recipe.id}>
                 <div className={style.cusines_recipes__wrapper}>
                   <div className={style.cusines_recipes__card}>
                     <div>

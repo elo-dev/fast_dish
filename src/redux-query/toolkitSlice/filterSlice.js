@@ -6,6 +6,8 @@ const initialState = {
     dishTypeItems: [],
     dietaryConcernsItem: [],
     equipmentItems: [],
+    includeIngridient: [],
+    excludeIngridient: [],
   },
 }
 
@@ -28,6 +30,12 @@ const filterSlice = createSlice({
         state.filters.equipmentItems = value
       }
     },
+    includeIngridient(state, action) {
+      state.filters.includeIngridient.push(action.payload)
+    },
+    excludeIngridient(state, action) {
+      state.filters.excludeIngridient.push(action.payload)
+    },
     removeTagItem(state, action) {
       const newTagsCuisines = state.filters.cuisinesItems.filter(
         (el) => el != action.payload
@@ -41,20 +49,36 @@ const filterSlice = createSlice({
       const newTagsEquipment = state.filters.equipmentItems.filter(
         (el) => el != action.payload
       )
+      const newTagsIncludeIngridient = state.filters.includeIngridient.filter(
+        (el) => el != action.payload
+      )
+      const newTagsExcludeIngridient = state.filters.excludeIngridient.filter(
+        (el) => el != action.payload
+      )
       state.filters.cuisinesItems = newTagsCuisines
       state.filters.dishTypeItems = newTagsDishType
       state.filters.dietaryConcernsItem = newTagsDietaryConcerns
       state.filters.equipmentItems = newTagsEquipment
+      state.filters.includeIngridient = newTagsIncludeIngridient
+      state.filters.excludeIngridient = newTagsExcludeIngridient
     },
     clearFilters(state) {
       state.filters.cuisinesItems = []
       state.filters.dishTypeItems = []
       state.filters.dietaryConcernsItem = []
       state.filters.equipmentItems = []
+      state.filters.includeIngridient = []
+      state.filters.excludeIngridient = []
     },
   },
 })
 
 export default filterSlice.reducer
 
-export const { addItem, removeTagItem, clearFilters } = filterSlice.actions
+export const {
+  addItem,
+  includeIngridient,
+  excludeIngridient,
+  removeTagItem,
+  clearFilters,
+} = filterSlice.actions
