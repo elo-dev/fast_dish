@@ -37,38 +37,16 @@ const filterSlice = createSlice({
       state.filters.excludeIngridient.push(action.payload)
     },
     removeTagItem(state, action) {
-      const newTagsCuisines = state.filters.cuisinesItems.filter(
-        (el) => el != action.payload
-      )
-      const newTagsDishType = state.filters.dishTypeItems.filter(
-        (el) => el != action.payload
-      )
-      const newTagsDietaryConcerns = state.filters.dietaryConcernsItem.filter(
-        (el) => el != action.payload
-      )
-      const newTagsEquipment = state.filters.equipmentItems.filter(
-        (el) => el != action.payload
-      )
-      const newTagsIncludeIngridient = state.filters.includeIngridient.filter(
-        (el) => el != action.payload
-      )
-      const newTagsExcludeIngridient = state.filters.excludeIngridient.filter(
-        (el) => el != action.payload
-      )
-      state.filters.cuisinesItems = newTagsCuisines
-      state.filters.dishTypeItems = newTagsDishType
-      state.filters.dietaryConcernsItem = newTagsDietaryConcerns
-      state.filters.equipmentItems = newTagsEquipment
-      state.filters.includeIngridient = newTagsIncludeIngridient
-      state.filters.excludeIngridient = newTagsExcludeIngridient
+      for (const key in state.filters) {
+        state.filters[key] = state.filters[key].filter(
+          (el) => el != action.payload
+        )
+      }
     },
     clearFilters(state) {
-      state.filters.cuisinesItems = []
-      state.filters.dishTypeItems = []
-      state.filters.dietaryConcernsItem = []
-      state.filters.equipmentItems = []
-      state.filters.includeIngridient = []
-      state.filters.excludeIngridient = []
+      for (const key in state.filters) {
+        state.filters[key] = []
+      }
     },
   },
 })
