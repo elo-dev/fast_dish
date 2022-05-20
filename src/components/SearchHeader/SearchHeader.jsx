@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
 import { Col, Input, Row, Typography, Dropdown, Tag } from 'antd'
 import {
   DownOutlined,
@@ -10,6 +10,7 @@ import {
 } from '@ant-design/icons'
 
 import useDebounce from '../../hooks/useDebounce'
+import useUpdateSearchParam from '../../hooks/useUpdateSearchParam'
 
 import {
   cuisines,
@@ -26,8 +27,6 @@ import {
   removeTagItem,
 } from '../../redux-query/toolkitSlice/filterSlice'
 
-import { addQuery } from '../../redux-query/toolkitSlice/querySlice'
-
 import cn from 'classnames'
 
 import DropDownMenu from '../../components/DropDownMenu/DropDownMenu'
@@ -36,69 +35,90 @@ import style from './SearchHeader.module.scss'
 
 const { Title } = Typography
 
-const SearchHeader = ({ recipe }) => {
-  const filters = useSelector((state) => state.filter.filters)
+const SearchHeader = ({
+  searchTerms,
+  setSearchTerms,
+  cuisineParams,
+  dishTypeParams,
+  dietaryConcernsParams,
+  equipmentParams,
+  searchParams,
+  includeIngridientParams,
+  excludeIngridientParams,
+  setSearchParams,
+  filters,
+}) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const [searchParams, setSearchParams] = useSearchParams()
+  const updateSearchParams = useUpdateSearchParam()
 
   const arrDropDownMenu = [
     {
       label: 'cuisine',
-      menuItems: filters.cuisinesItems,
+      menuItems: filters.cuisinesItems.length
+        ? filters.cuisinesItems
+        : cuisineParams.join('').split(','),
       menuOptions: cuisines,
     },
     {
       label: 'dish type',
-      menuItems: filters.dishTypeItems,
+      menuItems: filters.dishTypeItems.length
+        ? filters.dishTypeItems
+        : dishTypeParams.join('').split(','),
       menuOptions: dishType,
     },
     {
       label: 'dietary concerns',
-      menuItems: filters.dietaryConcernsItem,
+      menuItems: filters.dietaryConcernsItem.length
+        ? filters.dietaryConcernsItem
+        : dietaryConcernsParams.join('').split(','),
       menuOptions: dietaryConcerns,
     },
     {
       label: 'equipment',
-      menuItems: filters.equipmentItems,
+      menuItems: filters.equipmentItems.length
+        ? filters.equipmentItems
+        : equipmentParams.join('').split(','),
       menuOptions: equipment,
     },
   ]
 
   const [tags, setTags] = useState([])
-  const [searchValue, setSearchValue] = useState(recipe ? recipe : '')
+  const [searchValue, setSearchValue] = useState(searchTerms)
   const [isToggle, setIsToggle] = useState(false)
-  const [moreIngridients, setMoreIngridients] = useState({
-    include: '',
-    exclude: '',
-  })
+  const [includeIngr, setIncludeIngr] = useState('')
+  const [excludeIngr, setExcludeIngr] = useState('')
 
   const debouncedSearchTerm = useDebounce(searchValue, 700)
 
   useEffect(() => {
     if (debouncedSearchTerm) {
-      dispatch(addQuery(debouncedSearchTerm))
-      navigate(`/search/${debouncedSearchTerm}`)
-    } else if (recipe) {
-      dispatch(addQuery(recipe))
-    }
-    if (!debouncedSearchTerm) {
-      dispatch(addQuery(''))
-      navigate(`/search`)
+      navigate(`/search/${debouncedSearchTerm}?${searchParams.toString()}`)
+    } else {
+      setSearchTerms('')
+      navigate(`/search?${searchParams.toString()}`)
     }
   }, [debouncedSearchTerm])
 
   useEffect(() => {
-    const concatTags = [
-      ...filters.cuisinesItems,
-      ...filters.dishTypeItems,
-      ...filters.dietaryConcernsItem,
-      ...filters.equipmentItems,
-      ...filters.includeIngridient,
-      ...filters.excludeIngridient,
+    const concatParamsTags = [
+      ...cuisineParams,
+      ...dishTypeParams,
+      ...dietaryConcernsParams,
+      ...equipmentParams,
+      ...includeIngridientParams,
+      ...excludeIngridientParams,
     ]
-    setTags(concatTags)
+      .reduce(
+        (previousValue, currentValue) => [
+          ...previousValue,
+          ...currentValue.split(','),
+        ],
+        []
+      )
+      .filter((item) => item !== '')
+    setTags(concatParamsTags)
   }, [filters])
 
   const removeTag = (tag) => {
@@ -106,7 +126,7 @@ const SearchHeader = ({ recipe }) => {
 
     const allParams = [...searchParams].map(([key, value]) => {
       const params = value.split(',').filter((item) => item !== tag)
-      return [key, params.toString()]
+      return [key, params]
     })
 
     const updatedSearchParams = new URLSearchParams(allParams)
@@ -133,46 +153,34 @@ const SearchHeader = ({ recipe }) => {
   }
 
   const includeIngredients = (e) => {
-    if (e.key === 'Enter' && moreIngridients.include.length > 0) {
-      dispatch(includeIngridient(moreIngridients.include))
-      setMoreIngridients({ include: '' })
+    if (e.key === 'Enter' && includeIngr.length > 0) {
+      dispatch(includeIngridient(includeIngr))
+      updateSearchParams('include', [...includeIngridientParams, includeIngr])
+      setIncludeIngr('')
     }
   }
 
   const excludeIngredients = (e) => {
-    if (e.key === 'Enter' && moreIngridients.exclude.length > 0) {
-      dispatch(excludeIngridient(moreIngridients.exclude))
-      setMoreIngridients({ exclude: '' })
+    if (e.key === 'Enter' && excludeIngr.length > 0) {
+      dispatch(excludeIngridient(excludeIngr))
+      updateSearchParams('exclude', [...excludeIngridientParams, excludeIngr])
+      setExcludeIngr('')
     }
   }
 
   const onIncludeIngredients = () => {
-    if (moreIngridients.include.length > 0) {
-      dispatch(includeIngridient(moreIngridients.include))
-      setMoreIngridients({ include: '' })
+    if (includeIngr.length > 0) {
+      dispatch(includeIngridient(includeIngr))
+      updateSearchParams('include', [...includeIngridientParams, includeIngr])
+      setIncludeIngr('')
     }
   }
 
   const onExcludeIngredients = () => {
-    if (moreIngridients.exclude.length > 0) {
-      dispatch(excludeIngridient(moreIngridients.exclude))
-      setMoreIngridients({ exclude: '' })
-    }
-  }
-
-  const updateFiltersSearchParams = (paramKey, newValue) => {
-    const isParamExist = searchParams.getAll(paramKey).includes(newValue)
-
-    if (!isParamExist) {
-      searchParams.set(paramKey, newValue)
-      setSearchParams(searchParams)
-    } else {
-      const updatedSearchParams = new URLSearchParams(
-        [...searchParams].filter(
-          ([key, value]) => key !== paramKey || value !== newValue
-        )
-      )
-      setSearchParams(updatedSearchParams)
+    if (excludeIngr.length > 0) {
+      dispatch(excludeIngridient(excludeIngr))
+      updateSearchParams('exclude', [...excludeIngridientParams, excludeIngr])
+      setExcludeIngr('')
     }
   }
 
@@ -202,10 +210,8 @@ const SearchHeader = ({ recipe }) => {
                     <Input
                       placeholder="Include ingredients"
                       className={style.input}
-                      value={moreIngridients.include}
-                      onChange={(e) =>
-                        setMoreIngridients({ include: e.target.value })
-                      }
+                      value={includeIngr}
+                      onChange={(e) => setIncludeIngr(e.target.value)}
                       onKeyPress={includeIngredients}
                       suffix={
                         <PlusCircleOutlined
@@ -219,10 +225,8 @@ const SearchHeader = ({ recipe }) => {
                     <Input
                       placeholder="Exclude ingredients"
                       className={style.input}
-                      value={moreIngridients.exclude}
-                      onChange={(e) =>
-                        setMoreIngridients({ exclude: e.target.value })
-                      }
+                      value={excludeIngr}
+                      onChange={(e) => setExcludeIngr(e.target.value)}
                       onKeyPress={excludeIngredients}
                       suffix={
                         <MinusCircleOutlined
@@ -274,7 +278,7 @@ const SearchHeader = ({ recipe }) => {
                           dispatch(addItem({ filterName: label, val }))
                         }
                         setSearchParams={(val) =>
-                          updateFiltersSearchParams(label, val)
+                          updateSearchParams(label, val)
                         }
                       />
                     }

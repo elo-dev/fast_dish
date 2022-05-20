@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { useParams } from 'react-router'
+import { useSearchParams } from 'react-router-dom'
 import { Col, Layout, Row, Select } from 'antd'
+
 import { useGetRecipeQuery } from '../../redux-query/services/searchRecipe'
 
 import RecipeCard from '../../components/RecipeCard/RecipeCard'
+import SearchHeader from '../../components/SearchHeader/SearchHeader'
+
+import useUpdateSearchParam from '../../hooks/useUpdateSearchParam'
 
 import style from './Search.module.scss'
-import SearchHeader from '../../components/SearchHeader/SearchHeader'
-import { useParams } from 'react-router'
 
 const { Option } = Select
 
@@ -15,44 +19,45 @@ const Search = () => {
   const sortOptions = ['popularity', 'healthiness', 'price', 'time']
 
   const filters = useSelector((state) => state.filter.filters)
-  const queryInput = useSelector((state) => state.query.query)
+
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  const updateSearchParams = useUpdateSearchParam()
+
+  const cuisineParams = searchParams.getAll('cuisine')
+  const dishTypeParams = searchParams.getAll('dish type')
+  const dietaryConcernsParams = searchParams.getAll('dietary concerns')
+  const equipmentParams = searchParams.getAll('equipment')
+  const includeIngridientParams = searchParams.getAll('include')
+  const excludeIngridientParams = searchParams.getAll('exclude')
+  const sortParams = searchParams.getAll('sort').join('')
 
   const { recipe } = useParams()
 
-  const [filterCuisine, setFilterCuisine] = useState(null)
-  const [filterDishType, setFilterDishType] = useState(null)
-  const [filterDietaryConcerns, setFilterDietaryConcerns] = useState(null)
-  const [filterEquipment, setFilterEquipment] = useState(null)
-  const [ingredients, setIngredients] = useState({
-    include: null,
-    exclude: null,
-  })
-  const [sort, setSort] = useState(sortOptions[0])
+  const [searchTerms, setSearchTerms] = useState(recipe ? recipe : '')
+
+  const [sort, setSort] = useState(sortParams ? sortParams : sortOptions[0])
 
   const { data: recipes, isLoading } = useGetRecipeQuery({
-    query: queryInput,
-    cuisine: filterCuisine,
-    type: filterDishType,
-    diet: filterDietaryConcerns,
-    equipment: filterEquipment,
-    sort: sort,
-    includeIngredients: ingredients.include,
-    excludeIngredients: ingredients.exclude,
+    query: searchTerms,
+    cuisine: cuisineParams.toString(),
+    type: dishTypeParams.toString(),
+    diet: dietaryConcernsParams.toString(),
+    equipment: equipmentParams.toString(),
+    sort: sort ? sort : sortParams,
+    includeIngredients: includeIngridientParams.toString(),
+    excludeIngredients: excludeIngridientParams.toString(),
   })
 
   useEffect(() => {
-    setFilterCuisine(filters.cuisinesItems.join(','))
-    setFilterDishType(filters.dishTypeItems.join(','))
-    setFilterDietaryConcerns(filters.dietaryConcernsItem.join(','))
-    setFilterEquipment(filters.equipmentItems.join(','))
-    setIngredients({
-      include: filters.includeIngridient.join(','),
-      exclude: filters.excludeIngridient.join(','),
-    })
-  }, [filters])
+    if (recipe) {
+      setSearchTerms(recipe)
+    }
+  }, [recipe])
 
   const sortChange = (sortItem) => {
     setSort(sortItem)
+    updateSearchParams('sort', sortItem)
   }
 
   if (isLoading) {
@@ -61,7 +66,19 @@ const Search = () => {
 
   return (
     <Layout className={style.search}>
-      <SearchHeader recipe={recipe} />
+      <SearchHeader
+        searchTerms={searchTerms}
+        setSearchTerms={setSearchTerms}
+        cuisineParams={cuisineParams}
+        dishTypeParams={dishTypeParams}
+        dietaryConcernsParams={dietaryConcernsParams}
+        equipmentParams={equipmentParams}
+        searchParams={searchParams}
+        includeIngridientParams={includeIngridientParams}
+        excludeIngridientParams={excludeIngridientParams}
+        filters={filters}
+        setSearchParams={setSearchParams}
+      />
       <div className={style.search__container}>
         <div className={style.search__sort}>
           <div>
@@ -71,7 +88,7 @@ const Search = () => {
           </div>
           <div>
             <Select
-              defaultValue={sortOptions[0]}
+              defaultValue={sort}
               className={style.search__select}
               onChange={sortChange}
             >

@@ -1,7 +1,6 @@
+import { API_KEY } from '../constants'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-// const API_KEY = '66cc565acea24fcbbb226dc647b2a84d'
-const API_KEY = '35b6e90449144015b3dbc2e0f3c64d76'
 const baseUrl = `https://api.spoonacular.com/recipes/`
 const moreRecipeInfo = 'addRecipeInformation=true'
 const recipeNutrition = 'addRecipeNutrition=true'
