@@ -29,7 +29,6 @@
   background-color: #555;
   display: flex;
   justify-content: space-around;
-  padding: 0.5rem 0;
 
   &__item {
     text-transform: uppercase;
@@ -64,4 +63,11 @@
 .input_icon {
   opacity: 0.6;
   font-size: 1.5em;
+}
+
+.btn_clearAll {
+  background: none;
+  border: none;
+  margin: 0 10px;
+  cursor: pointer;
 }

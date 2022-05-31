@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import { Col, Input, Row, Typography, Dropdown, Tag } from 'antd'
+import { Col, Input, Row, Typography, Tag } from 'antd'
 import {
-  DownOutlined,
   MinusCircleOutlined,
   PlusCircleOutlined,
   SearchOutlined,
@@ -26,8 +25,6 @@ import {
   includeIngridient,
   removeTagItem,
 } from '../../redux-query/toolkitSlice/filterSlice'
-
-import cn from 'classnames'
 
 import DropDownMenu from '../../components/DropDownMenu/DropDownMenu'
 
@@ -260,7 +257,9 @@ const SearchHeader = ({
                 </Tag>
               ))}
               {tags.length > 0 && (
-                <button onClick={removeAllTags}>Clear all</button>
+                <button className={style.btn_clearAll} onClick={removeAllTags}>
+                  Clear all
+                </button>
               )}
             </div>
           </Col>
@@ -268,28 +267,16 @@ const SearchHeader = ({
             <div className={style.filters}>
               {arrDropDownMenu.map(
                 ({ label, menuItems, menuOptions }, index) => (
-                  <Dropdown
+                  <DropDownMenu
                     key={index}
-                    overlay={
-                      <DropDownMenu
-                        menuItems={menuItems}
-                        menuOptions={menuOptions}
-                        setList={(val) =>
-                          dispatch(addItem({ filterName: label, val }))
-                        }
-                        setSearchParams={(val) =>
-                          updateSearchParams(label, val)
-                        }
-                      />
+                    label={label}
+                    menuItems={menuItems}
+                    menuOptions={menuOptions}
+                    setList={(val) =>
+                      dispatch(addItem({ filterName: label, val }))
                     }
-                  >
-                    <a
-                      className={cn('ant-dropdown-link', style.filters__item)}
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      {label} <DownOutlined />
-                    </a>
-                  </Dropdown>
+                    setSearchParams={(val) => updateSearchParams(label, val)}
+                  />
                 )
               )}
             </div>
