@@ -19,9 +19,11 @@ export const searchRecipe = createApi({
         sort,
         includeIngredients,
         excludeIngredients,
+        offset,
+        number,
       }) =>
         createRequest(
-          `/complexSearch?query=${query}&addRecipeInformation=true&cuisine=${cuisine}&type=${type}&diet=${diet}&equipment=${equipment}&includeIngredients=${includeIngredients}&excludeIngredients=${excludeIngredients}&sort=${sort}&number=10&apiKey=${API_KEY}`
+          `/complexSearch?query=${query}&addRecipeInformation=true&cuisine=${cuisine}&type=${type}&diet=${diet}&equipment=${equipment}&includeIngredients=${includeIngredients}&excludeIngredients=${excludeIngredients}&sort=${sort}&number=${number}&offset=${offset}&apiKey=${API_KEY}`
         ),
     }),
   }),

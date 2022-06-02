@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router'
 import { useSearchParams } from 'react-router-dom'
-import { Col, Layout, Row, Select } from 'antd'
+import { Col, Layout, Pagination, Row, Select } from 'antd'
 
 import { useGetRecipeQuery } from '../../redux-query/services/searchRecipe'
 
@@ -31,12 +31,17 @@ const Search = () => {
   const includeIngridientParams = searchParams.getAll('include')
   const excludeIngridientParams = searchParams.getAll('exclude')
   const sortParams = searchParams.getAll('sort').join('')
+  const currentPageParams = +searchParams.get('page')
 
   const { recipe } = useParams()
 
   const [searchTerms, setSearchTerms] = useState(recipe ? recipe : '')
 
   const [sort, setSort] = useState(sortParams ? sortParams : sortOptions[0])
+
+  const [currentPage, setCurrentPage] = useState(1)
+  const [offsetPage, setOffsetPage] = useState(0)
+  const [pageSize, setPageSize] = useState(10)
 
   const { data: recipes, isLoading } = useGetRecipeQuery({
     query: searchTerms,
@@ -47,6 +52,8 @@ const Search = () => {
     sort: sort ? sort : sortParams,
     includeIngredients: includeIngridientParams.toString(),
     excludeIngredients: excludeIngridientParams.toString(),
+    offset: offsetPage,
+    number: pageSize,
   })
 
   useEffect(() => {
@@ -58,6 +65,28 @@ const Search = () => {
   const sortChange = (sortItem) => {
     setSort(sortItem)
     updateSearchParams('sort', sortItem)
+  }
+
+  useEffect(() => {
+    if (currentPage > 1) {
+      updateSearchParams('page', currentPage)
+    }
+  }, [currentPage])
+
+  useEffect(() => {
+    if (currentPageParams) {
+      setOffsetPage(currentPageParams * pageSize - pageSize)
+    }
+  }, [])
+
+  const changePage = (page, pageSize) => {
+    if (page === 1) {
+      searchParams.delete('page')
+      setSearchParams(searchParams)
+    }
+    setOffsetPage(page * pageSize - pageSize)
+    setCurrentPage(page)
+    setPageSize(pageSize)
   }
 
   if (isLoading) {
@@ -107,6 +136,13 @@ const Search = () => {
             </Col>
           ))}
         </Row>
+        <div className={style.pagination}>
+          <Pagination
+            current={currentPageParams ? currentPageParams : currentPage}
+            total={recipes.totalResults}
+            onChange={changePage}
+          />
+        </div>
       </div>
     </Layout>
   )
