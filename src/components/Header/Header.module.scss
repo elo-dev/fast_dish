@@ -31,6 +31,8 @@
     color: gray !important;
   }
   &__search {
+    display: flex;
+    align-items: center;
     cursor: pointer;
     margin-left: 20px;
     color: gray;

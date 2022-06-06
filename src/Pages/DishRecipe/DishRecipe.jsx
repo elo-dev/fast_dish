@@ -1,13 +1,14 @@
 import React from 'react'
-import { Card, Col, Divider, Layout, Row, Spin, Typography } from 'antd'
-import cn from 'classnames'
 import { useParams } from 'react-router'
+import { Card, Col, Divider, Layout, Row, Spin, Typography } from 'antd'
 import HTMLParser from 'html-react-parser'
 
 import { useGetRecipeByIdQuery } from '../../redux-query/services/recipe'
 import { useGetSimilarRecipesQuery } from '../../redux-query/services/recipes'
 
 import MainHeader from '../../components/Header/Header'
+
+import cn from 'classnames'
 
 import style from './DishRecipe.module.scss'
 
@@ -16,8 +17,6 @@ const { Meta } = Card
 
 const DishRecipe = () => {
   const { id } = useParams()
-
-  console.log(id)
 
   const { data: recipeInfo, isLoading: isLoadingRecipeById } =
     useGetRecipeByIdQuery(id)

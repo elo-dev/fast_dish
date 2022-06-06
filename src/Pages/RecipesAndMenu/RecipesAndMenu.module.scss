@@ -1,0 +1,76 @@
+@import '../../index.scss';
+
+@mixin title {
+  text-transform: uppercase;
+  font-size: 3.5em !important;
+}
+
+.recipesAndMenu {
+  width: 63rem;
+  margin: 7rem auto 0 auto;
+  background-color: white !important;
+  &__title {
+    font-size: 2em !important;
+    text-transform: uppercase;
+  }
+  &__search {
+    width: 300px;
+  }
+  &__row {
+    margin: 4rem 0;
+  }
+  &__col {
+    position: relative;
+    &::before {
+      position: absolute;
+      content: '';
+      top: 0;
+      left: 0;
+      bottom: 0;
+      border-left: 0.5px solid rgb(198, 198, 198);
+    }
+  }
+}
+
+.findRecipe {
+  text-align: center;
+  width: 500px;
+  &__title {
+    @include title;
+    color: var(--title-color) !important;
+  }
+}
+
+.createMenu {
+  text-align: center;
+  width: 500px;
+  &__title {
+    @include title;
+    color: var(--main-color) !important;
+  }
+  &__info {
+    width: 350px;
+    font-weight: 500;
+    margin: 0;
+  }
+  &__btn {
+    cursor: pointer;
+    color: var(--main-color);
+    text-transform: uppercase;
+    font-weight: 500;
+    background: none;
+    border: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.quickLinks {
+  &__link {
+    color: var(--title-color);
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

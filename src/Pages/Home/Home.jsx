@@ -1,21 +1,26 @@
-import React from 'react'
 import { Divider } from 'antd'
 
-import RandomRecipe from '../../components/RandomRecipe/RandomRecipe'
-import CuisineCarouselRecipesContainer from '../../components/CuisineCarouselRecipes/CuisineCarouselRecipesContainer'
-import MenuCategories from '../../components/MenuCategories/MenuCategories'
-import SearchRecipeBanner from '../../components/SearchRecipeBanner/SearchRecipeBanner'
+import { useGetRandomRecipesQuery } from '../../redux-query/services/recipes'
+
 import MainHeader from '../../components/Header/Header'
+import SearchRecipeBanner from '../../components/SearchRecipeBanner/SearchRecipeBanner'
+import RandomRecipe from '../../components/RandomRecipe/RandomRecipe'
+import CardMini from '../../components/CardMini/CardMini'
+import MenuCategories from '../../components/MenuCategories/MenuCategories'
+import CuisineCarouselRecipesContainer from '../../components/CuisineCarouselRecipes/CuisineCarouselRecipesContainer'
 
 import style from './Home.module.scss'
 
 const Home = () => {
+  const { data: randomRecipe, isLoading } = useGetRandomRecipesQuery(3)
+
   return (
     <>
       <MainHeader />
       <SearchRecipeBanner />
       <div className={style.home_page}>
-        <RandomRecipe />
+        <RandomRecipe content={randomRecipe} isLoading={isLoading} />
+        <CardMini content={randomRecipe} />
         <Divider className={style.divider} />
         <MenuCategories />
         <Divider className={style.divider} />

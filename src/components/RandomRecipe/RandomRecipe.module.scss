@@ -27,16 +27,15 @@
     width: 80%;
     padding: 25px;
   }
+  &__col {
+    margin-bottom: 180px;
+  }
 }
 
 .info {
   @include info_content;
 }
 
-.divider{
+.divider {
   @include divider;
-}
-
-.col{
-  margin-bottom: 180px;
 }

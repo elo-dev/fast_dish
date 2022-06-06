@@ -7,6 +7,7 @@ import DishRecipe from './Pages/DishRecipe/DishRecipe'
 import Search from './Pages/Search/Search'
 
 import style from './App.module.scss'
+import RecipesAndMenu from './Pages/RecipesAndMenu/RecipesAndMenu'
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route element={<Search />} path="/search/">
             <Route path=":recipe" element={null} />
           </Route>
+          <Route element={<RecipesAndMenu />} path="/recipes-menus" />
         </Routes>
       </main>
     </Layout>

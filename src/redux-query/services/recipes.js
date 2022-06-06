@@ -12,7 +12,8 @@ export const recipes = createApi({
   baseQuery: fetchBaseQuery({ baseUrl }),
   endpoints: (builder) => ({
     getRandomRecipes: builder.query({
-      query: () => createRequest(`random/?number=3&apiKey=${API_KEY}`),
+      query: (count) =>
+        createRequest(`random/?number=${count}&apiKey=${API_KEY}`),
     }),
     getRecipesByCuisine: builder.query({
       query: (country) =>

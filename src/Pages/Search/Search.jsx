@@ -132,7 +132,12 @@ const Search = () => {
         <Row gutter={16}>
           {recipes?.results.map(({ id, image, title, dishTypes }) => (
             <Col span={8} key={id}>
-              <RecipeCard image={image} title={title} dishTypes={dishTypes} />
+              <RecipeCard
+                id={id}
+                image={image}
+                title={title}
+                dishTypes={dishTypes}
+              />
             </Col>
           ))}
         </Row>
