@@ -15,7 +15,14 @@ export const recipe = createApi({
           `${id}/information?includeNutrition=true&apiKey=${API_KEY}`
         ),
     }),
+    addRecipe: builder.mutation({
+      query: (body) => ({
+        url: createRequest('/mealplanner/dsky/items'),
+        method: 'POST',
+        body,
+      }),
+    }),
   }),
 })
 
-export const { useGetRecipeByIdQuery } = recipe
+export const { useGetRecipeByIdQuery, useAddRecipeMutation } = recipe

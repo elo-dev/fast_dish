@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+
 import { Layout, Typography, Row, Col, Space, Menu, Dropdown } from 'antd'
 import {
   FacebookOutlined,
@@ -9,6 +10,8 @@ import {
   MenuOutlined,
 } from '@ant-design/icons'
 
+import { useAuth } from '../../hooks/useAuth'
+
 import SearchInput from '../SearchInput/SearchInput'
 
 import style from './Header.module.scss'
@@ -16,23 +19,36 @@ import style from './Header.module.scss'
 const { Header } = Layout
 const { Title, Text } = Typography
 
-const menu = (
-  <Menu>
-    <Menu.Item key="0">
-      <Link to="/recipes-menus">Recipes & Menu</Link>
-    </Menu.Item>
-    <Menu.Item key="1">
-      <a href="#">My Saved Recipes</a>
-    </Menu.Item>
-    <Menu.Divider />
-    <Menu.Item key="3">
-      <a href="#">Log in</a>
-    </Menu.Item>
-  </Menu>
-)
-
 const MainHeader = () => {
   const [isInputView, setIsInputView] = useState(false)
+
+  const { userAuth, signout } = useAuth()
+
+  const menu = (
+    <Menu>
+      <Menu.Item key="0">
+        <Link to="/recipes-menus">Recipes & Menu</Link>
+      </Menu.Item>
+      <Menu.Item key="1">
+        <a href="#">My Saved Recipes</a>
+      </Menu.Item>
+      <Menu.Divider />
+      {userAuth && (
+        <Menu.Item key="2">
+          <Link to="/me">{userAuth.displayName}</Link>
+        </Menu.Item>
+      )}
+      <Menu.Item key="3">
+        {userAuth ? (
+          <p className={style.menu__signout} onClick={signout}>
+            Logout
+          </p>
+        ) : (
+          <Link to="/signup">Sign Up</Link>
+        )}
+      </Menu.Item>
+    </Menu>
+  )
 
   return (
     <>

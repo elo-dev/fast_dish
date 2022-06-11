@@ -1,0 +1,25 @@
+.createMealPlan {
+  &__wrapper {
+    width: 63rem;
+    margin: 7rem auto;
+    background-color: white;
+    padding: 30px 0;
+  }
+  &__title {
+    font-size: 1.5em !important;
+    text-align: center;
+    margin-bottom: 1rem !important;
+  }
+  &__input {
+    text-align: center;
+    border: none !important;
+    box-shadow: none !important;
+    font-size: 3.5em !important;
+    font-weight: bold;
+    margin-bottom: 20px !important;
+  }
+  &__form {
+    width: 70%;
+    margin: 0 auto !important;
+  }
+}

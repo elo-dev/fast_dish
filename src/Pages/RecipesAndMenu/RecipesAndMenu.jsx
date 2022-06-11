@@ -85,9 +85,9 @@ const RecipesAndMenu = () => {
                   from any recipes and share it with friends!
                 </p>
                 <div>
-                  <button className={style.createMenu__btn}>
+                  <Link to="/account/menu" className={style.createMenu__btn}>
                     Create a Menu
-                  </button>
+                  </Link>
                   <CaretRightFilled />
                 </div>
               </Space>
