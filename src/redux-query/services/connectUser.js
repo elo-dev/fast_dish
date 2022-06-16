@@ -1,7 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { API_KEY } from '../constants'
-
-const baseUrl = 'https://api.spoonacular.com/users/'
+import { API_KEY, baseUrl } from '../constants'
 
 export const connectUser = createApi({
   reducerPath: 'connectUser',
@@ -9,7 +7,7 @@ export const connectUser = createApi({
   endpoints: (builder) => ({
     connectUser: builder.mutation({
       query: (body) => ({
-        url: `connect?apiKey=${API_KEY}`,
+        url: `users/connect?apiKey=${API_KEY}`,
         method: 'POST',
         body,
       }),

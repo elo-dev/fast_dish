@@ -28,8 +28,8 @@ const Registration = () => {
 
   const { signup, isLoading } = useAuth()
 
-  const onFinish = ({ name, username, email, password }) => {
-    signup(name, username, email, password)
+  const onFinish = async ({ name, username, email, password }) => {
+    await signup(name, username, email, password)
     form.resetFields()
   }
 

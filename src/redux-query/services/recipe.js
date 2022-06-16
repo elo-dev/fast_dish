@@ -1,7 +1,8 @@
-import { API_KEY } from '../constants'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { API_KEY, baseUrl } from '../constants'
 
-const baseUrl = 'https://api.spoonacular.com/recipes/'
+const { spoonacularUsername, hash } =
+  JSON.parse(localStorage.getItem('spoonacularAuth')) || {}
 
 const createRequest = (url) => ({ url })
 
@@ -12,14 +13,26 @@ export const recipe = createApi({
     getRecipeById: builder.query({
       query: (id) =>
         createRequest(
-          `${id}/information?includeNutrition=true&apiKey=${API_KEY}`
+          `recipes/${id}/information?includeNutrition=true&apiKey=${API_KEY}`
         ),
     }),
     addRecipe: builder.mutation({
-      query: (body) => ({
-        url: createRequest('/mealplanner/dsky/items'),
+      query: ({ title, slot, date, servings, readyInMinutes, image }) => ({
+        url: `mealplanner/${spoonacularUsername}/items?hash=${hash}&apiKey=${API_KEY}`,
         method: 'POST',
-        body,
+        body: {
+          date,
+          slot,
+          position: 0,
+          type: 'RECIPE',
+          value: {
+            id: Math.random(),
+            readyInMinutes,
+            servings,
+            title,
+            image,
+          },
+        },
       }),
     }),
   }),

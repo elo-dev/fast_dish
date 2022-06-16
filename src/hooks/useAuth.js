@@ -46,34 +46,29 @@ function useProvideAuth() {
     setIsLoading(true)
     setError(false)
 
-    const emailSplit = email.replace(/[\s.,$%!#[\]]/g, '')
+    try {
+      const { user } = await signInWithEmailAndPassword(auth, email, password)
 
-    get(child(ref(db), `user/${emailSplit}`))
-      .then((res) =>
-        localStorage.setItem('spoonacularAuth', JSON.stringify(res.val()))
+      const response = await get(child(ref(db), `user/${user.uid}`))
+
+      localStorage.setItem('spoonacularAuth', JSON.stringify(response.val()))
+      localStorage.setItem('authUser', JSON.stringify(user))
+
+      dispatch(
+        setUser({
+          id: user.uid,
+          token: user.accessToken,
+          name: user.displayName,
+          email: user.email,
+        })
       )
-      .catch((error) => console.log(error))
-
-    return await signInWithEmailAndPassword(auth, email, password)
-      .then(({ user }) => {
-        dispatch(
-          setUser({
-            id: user.uid,
-            token: user.accessToken,
-            name: user.displayName,
-            email: user.email,
-          })
-        )
-        localStorage.setItem('authUser', JSON.stringify(user))
-        setUserAuth(user)
-        setIsLoading(false)
-        navigate('/')
-        return user
-      })
-      .catch(() => {
-        setError(true)
-        setIsLoading(false)
-      })
+      setUserAuth(user)
+      setIsLoading(false)
+      navigate('/')
+    } catch (error) {
+      setError(true)
+      setIsLoading(false)
+    }
   }
 
   const signup = async (name, username, email, password) => {
@@ -86,19 +81,22 @@ function useProvideAuth() {
         email,
         password
       )
+
       await updateProfile(user, {
         displayName: name,
       })
-      const { hash, spoonacularPassword } = await connectUser({
+
+      const {
+        username: spoonacularUsername,
+        hash,
+        spoonacularPassword,
+      } = await connectUser({
         username,
-        name,
         email,
       }).unwrap()
 
-      const emailSplit = email.replace(/[\s.,$%!#[\]]/g, '')
-
-      await set(ref(db, `user/${emailSplit}`), {
-        username,
+      await set(ref(db, `user/${user.uid}`), {
+        spoonacularUsername,
         email,
         hash,
         spoonacularPassword,
@@ -106,7 +104,12 @@ function useProvideAuth() {
 
       localStorage.setItem(
         'spoonacularAuth',
-        JSON.stringify({ username, email, hash, spoonacularPassword })
+        JSON.stringify({
+          spoonacularUsername,
+          email,
+          hash,
+          spoonacularPassword,
+        })
       )
 
       localStorage.setItem('authUser', JSON.stringify(user))
@@ -122,7 +125,6 @@ function useProvideAuth() {
       setIsLoading(false)
       navigate('/')
     } catch (error) {
-      console.log(error)
       setError(true)
       setIsLoading(false)
     }
@@ -131,18 +133,17 @@ function useProvideAuth() {
   const signout = async () => {
     setIsLoading(true)
     setError(false)
-    return await signOut(auth)
-      .then(() => {
-        localStorage.removeItem('authUser')
-        localStorage.removeItem('spoonacularAuth')
-        setUserAuth(null)
-        setIsLoading(false)
-        navigate('/')
-      })
-      .catch(() => {
-        setError(true)
-        setIsLoading(false)
-      })
+    try {
+      await signOut(auth)
+      localStorage.removeItem('authUser')
+      localStorage.removeItem('spoonacularAuth')
+      setUserAuth(null)
+      setIsLoading(false)
+      navigate('/')
+    } catch (error) {
+      setError(true)
+      setIsLoading(false)
+    }
   }
 
   useEffect(() => {

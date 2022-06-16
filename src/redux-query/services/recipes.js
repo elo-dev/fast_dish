@@ -1,9 +1,5 @@
-import { API_KEY } from '../constants'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-
-const baseUrl = `https://api.spoonacular.com/recipes/`
-const moreRecipeInfo = 'addRecipeInformation=true'
-const recipeNutrition = 'addRecipeNutrition=true'
+import { API_KEY, baseUrl, moreRecipeInfo, recipeNutrition } from '../constants'
 
 const createRequest = (url) => ({ url })
 
@@ -13,34 +9,35 @@ export const recipes = createApi({
   endpoints: (builder) => ({
     getRandomRecipes: builder.query({
       query: (count) =>
-        createRequest(`random/?number=${count}&apiKey=${API_KEY}`),
+        createRequest(`recipes/random/?number=${count}&apiKey=${API_KEY}`),
     }),
     getRecipesByCuisine: builder.query({
       query: (country) =>
         createRequest(
-          `complexSearch?cuisine=${country}&${moreRecipeInfo}&${recipeNutrition}&number=10&apiKey=${API_KEY}`
+          `recipes/complexSearch?cuisine=${country}&${moreRecipeInfo}&${recipeNutrition}&number=10&apiKey=${API_KEY}`
         ),
     }),
     getLowCaloriesRecipes: builder.query({
       query: (mealType) =>
         createRequest(
-          `complexSearch?type=${mealType}&maxCalories=200&${moreRecipeInfo}&${recipeNutrition}&number=10&apiKey=${API_KEY}`
+          `recipes/complexSearch?type=${mealType}&maxCalories=200&${moreRecipeInfo}&${recipeNutrition}&number=10&apiKey=${API_KEY}`
         ),
     }),
     getFastRecipes: builder.query({
       query: (mealType) =>
         createRequest(
-          `complexSearch?type=${mealType}&maxReadyTime=20&${moreRecipeInfo}&${recipeNutrition}&number=10&apiKey=${API_KEY}`
+          `recipes/complexSearch?type=${mealType}&maxReadyTime=20&${moreRecipeInfo}&${recipeNutrition}&number=10&apiKey=${API_KEY}`
         ),
     }),
     getDietRecipes: builder.query({
       query: (mealType, diet) =>
         createRequest(
-          `complexSearch?type=${mealType}&diet=${diet}${moreRecipeInfo}&${recipeNutrition}&number=10&apiKey=${API_KEY}`
+          `recipes/complexSearch?type=${mealType}&diet=${diet}${moreRecipeInfo}&${recipeNutrition}&number=10&apiKey=${API_KEY}`
         ),
     }),
     getSimilarRecipes: builder.query({
-      query: (id) => createRequest(`${id}/similar?number=4&apiKey=${API_KEY}`),
+      query: (id) =>
+        createRequest(`recipes/${id}/similar?number=4&apiKey=${API_KEY}`),
     }),
   }),
 })
