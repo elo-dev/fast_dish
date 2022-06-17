@@ -13,6 +13,7 @@ import RecipesAndMenu from './Pages/RecipesAndMenu/RecipesAndMenu'
 import CreateMealPlan from './Pages/CreateMealPlan/CreateMealPlan'
 import Registration from './Pages/Registration/Registration'
 import Authorization from './Pages/Authorization/Authorization'
+import NotFound from './Pages/NotFound/NotFound'
 
 import style from './App.module.scss'
 
@@ -53,6 +54,7 @@ function App() {
             element={userAuth ? <Navigate to="/" /> : <Authorization />}
             path="/signin"
           />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
     </Layout>

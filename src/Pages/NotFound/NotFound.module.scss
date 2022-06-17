@@ -1,0 +1,12 @@
+.notfound {
+  min-height: 100vh !important;
+  &__title {
+    font-size: 1.3em;
+  }
+  &__text {
+    font-size: 1.2em;
+  }
+  &__link {
+    color: var(--main-color) !important;
+  }
+}
