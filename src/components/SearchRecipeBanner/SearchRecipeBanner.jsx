@@ -11,18 +11,16 @@ import style from './SearchRecipeBanner.module.scss'
 const { Title } = Typography
 
 const SearchRecipeBanner = () => {
-  const { data: imageFood, isLoading } = useGetRandomImageQuery()
+  const { data: imageFood } = useGetRandomImageQuery()
   const [isInputView, setIsInputView] = useState(false)
-
-  if (isLoading) return 'Loading ...'
 
   return (
     <>
       {isInputView && <SearchInput setIsInputView={setIsInputView} />}
       <Layout className={style.banner}>
         <img
-          src={imageFood.urls.regular}
-          alt={imageFood.alt_description}
+          src={imageFood?.urls.regular}
+          alt={imageFood?.alt_description}
           className={style.banner__image}
         />
         <Row className={style.banner__body}>

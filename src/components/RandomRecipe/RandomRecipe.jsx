@@ -1,27 +1,24 @@
+import { Link } from 'react-router-dom'
 import { Col, Divider, Empty, Row } from 'antd'
 import { FileImageOutlined } from '@ant-design/icons'
 
 import cn from 'classnames'
 
 import style from './RandomRecipe.module.scss'
-import { Link } from 'react-router-dom'
 
-const RandomRecipe = ({ content, isLoading }) => {
-  if (isLoading) {
-    return 'Loading...'
-  }
-
+const RandomRecipe = ({ content }) => {
   return (
-    <>
-      <Row justify="start" className={style.random_recipe}>
-        {Array(content?.recipes[0]).map((recipe) => (
-          <Col span={16} key={recipe.id} className={style.random_recipe__col}>
-            <Link to={`/recipe/${recipe.id}`}>
+    <Row justify="start" className={style.random_recipe}>
+      {content?.recipes
+        .slice(0, 1)
+        .map(({ id, image, title, readyInMinutes, creditsText }) => (
+          <Col span={16} key={id} className={style.random_recipe__col}>
+            <Link to={`/recipe/${id}`}>
               <div className={style.random_recipe__content}>
-                {recipe.image ? (
+                {image ? (
                   <img
-                    src={recipe.image}
-                    alt={recipe.title}
+                    src={image}
+                    alt={title}
                     className={style.random_recipe__photo}
                   />
                 ) : (
@@ -31,20 +28,17 @@ const RandomRecipe = ({ content, isLoading }) => {
                 )}
                 <div className={cn(style.random_recipe__info, style.info)}>
                   <span className={style.info__tag}>
-                    ready in {recipe.readyInMinutes} minutes
+                    ready in {readyInMinutes} minutes
                   </span>
-                  <h2 className={style.info__title}>{recipe.title}</h2>
+                  <h2 className={style.info__title}>{title}</h2>
                   <Divider className={style.divider} />
-                  <span className={style.info__author}>
-                    By {recipe.creditsText}
-                  </span>
+                  <span className={style.info__author}>By {creditsText}</span>
                 </div>
               </div>
             </Link>
           </Col>
         ))}
-      </Row>
-    </>
+    </Row>
   )
 }
 

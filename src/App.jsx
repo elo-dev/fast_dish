@@ -3,8 +3,6 @@ import { Navigate } from 'react-router-dom'
 
 import { useAuth } from './hooks/useAuth'
 
-import { Layout } from 'antd'
-
 import Home from './Pages/Home/Home'
 import { RecipesByCategoryContainer } from './Pages/RecipesByCategory/RecipesByCategoryContainer'
 import DishRecipe from './Pages/DishRecipe/DishRecipe'
@@ -16,10 +14,9 @@ import Authorization from './Pages/Authorization/Authorization'
 import Account from './Pages/Account/Account'
 import NotFound from './Pages/NotFound/NotFound'
 
+import MainLayout from './components/MainLayout/MainLayout'
 import MealPlanWeek from './components/MealPlanWeek/MealPlanWeek'
 import MealPlanDay from './components/MealPlanDay/MealPlanDay'
-
-import style from './App.module.scss'
 
 function App() {
   const { userAuth } = useAuth()
@@ -29,54 +26,55 @@ function App() {
   }
 
   return (
-    <Layout className={style.main_layout}>
-      <main className={style.main_content}>
-        <Routes>
-          <Route element={<Home />} path="/" />
-          <Route
-            element={<RecipesByCategoryContainer />}
-            path="/category/:category"
-          />
-          <Route element={<DishRecipe />} path="/recipe/:id" />
+    <Routes>
+      <Route path="/" element={<MainLayout />}>
+        <Route
+          element={<RecipesByCategoryContainer />}
+          path="category/:category"
+        />
+        <Route element={<DishRecipe />} path="recipe/:id" />
 
-          <Route element={<Search />} path="/search">
-            <Route element={<Search />} path=":recipe" />
-          </Route>
+        <Route element={<RecipesAndMenu />} path="recipes-menus" />
 
-          <Route element={<RecipesAndMenu />} path="/recipes-menus" />
+        <Route
+          element={
+            <RequiereAuth>
+              <Account />
+            </RequiereAuth>
+          }
+          path="account"
+        >
+          <Route element={<MealPlanWeek />} path="meal-week" />
+          <Route element={<MealPlanDay />} path="meal-day" />
+        </Route>
 
-          <Route
-            element={
-              <RequiereAuth>
-                <Account />
-              </RequiereAuth>
-            }
-            path="/account"
-          >
-            <Route element={<MealPlanWeek />} path="meal-week" />
-            <Route element={<MealPlanDay />} path="meal-day" />
-          </Route>
+        <Route
+          element={
+            <RequiereAuth>
+              <CreateMealPlan />
+            </RequiereAuth>
+          }
+          path="account/menu"
+        />
+      </Route>
 
-          <Route
-            element={
-              <RequiereAuth>
-                <CreateMealPlan />
-              </RequiereAuth>
-            }
-            path="/account/menu"
-          />
-          <Route
-            element={userAuth ? <Navigate to="/" /> : <Registration />}
-            path="/signup"
-          />
-          <Route
-            element={userAuth ? <Navigate to="/" /> : <Authorization />}
-            path="/signin"
-          />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </main>
-    </Layout>
+      <Route index element={<Home />} />
+
+      <Route element={<Search />} path="search">
+        <Route element={<Search />} path=":recipe" />
+      </Route>
+
+      <Route
+        element={userAuth ? <Navigate to="/" /> : <Registration />}
+        path="/signup"
+      />
+
+      <Route
+        element={userAuth ? <Navigate to="/" /> : <Authorization />}
+        path="/signin"
+      />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   )
 }
 

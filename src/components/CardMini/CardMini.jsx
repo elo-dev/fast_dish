@@ -1,9 +1,10 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { Col, Divider, Row } from 'antd'
+
 import cn from 'classnames'
 
 import style from './CardMini.module.scss'
-import { Link } from 'react-router-dom'
 
 const CardMini = ({ content }) => {
   return (

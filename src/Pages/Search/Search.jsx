@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router'
 import { useSearchParams } from 'react-router-dom'
-import { Col, Layout, Pagination, Row, Select } from 'antd'
+import { Col, Layout, Pagination, Row, Select, Spin } from 'antd'
+import { LoadingOutlined } from '@ant-design/icons'
 
 import { useGetRecipeQuery } from '../../redux-query/services/searchRecipe'
 
@@ -89,10 +90,6 @@ const Search = () => {
     setPageSize(pageSize)
   }
 
-  if (isLoading) {
-    return 'Loading...'
-  }
-
   return (
     <Layout className={style.search}>
       <SearchHeader
@@ -108,11 +105,16 @@ const Search = () => {
         filters={filters}
         setSearchParams={setSearchParams}
       />
+      {isLoading && (
+        <div className={style.loading}>
+          <Spin indicator={<LoadingOutlined spin />} size="large" />
+        </div>
+      )}
       <div className={style.search__container}>
         <div className={style.search__sort}>
           <div>
             <p className={style.search__matchResults}>
-              {recipes.totalResults} matching results
+              {recipes?.totalResults} matching results
             </p>
           </div>
           <div>
@@ -144,7 +146,7 @@ const Search = () => {
         <div className={style.pagination}>
           <Pagination
             current={currentPageParams ? currentPageParams : currentPage}
-            total={recipes.totalResults}
+            total={recipes?.totalResults}
             onChange={changePage}
           />
         </div>

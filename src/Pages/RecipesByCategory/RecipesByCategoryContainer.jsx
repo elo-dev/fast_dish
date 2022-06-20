@@ -25,6 +25,7 @@ import muffinsImg from '../../assets/images/BreakfastCategory/muffins.jpeg'
 import pancakesImg from '../../assets/images/BreakfastCategory/pancakes.jpeg'
 import smoothiesImg from '../../assets/images/BreakfastCategory/smoothies.jpeg'
 import wafflesImg from '../../assets/images/BreakfastCategory/waffles.jpeg'
+import Loading from '../../components/Loading/Loading'
 
 const breakfastCategory = [
   { id: 1, title: 'Donuts', img: donutsImg },
@@ -117,7 +118,7 @@ export const RecipesByCategoryContainer = () => {
     return hours + 'h. ' + minutes + 'm.'
   }
 
-  if (isLoading) return 'Loading...'
+  if (isLoading) return <Loading />
 
   return (
     <RecipesByCategory

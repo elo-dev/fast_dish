@@ -1,7 +1,7 @@
 .banner {
   justify-content: center;
   text-align: center;
-  max-height: 500px;
+  min-height: 500px !important;
   &__image {
     height: 500px;
     object-fit: cover;

@@ -8,6 +8,7 @@ import RandomRecipe from '../../components/RandomRecipe/RandomRecipe'
 import CardMini from '../../components/CardMini/CardMini'
 import MenuCategories from '../../components/MenuCategories/MenuCategories'
 import CuisineCarouselRecipesContainer from '../../components/CuisineCarouselRecipes/CuisineCarouselRecipesContainer'
+import Loading from '../../components/Loading/Loading'
 
 import style from './Home.module.scss'
 
@@ -17,15 +18,21 @@ const Home = () => {
   return (
     <>
       <MainHeader />
-      <SearchRecipeBanner />
-      <div className={style.home_page}>
-        <RandomRecipe content={randomRecipe} isLoading={isLoading} />
-        <CardMini content={randomRecipe} />
-        <Divider className={style.divider} />
-        <MenuCategories />
-        <Divider className={style.divider} />
-        <CuisineCarouselRecipesContainer />
-      </div>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <SearchRecipeBanner />
+          <div className={style.home_page}>
+            <RandomRecipe content={randomRecipe} />
+            <CardMini content={randomRecipe} />
+            <Divider className={style.divider} />
+            <MenuCategories />
+            <Divider className={style.divider} />
+            <CuisineCarouselRecipesContainer />
+          </div>
+        </>
+      )}
     </>
   )
 }

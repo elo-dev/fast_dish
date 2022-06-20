@@ -6,7 +6,7 @@ import HTMLParser from 'html-react-parser'
 import { useGetRecipeByIdQuery } from '../../redux-query/services/recipe'
 import { useGetSimilarRecipesQuery } from '../../redux-query/services/recipes'
 
-import MainHeader from '../../components/Header/Header'
+import Loading from '../../components/Loading/Loading'
 
 import cn from 'classnames'
 
@@ -23,11 +23,10 @@ const DishRecipe = () => {
   const { data: recipeSimilar, isLoadingSimilarRecipes } =
     useGetSimilarRecipesQuery(id)
 
-  if (isLoadingRecipeById) return <Spin />
+  if (isLoadingRecipeById) return <Loading />
 
   return (
     <Layout className={style.dish_recipe}>
-      <MainHeader />
       <Row className={style.header}>
         <Col span={12}>
           <div
