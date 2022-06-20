@@ -1,5 +1,5 @@
-import React from 'react'
 import { Carousel, Col, Layout, Row, Typography } from 'antd'
+import { Link } from 'react-router-dom'
 
 import CarouselRecipes from '../../components/CuisineCarouselRecipes/CarouselRecipes'
 import MainHeader from '../../components/Header/Header'
@@ -52,16 +52,18 @@ const RecipesByCategory = ({
                     className={style.breakfast_category__wrapper}
                     key={category.id}
                   >
-                    <div className={style.card}>
-                      <img
-                        className={style.card__image}
-                        src={category.img}
-                        alt={category.title}
-                      />
-                      <Text className={style.card__title}>
-                        {category.title}
-                      </Text>
-                    </div>
+                    <Link to={`/search/${category.title}`}>
+                      <div className={style.card}>
+                        <img
+                          className={style.card__image}
+                          src={category.img}
+                          alt={category.title}
+                        />
+                        <Text className={style.card__title}>
+                          {category.title}
+                        </Text>
+                      </div>
+                    </Link>
                   </div>
                 ))}
               </Carousel>

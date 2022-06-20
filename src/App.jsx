@@ -13,7 +13,11 @@ import RecipesAndMenu from './Pages/RecipesAndMenu/RecipesAndMenu'
 import CreateMealPlan from './Pages/CreateMealPlan/CreateMealPlan'
 import Registration from './Pages/Registration/Registration'
 import Authorization from './Pages/Authorization/Authorization'
+import Account from './Pages/Account/Account'
 import NotFound from './Pages/NotFound/NotFound'
+
+import MealPlanWeek from './components/MealPlanWeek/MealPlanWeek'
+import MealPlanDay from './components/MealPlanDay/MealPlanDay'
 
 import style from './App.module.scss'
 
@@ -34,10 +38,25 @@ function App() {
             path="/category/:category"
           />
           <Route element={<DishRecipe />} path="/recipe/:id" />
-          <Route element={<Search />} path="/search/">
-            <Route path=":recipe" element={null} />
+
+          <Route element={<Search />} path="/search">
+            <Route element={<Search />} path=":recipe" />
           </Route>
+
           <Route element={<RecipesAndMenu />} path="/recipes-menus" />
+
+          <Route
+            element={
+              <RequiereAuth>
+                <Account />
+              </RequiereAuth>
+            }
+            path="/account"
+          >
+            <Route element={<MealPlanWeek />} path="meal-week" />
+            <Route element={<MealPlanDay />} path="meal-day" />
+          </Route>
+
           <Route
             element={
               <RequiereAuth>

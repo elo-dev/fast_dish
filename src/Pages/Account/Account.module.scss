@@ -1,0 +1,61 @@
+.account {
+  min-height: 100vh !important;
+  width: 63rem;
+  margin: 0 auto;
+  background-color: white !important;
+  margin-top: 3rem;
+  &__container {
+    border-radius: 15px;
+    box-shadow: 0px 0px 15px 3px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    padding: 35px 30px;
+  }
+}
+
+.info {
+  &__img {
+    width: 200px !important;
+    height: 200px !important;
+    object-fit: cover !important;
+    border-radius: 50%;
+  }
+  &__without_img {
+    font-size: 3em;
+  }
+  &__description {
+    opacity: 0.6;
+  }
+  &__btn_settings {
+    cursor: pointer;
+    padding: 5px 0;
+    background-color: transparent;
+    margin-top: 10px;
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid var(--main-color);
+    color: black;
+    font-size: 1.2em;
+    &:hover {
+      color: white;
+      background-color: var(--main-color);
+    }
+  }
+}
+
+.content {
+  min-height: 100%;
+  &__header {
+    margin-bottom: 20px;
+  }
+  &__tab {
+    font-size: 1.2em;
+    color: black;
+    &:hover {
+      color: var(--main-color);
+      opacity: 0.75;
+    }
+    &_active {
+      color: var(--main-color);
+    }
+  }
+}

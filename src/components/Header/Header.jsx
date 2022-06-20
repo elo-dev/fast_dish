@@ -35,7 +35,7 @@ const MainHeader = () => {
       <Menu.Divider />
       {userAuth && (
         <Menu.Item key="2">
-          <Link to="/me">{userAuth.displayName}</Link>
+          <Link to="/account">{userAuth.displayName}</Link>
         </Menu.Item>
       )}
       <Menu.Item key="3">

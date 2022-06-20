@@ -1,9 +1,10 @@
 import { useState } from 'react'
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
 
 import {
   Button,
   Col,
-  DatePicker,
   Form,
   Input,
   Space,
@@ -25,8 +26,11 @@ import { useAddRecipeMutation } from '../../redux-query/services/recipe'
 
 import MainHeader from '../../components/Header/Header'
 import PreviewImage from '../../components/PreviewImage/PreviewImage'
+import DatePicker from '../../components/DatePicker/DatePicker'
 
 import style from './CreateMealPlan.module.scss'
+
+dayjs.extend(utc)
 
 const { Title } = Typography
 const { Option } = Select
@@ -58,13 +62,13 @@ const CreateMealPlan = () => {
   const onFinish = async ({ recipeName, meal, date, servings, time }) => {
     const timeToMin = time.hour * 60 + time.min
 
-    message.loading('Add to your meal plan')
+    message.loading('Adding to your meal plan')
 
     await addMeal({
       title: recipeName,
       slot: meal,
-      date: date.unix(),
-      image: uploadedImage?.img,
+      date: date.utc(true).unix(),
+      image: uploadedImage,
       readyInMinutes: timeToMin,
       servings,
     }).unwrap()
