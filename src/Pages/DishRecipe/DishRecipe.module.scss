@@ -39,12 +39,14 @@
       font-size: 1.2em;
       color: var(--main-color);
     }
+    &__favourite {
+      cursor: pointer;
+      font-size: 2em;
+      &:hover {
+        color: var(--main-color);
+      }
+    }
   }
-}
-
-.body {
-  margin: 5rem auto 0 auto;
-  width: 63rem !important;
 }
 
 .recipe_ingridients {
@@ -53,9 +55,6 @@
       margin-bottom: 1rem;
     }
   }
-  &__text {
-    font-size: 1.2em;
-  }
   &__servings {
     font-size: 1.2em;
     background-color: var(--main-color);
@@ -63,6 +62,13 @@
     text-align: center;
     margin-bottom: 20px;
   }
+  &__addToList {
+    text-align: center;
+  }
+}
+
+.content {
+  padding-top: 4rem;
 }
 
 .recipe_steps {
@@ -73,13 +79,11 @@
   }
   &__text {
     font-weight: 400;
-    font-size: 1.2em;
   }
 }
 
 .recipe_info {
   &__text {
-    font-size: 1.2em;
     font-weight: 300;
   }
 }
@@ -93,4 +97,19 @@
     color: grey;
     margin-left: 10px;
   }
+}
+
+.favourite_active {
+  color: var(--main-color) !important;
+}
+
+.addToList {
+  cursor: pointer;
+  &:hover {
+    color: var(--main-color) !important;
+  }
+}
+
+.text {
+  font-size: 1.2em;
 }

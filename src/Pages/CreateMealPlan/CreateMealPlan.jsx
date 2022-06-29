@@ -20,12 +20,13 @@ import {
 import cn from 'classnames'
 
 import useUploadImage from '../../hooks/useUploadImage'
-import useDeleteImage from '../../hooks/useDeleteImage'
 
 import { useAddRecipeMutation } from '../../redux-query/services/recipe'
 
 import PreviewImage from '../../components/PreviewImage/PreviewImage'
 import DatePicker from '../../components/DatePicker/DatePicker'
+
+import { getBase64 } from '../../utils/getBase64'
 
 import style from './CreateMealPlan.module.scss'
 
@@ -41,21 +42,13 @@ const CreateMealPlan = () => {
 
   const [addMeal, { isLoading }] = useAddRecipeMutation()
 
-  const { uploadedImage, percentLoading, uploadError, isUploadLoading } =
-    useUploadImage(image)
-
-  const { deleteImage } = useDeleteImage(uploadedImage)
+  const { uploadImage, uploadedImage, percentLoading, isUploadLoading } =
+    useUploadImage()
 
   const handleChangeImage = async (file) => {
-    if (image) {
-      try {
-        await deleteImage()
-        setImage(null)
-      } catch {
-        message.error(uploadError)
-      }
-    }
-    setImage(file)
+    const url = await getBase64(file)
+    setImage(url)
+    uploadImage(file)
   }
 
   const onFinish = async ({ recipeName, meal, date, servings, time }) => {
@@ -176,7 +169,8 @@ const CreateMealPlan = () => {
                 <Dragger
                   name="file"
                   className={cn(style.upload, {
-                    [style.upload__after]: uploadedImage,
+                    [style.upload__after]: image,
+                    [style.upload__loading]: isUploadLoading,
                   })}
                   beforeUpload={() => false}
                   showUploadList={false}
@@ -186,7 +180,7 @@ const CreateMealPlan = () => {
                 >
                   <PreviewImage
                     isUploadLoading={isUploadLoading}
-                    uploadedImage={uploadedImage}
+                    uploadedImage={image}
                     percentLoading={percentLoading}
                   />
                 </Dragger>

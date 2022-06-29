@@ -16,7 +16,7 @@ h2 {
   --main-font: 'Mukta', sans-serif;
   --main-color: #e27d60;
   --title-color: #41b3a3;
-  --border-color: #E8A87C;
+  --border-color: #e8a87c;
 }
 
 @mixin textNoWrap {
@@ -55,4 +55,14 @@ h2 {
   min-width: 0 !important;
   width: 5rem !important;
   background-color: rgb(221, 221, 221);
+}
+
+.ant-upload-select-picture-card {
+  width: 120px !important;
+  height: 120px !important;
+  border-radius: 50% !important;
+}
+
+.ant-progress-text {
+  color: var(--main-color) !important;
 }

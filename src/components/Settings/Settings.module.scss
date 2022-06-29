@@ -1,0 +1,43 @@
+.settings {
+  width: 60%;
+  margin: 0 auto;
+  background-color: white !important;
+}
+
+.info {
+  margin-bottom: 50px;
+  &__label {
+    display: block;
+    margin: 0;
+    opacity: 0.5;
+  }
+  &__name,
+  &__email,
+  &__password {
+    font-size: 1.2em;
+  }
+  &__wrapper {
+    text-align: start;
+    height: 50px;
+  }
+}
+
+.btn_edit {
+  border-radius: 5px !important;
+  &:hover {
+    border-color: var(--main-color) !important;
+    color: var(--main-color) !important;
+  }
+}
+
+.avatar {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.error {
+  color: red;
+  margin-top: 5px;
+}

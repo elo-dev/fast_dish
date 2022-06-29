@@ -7,6 +7,7 @@ import { connectUser } from './services/connectUser'
 import { mealPlan } from './services/mealPlan'
 import filterSlice from './toolkitSlice/filterSlice'
 import userSlice from './toolkitSlice/userSlice'
+import { shoppingList } from './services/shoppingList'
 
 const rootReducer = combineReducers({
   filter: filterSlice,
@@ -17,10 +18,13 @@ const rootReducer = combineReducers({
   [searchRecipe.reducerPath]: searchRecipe.reducer,
   [connectUser.reducerPath]: connectUser.reducer,
   [mealPlan.reducerPath]: mealPlan.reducer,
+  [shoppingList.reducerPath]: shoppingList.reducer,
 })
 
 export default configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(mealPlan.middleware),
+    getDefaultMiddleware()
+      .concat(mealPlan.middleware)
+      .concat(shoppingList.middleware),
 })

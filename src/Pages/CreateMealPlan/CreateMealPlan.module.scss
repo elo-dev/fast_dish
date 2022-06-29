@@ -57,6 +57,18 @@
       color: white !important;
     }
   }
+  &__loading::after {
+    pointer-events: none;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 4;
+    filter: blur(2px);
+  }
   &__after:hover::after {
     pointer-events: none;
     content: '';
@@ -89,6 +101,7 @@
 }
 
 .preview {
+  position: relative;
   &__body {
     position: absolute;
     z-index: 3;
@@ -99,6 +112,14 @@
   }
   &__image {
     max-height: 350px;
+  }
+  &__progress {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    pointer-events: none;
   }
 }
 

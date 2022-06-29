@@ -1,12 +1,19 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
-import { Card, Col, Divider, Layout, Row, Spin, Typography } from 'antd'
+import { Card, Col, Divider, Layout, Row, Space, Spin, Typography } from 'antd'
+import { PlusOutlined, StarOutlined } from '@ant-design/icons'
 import HTMLParser from 'html-react-parser'
+
+import { set, push, child, ref, remove, get, onValue } from 'firebase/database'
+import { db } from '../../firebase'
+
+import { useAuth } from '../../hooks/useAuth'
 
 import { useGetRecipeByIdQuery } from '../../redux-query/services/recipe'
 import { useGetSimilarRecipesQuery } from '../../redux-query/services/recipes'
 
 import Loading from '../../components/Loading/Loading'
+import CustomModal from '../../components/CustomModal/CustomModal'
 
 import cn from 'classnames'
 
@@ -17,17 +24,62 @@ const { Meta } = Card
 
 const DishRecipe = () => {
   const { id } = useParams()
+  const { userAuth } = useAuth()
+  const [isFavourite, setIsFavourite] = useState(false)
+  const [isModalVisible, setIsModalVisible] = useState(false)
+
+  useEffect(() => {
+    const favourites = ref(db, `user/${userAuth.uid}/favourites`)
+
+    const unsubscribe = onValue(favourites, (snapshot) => {
+      snapshot.forEach((item) => {
+        if (item.val().id === id) setIsFavourite(true)
+      })
+    })
+
+    return () => unsubscribe()
+  }, [])
 
   const { data: recipeInfo, isLoading: isLoadingRecipeById } =
     useGetRecipeByIdQuery(id)
   const { data: recipeSimilar, isLoadingSimilarRecipes } =
     useGetSimilarRecipesQuery(id)
 
+  const addFavourite = async () => {
+    const postListRef = ref(db, `user/${userAuth.uid}/favourites`)
+
+    const newPostRef = push(postListRef)
+    await set(newPostRef, {
+      id,
+      image: recipeInfo.image,
+      dishTypes: recipeInfo.dishTypes,
+      title: recipeInfo.title,
+    })
+  }
+
+  const removeFavourite = async (key) => {
+    await remove(ref(db, `user/${userAuth.uid}/favourites/${key}`))
+  }
+
+  const handleFavourite = async () => {
+    setIsFavourite(!isFavourite)
+
+    const snapshot = await get(child(ref(db), `user/${userAuth.uid}/favourites`))
+
+    let existKey = null
+
+    snapshot.forEach((item) => {
+      if (item.val().id === id) existKey = item.key
+    })
+
+    existKey ? removeFavourite(existKey) : addFavourite()
+  }
+
   if (isLoadingRecipeById) return <Loading />
 
   return (
     <Layout className={style.dish_recipe}>
-      <Row className={style.header}>
+      <Row className={style.header} gutter={16}>
         <Col span={12}>
           <div
             className={cn(style.dish_recipe__header_info, style.header_info)}
@@ -48,6 +100,12 @@ const DishRecipe = () => {
               <p className={style.header_info__isVegan}>
                 For vegetarians: {recipeInfo.vegetarian ? 'yes' : 'no'}
               </p>
+              <StarOutlined
+                className={cn(style.header_info__favourite, {
+                  [style.favourite_active]: isFavourite,
+                })}
+                onClick={handleFavourite}
+              />
             </div>
           </div>
         </Col>
@@ -61,10 +119,10 @@ const DishRecipe = () => {
           </div>
         </Col>
       </Row>
-      <main className={style.body}>
+      <main className={style.content}>
         <Row className={style.recipe_info}>
           <Col span={24}>
-            <Text className={style.recipe_info__text}>
+            <Text className={cn(style.recipe_info__text, style.text)}>
               {HTMLParser(recipeInfo.summary)}
             </Text>
           </Col>
@@ -74,20 +132,35 @@ const DishRecipe = () => {
           <Col span={24}>
             <Title level={3}>Ingredients</Title>
           </Col>
-          <Col className={style.recipe_ingridients__servings} span={2}>
+          <Col className={style.recipe_ingridients__servings} span={24}>
             <Text>{recipeInfo.servings} servings</Text>
           </Col>
           {recipeInfo.extendedIngredients.map(({ id, name, amount }) => (
             <Col
-              span={24}
               className={style.recipe_ingridients__wrapper}
+              span={6}
               key={id}
             >
-              <Text className={style.recipe_ingridients__text}>
-                {amount} {name}
-              </Text>
+              <Space direction="horizontal">
+                <Text
+                  className={cn(style.recipe_ingridients__text, style.text)}
+                >
+                  {amount} {name}
+                </Text>
+              </Space>
             </Col>
           ))}
+          <Col span={24} className={style.recipe_ingridients__addToList}>
+            <Space>
+              <PlusOutlined />
+              <Text
+                className={cn(style.addToList, style.text)}
+                onClick={() => setIsModalVisible(true)}
+              >
+                Add to shopping list
+              </Text>
+            </Space>
+          </Col>
         </Row>
         <Divider />
         <Row className={style.recipe_steps} justify="space-between">
@@ -101,7 +174,9 @@ const DishRecipe = () => {
                 <Title className={style.recipe_steps__title} level={4}>
                   Step {number}
                 </Title>
-                <Text className={style.recipe_steps__text}>{step}</Text>
+                <Text className={cn(style.recipe_steps__text, style.text)}>
+                  {step}
+                </Text>
               </Col>
             ))
           )}
@@ -128,7 +203,7 @@ const DishRecipe = () => {
         </Row>
         <Divider />
         {!isLoadingSimilarRecipes ? (
-          <Row justify="center">
+          <Row justify="center" gutter={16}>
             <Col span={24}>
               <Title level={3}>Similar recipes</Title>
             </Col>
@@ -160,6 +235,13 @@ const DishRecipe = () => {
           <Spin />
         )}
       </main>
+      {isModalVisible && (
+        <CustomModal
+          isModalVisible={isModalVisible}
+          setIsModalVisible={setIsModalVisible}
+          recipeInfo={recipeInfo}
+        />
+      )}
     </Layout>
   )
 }

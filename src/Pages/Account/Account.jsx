@@ -1,6 +1,13 @@
-import { NavLink, Outlet } from 'react-router-dom'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, NavLink, Outlet } from 'react-router-dom'
 import { Col, Divider, Image, Layout, Row, Space, Typography } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
+
+import { onValue, ref } from 'firebase/database'
+import { db } from '../../firebase'
+
+import { setAboutMe } from '../../redux-query/toolkitSlice/userSlice'
 
 import { useAuth } from '../../hooks/useAuth'
 
@@ -11,7 +18,19 @@ import style from './Account.module.scss'
 const { Title, Text } = Typography
 
 const Account = () => {
+  const dispatch = useDispatch()
   const { userAuth } = useAuth()
+  const { username, aboutMe, avatar } = useSelector((state) => state.user)
+
+  useEffect(() => {
+    if (userAuth !== null) {
+      const starCountRef = ref(db, `user/${userAuth.uid}`)
+      onValue(starCountRef, (snapshot) => {
+        const data = snapshot.val()
+        dispatch(setAboutMe({ aboutMe: data.aboutMe }))
+      })
+    }
+  }, [])
 
   const activeNav = ({ isActive }) =>
     cn(style.content__tab, {
@@ -23,10 +42,10 @@ const Account = () => {
       <Row justify="space-between" gutter={24}>
         <Col span={8}>
           <div className={cn(style.info, style.account__container)}>
-            <Space direction="vertical">
+            <Space direction="vertical" size="middle">
               {userAuth?.photoURL ? (
                 <Image
-                  src={userAuth.photoURL}
+                  src={avatar ? avatar : userAuth.photoURL}
                   preview={false}
                   className={style.info__img}
                 />
@@ -34,10 +53,12 @@ const Account = () => {
                 <UserOutlined className={style.info__without_img} />
               )}
               <Title className={style.info__name}>
-                {userAuth?.displayName}
+                {username ? username : userAuth?.displayName}
               </Title>
-              <Text className={style.info__description}>Description</Text>
-              <button className={style.info__btn_settings}>Settings</button>
+              <Text className={style.info__description}>{aboutMe}</Text>
+              <Link to="settings" className={style.info__link_settings}>
+                Settings
+              </Link>
             </Space>
           </div>
         </Col>
@@ -52,10 +73,10 @@ const Account = () => {
                 <NavLink className={activeNav} to="meal-day">
                   Meal Plan Day
                 </NavLink>
-                <NavLink className={activeNav} to={'/shopping-list'}>
+                <NavLink className={activeNav} to="shopping-list">
                   Shopping list
                 </NavLink>
-                <NavLink className={activeNav} to={'/favourites'}>
+                <NavLink className={activeNav} to="favourites">
                   Favourites
                 </NavLink>
               </Space>

@@ -17,6 +17,9 @@ import NotFound from './Pages/NotFound/NotFound'
 import MainLayout from './components/MainLayout/MainLayout'
 import MealPlanWeek from './components/MealPlanWeek/MealPlanWeek'
 import MealPlanDay from './components/MealPlanDay/MealPlanDay'
+import ShoppingList from './components/ShoppingList/ShoppingList'
+import Favourites from './components/Favourites/Favourites'
+import Settings from './components/Settings/Settings'
 
 function App() {
   const { userAuth } = useAuth()
@@ -46,6 +49,9 @@ function App() {
         >
           <Route element={<MealPlanWeek />} path="meal-week" />
           <Route element={<MealPlanDay />} path="meal-day" />
+          <Route element={<ShoppingList />} path="shopping-list" />
+          <Route element={<Favourites />} path="favourites" />
+          <Route element={<Settings />} path="settings" />
         </Route>
 
         <Route

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext, createContext } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
-import { set, child, get, getDatabase, ref } from 'firebase/database'
+import { set, child, get, ref } from 'firebase/database'
+import { db } from '../firebase'
 
 import { setUser } from '../redux-query/toolkitSlice/userSlice'
 import { useConnectUserMutation } from '../redux-query/services/connectUser'
@@ -31,8 +32,6 @@ function useProvideAuth() {
     JSON.parse(localStorage.getItem('authUser') || null)
   )
 
-  const db = getDatabase()
-
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(false)
 
@@ -58,7 +57,7 @@ function useProvideAuth() {
         setUser({
           id: user.uid,
           token: user.accessToken,
-          name: user.displayName,
+          username: user.displayName,
           email: user.email,
         })
       )

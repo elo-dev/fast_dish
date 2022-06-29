@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import { Layout, Typography, Row, Col, Space, Menu, Dropdown } from 'antd'
@@ -23,6 +24,7 @@ const MainHeader = () => {
   const [isInputView, setIsInputView] = useState(false)
 
   const { userAuth, signout } = useAuth()
+  const { username } = useSelector((state) => state.user)
 
   const menu = (
     <Menu>
@@ -35,7 +37,9 @@ const MainHeader = () => {
       <Menu.Divider />
       {userAuth && (
         <Menu.Item key="2">
-          <Link to="/account">{userAuth.displayName}</Link>
+          <Link to="/account">
+            {username ? username : userAuth.displayName}
+          </Link>
         </Menu.Item>
       )}
       <Menu.Item key="3">

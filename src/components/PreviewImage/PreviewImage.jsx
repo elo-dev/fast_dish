@@ -12,6 +12,15 @@ const PreviewImage = ({ uploadedImage, isUploadLoading, percentLoading }) => {
           preview={false}
           src={uploadedImage}
         />
+        {isUploadLoading && (
+          <div className={style.preview__progress}>
+            <Progress
+              type="circle"
+              percent={percentLoading}
+              strokeColor={'#e27d60'}
+            />
+          </div>
+        )}
         <div className={style.preview__body}>
           <p className={style.text}>
             <UploadOutlined className={style.icon_upload} />
@@ -21,8 +30,6 @@ const PreviewImage = ({ uploadedImage, isUploadLoading, percentLoading }) => {
         </div>
       </div>
     )
-  } else if (isUploadLoading) {
-    return <Progress type="circle" percent={percentLoading} />
   }
   return (
     <>

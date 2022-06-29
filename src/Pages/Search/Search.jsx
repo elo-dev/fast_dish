@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router'
 import { useSearchParams } from 'react-router-dom'
-import { Col, Layout, Pagination, Row, Select, Spin } from 'antd'
-import { LoadingOutlined } from '@ant-design/icons'
+import { Col, Layout, Pagination, Row, Select } from 'antd'
 
 import { useGetRecipeQuery } from '../../redux-query/services/searchRecipe'
 
 import RecipeCard from '../../components/RecipeCard/RecipeCard'
 import SearchHeader from '../../components/SearchHeader/SearchHeader'
+import Loading from '../../components/Loading/Loading'
 
 import useUpdateSearchParam from '../../hooks/useUpdateSearchParam'
 
@@ -105,11 +105,7 @@ const Search = () => {
         filters={filters}
         setSearchParams={setSearchParams}
       />
-      {isLoading && (
-        <div className={style.loading}>
-          <Spin indicator={<LoadingOutlined spin />} size="large" />
-        </div>
-      )}
+      {isLoading && <Loading />}
       <div className={style.search__container}>
         <div className={style.search__sort}>
           <div>
