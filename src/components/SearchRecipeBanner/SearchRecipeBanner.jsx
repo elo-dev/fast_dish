@@ -1,8 +1,6 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Col, Input, Layout, Row, Typography } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
-
-import { useGetRandomImageQuery } from '../../redux-query/services/randomImage'
 
 import SearchInput from '../SearchInput/SearchInput'
 
@@ -10,8 +8,7 @@ import style from './SearchRecipeBanner.module.scss'
 
 const { Title } = Typography
 
-const SearchRecipeBanner = () => {
-  const { data: imageFood } = useGetRandomImageQuery()
+const SearchRecipeBanner = ({ imageFood }) => {
   const [isInputView, setIsInputView] = useState(false)
 
   return (

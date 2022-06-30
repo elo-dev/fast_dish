@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import { Card, Col, Divider, Layout, Row, Space, Spin, Typography } from 'antd'
 import { PlusOutlined, StarOutlined } from '@ant-design/icons'
@@ -8,6 +8,7 @@ import { set, push, child, ref, remove, get, onValue } from 'firebase/database'
 import { db } from '../../firebase'
 
 import { useAuth } from '../../hooks/useAuth'
+import { getTimeFromMins } from '../../utils/timeTransform'
 
 import { useGetRecipeByIdQuery } from '../../redux-query/services/recipe'
 import { useGetSimilarRecipesQuery } from '../../redux-query/services/recipes'
@@ -64,7 +65,9 @@ const DishRecipe = () => {
   const handleFavourite = async () => {
     setIsFavourite(!isFavourite)
 
-    const snapshot = await get(child(ref(db), `user/${userAuth.uid}/favourites`))
+    const snapshot = await get(
+      child(ref(db), `user/${userAuth.uid}/favourites`)
+    )
 
     let existKey = null
 
@@ -89,7 +92,7 @@ const DishRecipe = () => {
                 {recipeInfo.title}
               </Title>
               <p className={style.header_info__time}>
-                {recipeInfo.readyInMinutes} min
+                {getTimeFromMins(recipeInfo.readyInMinutes)}
               </p>
               <p className={style.header_info__healthScore}>
                 Health Score: {recipeInfo.healthScore}/100
@@ -145,22 +148,20 @@ const DishRecipe = () => {
                 <Text
                   className={cn(style.recipe_ingridients__text, style.text)}
                 >
-                  {amount} {name}
+                  {(amount ^ 0) === amount ? amount : amount.toFixed(2)} {name}
                 </Text>
               </Space>
             </Col>
           ))}
-          <Col span={24} className={style.recipe_ingridients__addToList}>
+          <div
+            className={style.recipe_ingridients__addToList}
+            onClick={() => setIsModalVisible(true)}
+          >
             <Space>
               <PlusOutlined />
-              <Text
-                className={cn(style.addToList, style.text)}
-                onClick={() => setIsModalVisible(true)}
-              >
-                Add to shopping list
-              </Text>
+              <Text className={style.text}>Add to shopping list</Text>
             </Space>
-          </Col>
+          </div>
         </Row>
         <Divider />
         <Row className={style.recipe_steps} justify="space-between">

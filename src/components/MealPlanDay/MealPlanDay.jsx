@@ -19,6 +19,8 @@ import {
   useGetMealPlanDayQuery,
 } from '../../redux-query/services/mealPlan'
 
+import { getTimeFromMins } from '../../utils/timeTransform'
+
 import DatePicker from '../DatePicker/DatePicker'
 
 import style from './MealPlanDay.module.scss'
@@ -34,8 +36,7 @@ const MealPlanDay = () => {
     localStorage.getItem('spoonacularAuth')
   )
 
-  const [deleteMealPlan, { isLoading: deleteIsLoading }] =
-    useDeleteMealPlanMutation()
+  const [deleteMealPlan] = useDeleteMealPlanMutation()
 
   const {
     data: mealPlan,
@@ -76,8 +77,8 @@ const MealPlanDay = () => {
           placeholder="Select day"
         />
       </Row>
-      <Row gutter={[16, 16]} justify="center">
-        {isError && <Empty description={error?.data.message} />}
+      {isError && <Empty description={error?.data.message} />}
+      <Row gutter={[16, 16]}>
         {!isError &&
           mealPlan?.items.map(
             ({
@@ -116,7 +117,7 @@ const MealPlanDay = () => {
                           <ChangeSlot slot={slot} />
                         </Text>
                         <Text className={style.ready}>
-                          {readyInMinutes} min
+                          {getTimeFromMins(readyInMinutes)}
                         </Text>
                       </Space>
                     }

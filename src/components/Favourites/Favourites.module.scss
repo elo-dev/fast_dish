@@ -21,9 +21,13 @@
   }
 
   &__title {
+    max-width: 400px;
     font-size: 1.2em !important;
     color: var(--main-color) !important;
     padding-bottom: 10px;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+    overflow: hidden !important;
   }
 
   &__types {

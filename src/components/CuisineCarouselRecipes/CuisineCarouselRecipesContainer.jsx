@@ -1,11 +1,9 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Spin } from 'antd'
 
 import CarouselRecipes from './CarouselRecipes'
 
 import { useGetRecipesByCuisineQuery } from '../../redux-query/services/recipes'
-
-import useCreateRecipeObj from '../../hooks/useCreateRecipeObj'
 
 const CuisineCarouselRecipesContainer = () => {
   const [countryCuisines, setCountryCuisines] = useState('European')
@@ -16,14 +14,6 @@ const CuisineCarouselRecipesContainer = () => {
 
   const { data: recipesResponse, isLoading } =
     useGetRecipesByCuisineQuery(countryCuisines)
-
-  const recipes = useCreateRecipeObj(recipesResponse)
-
-  function getTimeFromMins(mins) {
-    let hours = Math.trunc(mins / 60)
-    let minutes = mins % 60
-    return hours + 'h. ' + minutes + 'm.'
-  }
 
   const settings = {
     dots: false,
@@ -42,8 +32,7 @@ const CuisineCarouselRecipesContainer = () => {
   return (
     <CarouselRecipes
       settings={settings}
-      recipes={recipes}
-      transformTime={getTimeFromMins}
+      recipes={recipesResponse}
       changeCountry={handleChange}
       isFilter={true}
       sectionTitle="Cuisines"

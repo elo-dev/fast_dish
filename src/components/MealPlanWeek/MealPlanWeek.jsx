@@ -59,23 +59,36 @@ const MealPlanWeek = () => {
           placeholder="Start date"
         />
       </Row>
-      <Row gutter={[16, 16]} justify="center">
-        {(isError || mealPlan?.days?.length === 0) && (
-          <Empty
-            description={
-              error?.data.message || 'No meals planned for that period'
-            }
-          />
-        )}
+      {(isError || mealPlan?.days?.length === 0) && (
+        <Empty
+          description={
+            error?.data.message || 'No meals planned for that period'
+          }
+        />
+      )}
+      <Row gutter={[16, 16]}>
         {mealPlan?.days?.map(({ day, items }, index) => (
           <Col span={12} key={index}>
             <div className={style.card}>
               <div className={style.card__header}>
-                {items.slice(0, 3).map((recipe) => (
-                  <div className={style.image__wrapper} key={recipe.id}>
-                    <img className={style.image} src={recipe.value.image} />
-                  </div>
-                ))}
+                <Row>
+                  {items.slice(0, 3).map((recipe) => (
+                    <Col
+                      span={
+                        items.length === 3
+                          ? 8
+                          : items.length === 2
+                          ? 12
+                          : items.length === 1
+                          ? 24
+                          : 8
+                      }
+                      className={style.image__wrapper}
+                    >
+                      <img className={style.image} src={recipe.value.image} />
+                    </Col>
+                  ))}
+                </Row>
               </div>
               <div className={style.card__footer}>
                 <Text className={style.text} strong>

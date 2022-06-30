@@ -13,10 +13,6 @@
   &:hover {
     border: 1px solid var(--main-color);
   }
-  &__header {
-    display: flex;
-    height: 200px;
-  }
   &__footer {
     display: flex;
     align-items: center;
@@ -29,8 +25,11 @@
   font-size: 1.3em;
 }
 
-.image__wrapper:not(:last-child) {
-  margin-right: 2px;
+.image__wrapper {
+  height: 200px;
+  &:not(:last-child) {
+    padding-right: 2px;
+  }
 }
 
 .image {

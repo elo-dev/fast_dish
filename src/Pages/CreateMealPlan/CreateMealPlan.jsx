@@ -230,7 +230,7 @@ const CreateMealPlan = () => {
               <Button
                 type="primary"
                 htmlType="submit"
-                disabled={isLoading || (percentLoading && percentLoading < 100)}
+                disabled={isLoading || isUploadLoading}
                 size="large"
                 className={style.submit_btn}
               >

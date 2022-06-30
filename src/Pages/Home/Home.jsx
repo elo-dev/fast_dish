@@ -1,6 +1,7 @@
 import { Divider } from 'antd'
 
 import { useGetRandomRecipesQuery } from '../../redux-query/services/recipes'
+import { useGetRandomImageQuery } from '../../redux-query/services/randomImage'
 
 import MainHeader from '../../components/Header/Header'
 import SearchRecipeBanner from '../../components/SearchRecipeBanner/SearchRecipeBanner'
@@ -14,15 +15,17 @@ import style from './Home.module.scss'
 
 const Home = () => {
   const { data: randomRecipe, isLoading } = useGetRandomRecipesQuery(3)
+  const { data: imageFood, isLoading: imageFoodIsLoading } =
+    useGetRandomImageQuery()
 
   return (
     <>
       <MainHeader />
-      {isLoading ? (
+      {isLoading && imageFoodIsLoading ? (
         <Loading />
       ) : (
         <>
-          <SearchRecipeBanner />
+          <SearchRecipeBanner imageFood={imageFood} />
           <div className={style.home_page}>
             <RandomRecipe content={randomRecipe} />
             <CardMini content={randomRecipe} />

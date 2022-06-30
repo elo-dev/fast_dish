@@ -1,5 +1,5 @@
 import { DeleteOutlined, LoadingOutlined } from '@ant-design/icons'
-import { Col, Divider, Empty, Layout, Row, Spin, Typography } from 'antd'
+import { Col, Divider, Empty, Layout, Row, Space, Spin, Typography } from 'antd'
 
 import {
   useDeleteShoppingItemMutation,
@@ -31,30 +31,32 @@ const ShoppingList = () => {
     <Layout className={style.shoppingList}>
       {shoppingList.aisles.length ? (
         <>
-          <Row gutter={20}>
+          <Row gutter={[16, 20]}>
             {shoppingList.aisles.map(({ items }) =>
               items.map(
                 (ingredient) =>
                   ingredient.name && (
-                    <Col span={8} key={ingredient.id}>
-                      <Row align="middle" justify="space-between">
-                        <Col>
-                          <p className={style.cost}>${ingredient.cost}</p>
-                          <Text className={style.name}>{ingredient.name}</Text>
-                          <p className={style.measures}>
-                            {ingredient.measures.metric.amount}
-                            {ingredient.measures.metric.unit}
-                          </p>
-                        </Col>
-                        <Col>
-                          <DeleteOutlined
-                            className={style.delete}
-                            onClick={() => handleDelete(ingredient.id)}
-                          />
-                        </Col>
-                      </Row>
-                      <Divider />
-                    </Col>
+                    <>
+                      <Col span={8} key={ingredient.id}>
+                        <div className={style.shoppingList__content}>
+                          <Space direction="vertical">
+                            <p className={style.cost}>${ingredient.cost}</p>
+                            <Text className={style.name}>
+                              {ingredient.name}
+                            </Text>
+                            <p className={style.measures}>
+                              {ingredient.measures.metric.amount}
+                              {ingredient.measures.metric.unit}
+                            </p>
+                            <DeleteOutlined
+                              className={style.delete}
+                              onClick={() => handleDelete(ingredient.id)}
+                            />
+                          </Space>
+                        </div>
+                        <Divider />
+                      </Col>
+                    </>
                   )
               )
             )}

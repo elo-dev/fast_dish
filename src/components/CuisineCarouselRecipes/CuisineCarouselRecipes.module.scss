@@ -1,6 +1,5 @@
 .cusines_recipes {
   background-color: white !important;
-  margin: 3rem 0;
   &__header {
     justify-content: space-between;
     align-items: center;
@@ -18,7 +17,7 @@
   }
   &__image {
     width: 100%;
-    height: 14rem;
+    height: 200px;
     object-fit: cover;
     object-position: center center;
     outline: 2px solid rgba(230, 230, 230, 0.3);

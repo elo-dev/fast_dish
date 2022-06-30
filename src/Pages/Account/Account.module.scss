@@ -21,6 +21,10 @@
   }
   &__description {
     opacity: 0.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   &__link_settings {
     cursor: pointer;

@@ -63,7 +63,13 @@
     margin-bottom: 20px;
   }
   &__addToList {
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    margin: 5px auto;
+    cursor: pointer;
+    &:hover * {
+      color: var(--main-color) !important;
+    }
   }
 }
 
@@ -101,13 +107,6 @@
 
 .favourite_active {
   color: var(--main-color) !important;
-}
-
-.addToList {
-  cursor: pointer;
-  &:hover {
-    color: var(--main-color) !important;
-  }
 }
 
 .text {

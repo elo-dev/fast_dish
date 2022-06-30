@@ -1,5 +1,5 @@
-import { Carousel, Col, Row, Typography } from 'antd'
 import { Link } from 'react-router-dom'
+import { Carousel, Col, Row, Typography } from 'antd'
 
 import CarouselRecipes from '../../components/CuisineCarouselRecipes/CarouselRecipes'
 
@@ -17,14 +17,13 @@ const RecipesByCategory = ({
   lowCaloriesRecipes,
   fastRecipes,
   vegetarianRecipes,
-  getTimeFromMins,
 }) => {
   return (
     <>
       <Row className={style.header}>
         <Col span={24}>
           <div className={style.header__wrapper}>
-            <HeaderImage />
+            <HeaderImage category={category} />
           </div>
           <div className={style.header__title}>
             <Title className={style.title} level={1}>
@@ -36,7 +35,7 @@ const RecipesByCategory = ({
       <Row justify="center" className={style.category_info}>
         <Col span={18}>
           <Text className={style.category_info__text}>
-            <HeaderInfo />
+            <HeaderInfo category={category} />
           </Text>
         </Col>
       </Row>
@@ -69,19 +68,16 @@ const RecipesByCategory = ({
       )}
       <CarouselRecipes
         recipes={lowCaloriesRecipes}
-        transformTime={getTimeFromMins}
         settings={settingsCarousel}
         sectionTitle="Low-calorie"
       />
       <CarouselRecipes
         recipes={fastRecipes}
-        transformTime={getTimeFromMins}
         settings={settingsCarousel}
         sectionTitle="Fast recipes"
       />
       <CarouselRecipes
         recipes={vegetarianRecipes}
-        transformTime={getTimeFromMins}
         settings={settingsCarousel}
         sectionTitle="Vegetarian"
       />
