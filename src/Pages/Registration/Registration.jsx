@@ -24,10 +24,15 @@ const { Title } = Typography
 const Registration = () => {
   const [form] = Form.useForm()
 
-  const { signup, isLoading } = useAuth()
+  const { signup, isLoading, googleSignIn, error } = useAuth()
 
   const onFinish = async ({ name, username, email, password }) => {
     await signup(name, username, email, password)
+    form.resetFields()
+  }
+
+  const handleGoogleSignIn = async () => {
+    await googleSignIn()
     form.resetFields()
   }
 
@@ -43,7 +48,10 @@ const Registration = () => {
         <Col span={15}>
           <div className={style.registration__form}>
             <Title level={1}>Sign up to Fast Dish</Title>
-            <div className={style.form__signInGoogle}>
+            <div
+              className={style.form__signInGoogle}
+              onClick={handleGoogleSignIn}
+            >
               <GoogleOutlined />
               <p className={style.form__text}>Continue with Google</p>
             </div>
@@ -140,6 +148,11 @@ const Registration = () => {
           </div>
         </Col>
       </Row>
+      {error && (
+        <div className={style.error}>
+          <h2 className={style.error__msg}>Mail is already in use</h2>
+        </div>
+      )}
     </Layout>
   )
 }

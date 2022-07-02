@@ -38,7 +38,7 @@ const Favourites = () => {
         const favourites = Object.values(data).map((favourite) => favourite)
         setFavourites(favourites)
       } else {
-        setFavourites({})
+        setFavourites([])
       }
     })
 
@@ -97,7 +97,7 @@ const Favourites = () => {
                 <img className={style.recipe__image} src={image} alt={title} />
                 <div>
                   <Title className={style.recipe__title}>{title}</Title>
-                  {dishTypes.slice(0, 3).map((type, index) => (
+                  {dishTypes?.slice(0, 3).map((type, index) => (
                     <Text className={style.recipe__types} key={index}>
                       {type}
                     </Text>

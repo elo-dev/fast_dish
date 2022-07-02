@@ -94,7 +94,7 @@ const RecipesAndMenu = () => {
           </div>
         </Col>
       </Row>
-      <RandomRecipe content={randomRecipe} isLoading={isLoading} />
+      <RandomRecipe content={randomRecipe} />
       <CardMini content={randomRecipe} />
     </Layout>
   )

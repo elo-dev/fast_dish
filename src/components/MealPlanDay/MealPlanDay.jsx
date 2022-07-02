@@ -19,6 +19,8 @@ import {
   useGetMealPlanDayQuery,
 } from '../../redux-query/services/mealPlan'
 
+import { useAuth } from '../../hooks/useAuth'
+
 import { getTimeFromMins } from '../../utils/timeTransform'
 
 import DatePicker from '../DatePicker/DatePicker'
@@ -29,12 +31,10 @@ const { Text } = Typography
 const { Meta } = Card
 
 const MealPlanDay = () => {
+  const { userAuth } = useAuth()
+
   const today = dayjs().format('YYYY-MM-DD')
   const [date, setDate] = useState(today)
-
-  const { spoonacularUsername: username, hash } = JSON.parse(
-    localStorage.getItem('spoonacularAuth')
-  )
 
   const [deleteMealPlan] = useDeleteMealPlanMutation()
 
@@ -43,7 +43,11 @@ const MealPlanDay = () => {
     isLoading,
     isError,
     error,
-  } = useGetMealPlanDayQuery({ username, hash, date })
+  } = useGetMealPlanDayQuery({
+    username: userAuth.spoonacularUsername,
+    hash: userAuth.hash,
+    date,
+  })
 
   const changeDate = (day) => {
     const formattedDate = day.format('YYYY-MM-DD')
@@ -51,7 +55,11 @@ const MealPlanDay = () => {
   }
 
   const handleDeletePlan = async (id) => {
-    await deleteMealPlan({ id, username, hash }).unwrap()
+    await deleteMealPlan({
+      id,
+      username: userAuth.spoonacularUsername,
+      hash: userAuth.hash,
+    }).unwrap()
   }
 
   const ChangeSlot = ({ slot }) => {

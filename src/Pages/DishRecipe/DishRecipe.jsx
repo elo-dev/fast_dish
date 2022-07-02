@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
-import { Card, Col, Divider, Layout, Row, Space, Spin, Typography } from 'antd'
+import { Card, Col, Divider, Layout, Row, Space, Typography } from 'antd'
 import { PlusOutlined, StarOutlined } from '@ant-design/icons'
 import HTMLParser from 'html-react-parser'
 
@@ -14,7 +14,8 @@ import { useGetRecipeByIdQuery } from '../../redux-query/services/recipe'
 import { useGetSimilarRecipesQuery } from '../../redux-query/services/recipes'
 
 import Loading from '../../components/Loading/Loading'
-import CustomModal from '../../components/CustomModal/CustomModal'
+import ShoppingModal from '../../components/ShoppingModal/ShoppingModal'
+import RequiredAuthModal from '../../components/RequiredAuthModal/RequiredAuthModal'
 
 import cn from 'classnames'
 
@@ -27,18 +28,22 @@ const DishRecipe = () => {
   const { id } = useParams()
   const { userAuth } = useAuth()
   const [isFavourite, setIsFavourite] = useState(false)
-  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isModalShopping, setIsModalShopping] = useState(false)
+  const [isModalSignUpShopping, setIsModalSignUpShopping] = useState(false)
+  const [isModalSignUpFavourite, setIsModalSignUpFavourite] = useState(false)
 
   useEffect(() => {
-    const favourites = ref(db, `user/${userAuth.uid}/favourites`)
+    if (userAuth) {
+      const favourites = ref(db, `user/${userAuth.uid}/favourites`)
 
-    const unsubscribe = onValue(favourites, (snapshot) => {
-      snapshot.forEach((item) => {
-        if (item.val().id === id) setIsFavourite(true)
+      const unsubscribe = onValue(favourites, (snapshot) => {
+        snapshot.forEach((item) => {
+          if (item.val().id === id) setIsFavourite(true)
+        })
       })
-    })
 
-    return () => unsubscribe()
+      return () => unsubscribe()
+    }
   }, [])
 
   const { data: recipeInfo, isLoading: isLoadingRecipeById } =
@@ -63,22 +68,34 @@ const DishRecipe = () => {
   }
 
   const handleFavourite = async () => {
-    setIsFavourite(!isFavourite)
+    if (userAuth) {
+      setIsFavourite(!isFavourite)
 
-    const snapshot = await get(
-      child(ref(db), `user/${userAuth.uid}/favourites`)
-    )
+      const snapshot = await get(
+        child(ref(db), `user/${userAuth.uid}/favourites`)
+      )
 
-    let existKey = null
+      let existKey = null
 
-    snapshot.forEach((item) => {
-      if (item.val().id === id) existKey = item.key
-    })
+      snapshot.forEach((item) => {
+        if (item.val().id === id) existKey = item.key
+      })
 
-    existKey ? removeFavourite(existKey) : addFavourite()
+      existKey ? removeFavourite(existKey) : addFavourite()
+    } else {
+      setIsModalSignUpFavourite(true)
+    }
   }
 
-  if (isLoadingRecipeById) return <Loading />
+  const showModalShopping = () => {
+    if (userAuth) {
+      setIsModalShopping(true)
+    } else {
+      setIsModalSignUpShopping(true)
+    }
+  }
+
+  if (isLoadingRecipeById || isLoadingSimilarRecipes) return <Loading />
 
   return (
     <Layout className={style.dish_recipe}>
@@ -153,16 +170,16 @@ const DishRecipe = () => {
               </Space>
             </Col>
           ))}
-          <div
-            className={style.recipe_ingridients__addToList}
-            onClick={() => setIsModalVisible(true)}
-          >
-            <Space>
-              <PlusOutlined />
-              <Text className={style.text}>Add to shopping list</Text>
-            </Space>
-          </div>
         </Row>
+        <div
+          className={style.recipe_ingridients__addToList}
+          onClick={showModalShopping}
+        >
+          <Space>
+            <PlusOutlined />
+            <Text className={style.text}>Add to shopping list</Text>
+          </Space>
+        </div>
         <Divider />
         <Row className={style.recipe_steps} justify="space-between">
           {recipeInfo.analyzedInstructions.map(({ steps }) =>
@@ -203,46 +220,49 @@ const DishRecipe = () => {
           )}
         </Row>
         <Divider />
-        {!isLoadingSimilarRecipes ? (
-          <Row justify="center" gutter={16}>
-            <Col span={24}>
-              <Title level={3}>Similar recipes</Title>
-            </Col>
-            {recipeSimilar?.map(
-              ({ id, readyInMinutes, imageType, title, sourceUrl }) => (
-                <Col span={6} key={id}>
-                  <a href={sourceUrl} target="_blank">
-                    <Card
-                      hoverable
-                      style={{ width: 240 }}
-                      cover={
-                        <img
-                          alt={title}
-                          src={`https://spoonacular.com/recipeImages/${id}-556x370.${imageType}`}
-                        />
-                      }
-                    >
-                      <Meta
-                        title={title}
-                        description={`${readyInMinutes} min`}
+        <Row justify="center" gutter={16}>
+          <Col span={24}>
+            <Title level={3}>Similar recipes</Title>
+          </Col>
+          {recipeSimilar?.map(
+            ({ id, readyInMinutes, imageType, title, sourceUrl }) => (
+              <Col span={6} key={id}>
+                <a href={sourceUrl} target="_blank">
+                  <Card
+                    hoverable
+                    style={{ width: 240 }}
+                    cover={
+                      <img
+                        alt={title}
+                        src={`https://spoonacular.com/recipeImages/${id}-556x370.${imageType}`}
                       />
-                    </Card>
-                  </a>
-                </Col>
-              )
-            )}
-          </Row>
-        ) : (
-          <Spin />
-        )}
+                    }
+                  >
+                    <Meta title={title} description={`${readyInMinutes} min`} />
+                  </Card>
+                </a>
+              </Col>
+            )
+          )}
+        </Row>
       </main>
-      {isModalVisible && (
-        <CustomModal
-          isModalVisible={isModalVisible}
-          setIsModalVisible={setIsModalVisible}
-          recipeInfo={recipeInfo}
-        />
-      )}
+      <ShoppingModal
+        isModalVisible={isModalShopping}
+        setIsModalVisible={setIsModalShopping}
+        recipeInfo={recipeInfo}
+      />
+      <RequiredAuthModal
+        isModalSignUp={isModalSignUpShopping}
+        setIsModalSignUp={setIsModalSignUpShopping}
+        title="Create a shopping list using your account"
+        text="After logging in, you can add products to your shopping list and easily view them on any device."
+      />
+      <RequiredAuthModal
+        isModalSignUp={isModalSignUpFavourite}
+        setIsModalSignUp={setIsModalSignUpFavourite}
+        title="Save recipes with an account"
+        text="After signing in, you can save recipes and easily revisit them on any device."
+      />
     </Layout>
   )
 }

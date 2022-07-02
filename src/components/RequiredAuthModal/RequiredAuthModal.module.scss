@@ -1,0 +1,42 @@
+.modal {
+  &__body {
+    width: 85%;
+    margin: 0 auto;
+    padding: 20px 0;
+    text-align: center;
+  }
+  &__icon {
+    font-size: 6em;
+    background-color: var(--main-color);
+    color: white !important;
+    padding: 25px;
+    border-radius: 50%;
+    svg {
+      filter: drop-shadow(-5px 5px 3px rgba(0, 0, 0, 0.6));
+    }
+  }
+  &__signup {
+    display: inline-block;
+    width: 100%;
+    cursor: pointer;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.8);
+    text-transform: uppercase;
+    padding: 10px 0 !important;
+    color: white;
+    letter-spacing: 1px;
+    transition: 0.1s ease-in-out;
+    &:hover {
+      color: var(--main-color);
+    }
+  }
+  &__signin {
+    text-decoration: underline;
+    color: black !important;
+  }
+}
+
+.icon__wrapper {
+  display: flex;
+  justify-content: center;
+}

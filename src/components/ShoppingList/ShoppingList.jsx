@@ -1,5 +1,6 @@
 import { DeleteOutlined, LoadingOutlined } from '@ant-design/icons'
 import { Col, Divider, Empty, Layout, Row, Space, Spin, Typography } from 'antd'
+import { useAuth } from '../../hooks/useAuth'
 
 import {
   useDeleteShoppingItemMutation,
@@ -11,17 +12,21 @@ import style from './ShoppingList.module.scss'
 const { Text } = Typography
 
 const ShoppingList = () => {
-  const { spoonacularUsername: username, hash } = JSON.parse(
-    localStorage.getItem('spoonacularAuth')
-  )
+  const { userAuth } = useAuth()
+
   const { data: shoppingList, isLoading } = useGetShoppingListQuery({
-    username,
-    hash,
+    username: userAuth.spoonacularUsername,
+    hash: userAuth.hash,
   })
+
   const [deleteShoppingItem] = useDeleteShoppingItemMutation()
 
   const handleDelete = async (id) => {
-    await deleteShoppingItem({ username, hash, id }).unwrap()
+    await deleteShoppingItem({
+      username: userAuth.spoonacularUsername,
+      hash: userAuth.hash,
+      id,
+    }).unwrap()
   }
 
   if (isLoading)
@@ -29,34 +34,30 @@ const ShoppingList = () => {
 
   return (
     <Layout className={style.shoppingList}>
-      {shoppingList.aisles.length ? (
+      {shoppingList?.aisles.length ? (
         <>
           <Row gutter={[16, 20]}>
             {shoppingList.aisles.map(({ items }) =>
               items.map(
                 (ingredient) =>
                   ingredient.name && (
-                    <>
-                      <Col span={8} key={ingredient.id}>
-                        <div className={style.shoppingList__content}>
-                          <Space direction="vertical">
-                            <p className={style.cost}>${ingredient.cost}</p>
-                            <Text className={style.name}>
-                              {ingredient.name}
-                            </Text>
-                            <p className={style.measures}>
-                              {ingredient.measures.metric.amount}
-                              {ingredient.measures.metric.unit}
-                            </p>
-                            <DeleteOutlined
-                              className={style.delete}
-                              onClick={() => handleDelete(ingredient.id)}
-                            />
-                          </Space>
-                        </div>
-                        <Divider />
-                      </Col>
-                    </>
+                    <Col span={8} key={ingredient.id}>
+                      <div className={style.shoppingList__content}>
+                        <Space direction="vertical">
+                          <p className={style.cost}>${ingredient.cost}</p>
+                          <Text className={style.name}>{ingredient.name}</Text>
+                          <p className={style.measures}>
+                            {ingredient.measures.metric.amount}
+                            {ingredient.measures.metric.unit}
+                          </p>
+                          <DeleteOutlined
+                            className={style.delete}
+                            onClick={() => handleDelete(ingredient.id)}
+                          />
+                        </Space>
+                      </div>
+                      <Divider />
+                    </Col>
                   )
               )
             )}

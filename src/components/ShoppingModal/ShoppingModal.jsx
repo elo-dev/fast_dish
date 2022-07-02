@@ -1,15 +1,16 @@
 import { useState } from 'react'
 import { Button, message, Modal, Transfer } from 'antd'
 
+import { useAuth } from '../../hooks/useAuth'
+
 import { useAddShoppingItemMutation } from '../../redux-query/services/shoppingList'
 
-const CustomModal = ({ isModalVisible, setIsModalVisible, recipeInfo }) => {
+const ShoppingModal = ({ isModalVisible, setIsModalVisible, recipeInfo }) => {
+  const { userAuth } = useAuth()
+
   const [targetKeys, setTargetKeys] = useState([])
   const [selectedKeys, setSelectedKeys] = useState([])
 
-  const { spoonacularUsername: username, hash } = JSON.parse(
-    localStorage.getItem('spoonacularAuth')
-  )
   const [addToShoppingList, { isLoading }] = useAddShoppingItemMutation()
 
   const transferData = recipeInfo.extendedIngredients.map((item) => ({
@@ -25,7 +26,11 @@ const CustomModal = ({ isModalVisible, setIsModalVisible, recipeInfo }) => {
     )
 
     for (const item of data) {
-      await addToShoppingList({ username, hash, item }).unwrap()
+      await addToShoppingList({
+        username: userAuth.spoonacularUsername,
+        hash: userAuth.hash,
+        item,
+      }).unwrap()
     }
 
     message.success('Products added successfully')
@@ -77,4 +82,4 @@ const CustomModal = ({ isModalVisible, setIsModalVisible, recipeInfo }) => {
   )
 }
 
-export default CustomModal
+export default ShoppingModal

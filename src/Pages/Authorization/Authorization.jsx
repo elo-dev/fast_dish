@@ -20,10 +20,14 @@ import style from './Authorization.module.scss'
 const { Title } = Typography
 
 const Authorization = () => {
-  const { signin, isLoading, error } = useAuth()
+  const { signin, isLoading, error, googleSignIn } = useAuth()
 
   const onFinish = ({ email, password }) => {
     signin(email, password)
+  }
+
+  const handleGoogleSignIn = async () => {
+    await googleSignIn()
   }
 
   return (
@@ -38,7 +42,10 @@ const Authorization = () => {
         <Col span={15}>
           <div className={style.authorization__form}>
             <Title level={1}>Sign in to Fast Dish</Title>
-            <div className={style.form__signInGoogle}>
+            <div
+              className={style.form__signInGoogle}
+              onClick={handleGoogleSignIn}
+            >
               <GoogleOutlined />
               <p className={style.form__text}>Continue with Google</p>
             </div>

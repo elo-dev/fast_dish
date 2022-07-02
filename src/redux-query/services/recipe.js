@@ -1,9 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { API_KEY, baseUrl } from '../constants'
 
-const { spoonacularUsername, hash } =
-  JSON.parse(localStorage.getItem('spoonacularAuth')) || {}
-
 const createRequest = (url) => ({ url })
 
 export const recipe = createApi({
@@ -17,8 +14,17 @@ export const recipe = createApi({
         ),
     }),
     addRecipe: builder.mutation({
-      query: ({ title, slot, date, servings, readyInMinutes, image }) => ({
-        url: `mealplanner/${spoonacularUsername}/items?hash=${hash}&apiKey=${API_KEY}`,
+      query: ({
+        title,
+        slot,
+        date,
+        servings,
+        readyInMinutes,
+        image,
+        username,
+        hash,
+      }) => ({
+        url: `mealplanner/${username}/items?hash=${hash}&apiKey=${API_KEY}`,
         method: 'POST',
         body: {
           date,

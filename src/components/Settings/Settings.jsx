@@ -31,14 +31,13 @@ const Settings = () => {
   const auth = getAuth()
   const { userAuth } = useAuth()
   const dispatch = useDispatch()
+
   const { uploadImage, uploadedImage, percentLoading, isUploadLoading } =
     useUploadImage()
 
   useEffect(() => {
     if (uploadedImage) {
-      updateProfile(auth.currentUser, {
-        photoURL: uploadedImage,
-      })
+      updateProfile(auth.currentUser, { photoURL: uploadedImage })
       dispatch(setAvatar({ avatar: uploadedImage }))
       setImageUrl(null)
     }

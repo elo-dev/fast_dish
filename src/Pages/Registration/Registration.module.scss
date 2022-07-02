@@ -88,3 +88,18 @@
 .signIn_btn {
   font-size: 1.1em;
 }
+
+.error {
+  position: fixed;
+  width: 100%;
+  padding: 12px;
+  text-align: center;
+  z-index: 1000;
+  bottom: 0;
+  background-color: #ff5555;
+  transition: all 15s ease-in-out;
+  &__msg {
+    color: white;
+    font-size: 1.3em;
+  }
+}

@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useContext, createContext } from 'react'
+import { useState, useEffect, useContext, createContext } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
-import { set, child, get, ref } from 'firebase/database'
+import { set, ref, onValue } from 'firebase/database'
 import { db } from '../firebase'
 
 import { setUser } from '../redux-query/toolkitSlice/userSlice'
@@ -14,6 +14,8 @@ import {
   signOut,
   getAuth,
   updateProfile,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from 'firebase/auth'
 
 const authContext = createContext()
@@ -28,16 +30,15 @@ export const useAuth = () => {
 }
 
 function useProvideAuth() {
-  const [userAuth, setUserAuth] = useState(() =>
-    JSON.parse(localStorage.getItem('authUser') || null)
+  const [userAuth, setUserAuth] = useState(
+    JSON.parse(localStorage.getItem('user') || null)
   )
 
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(false)
 
   const auth = getAuth()
-  const [connectUser, { isLoading: isLoadingConnect }] =
-    useConnectUserMutation()
+  const [connectUser] = useConnectUserMutation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -47,11 +48,6 @@ function useProvideAuth() {
 
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password)
-
-      const response = await get(child(ref(db), `user/${user.uid}`))
-
-      localStorage.setItem('spoonacularAuth', JSON.stringify(response.val()))
-      localStorage.setItem('authUser', JSON.stringify(user))
 
       dispatch(
         setUser({
@@ -101,22 +97,11 @@ function useProvideAuth() {
         spoonacularPassword,
       })
 
-      localStorage.setItem(
-        'spoonacularAuth',
-        JSON.stringify({
-          spoonacularUsername,
-          email,
-          hash,
-          spoonacularPassword,
-        })
-      )
-
-      localStorage.setItem('authUser', JSON.stringify(user))
       dispatch(
         setUser({
           id: user.uid,
           token: user.accessToken,
-          name: user.displayName,
+          username: user.displayName,
           email: user.email,
         })
       )
@@ -124,7 +109,32 @@ function useProvideAuth() {
       setIsLoading(false)
       navigate('/')
     } catch (error) {
-      setError(true)
+      const errorCode = error.code
+      if (errorCode === 'auth/email-already-in-use') {
+        setError(true)
+      }
+      setIsLoading(false)
+    }
+  }
+
+  const googleSignIn = async () => {
+    setIsLoading(true)
+    try {
+      const provider = new GoogleAuthProvider()
+      const { user } = await signInWithPopup(auth, provider)
+
+      dispatch(
+        setUser({
+          id: user.uid,
+          token: user.accessToken,
+          username: user.displayName,
+          email: user.email,
+        })
+      )
+
+      setIsLoading(false)
+      navigate('/')
+    } catch (error) {
       setIsLoading(false)
     }
   }
@@ -134,8 +144,7 @@ function useProvideAuth() {
     setError(false)
     try {
       await signOut(auth)
-      localStorage.removeItem('authUser')
-      localStorage.removeItem('spoonacularAuth')
+      localStorage.removeItem('user')
       setUserAuth(null)
       setIsLoading(false)
       navigate('/')
@@ -147,15 +156,23 @@ function useProvideAuth() {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      const spoonacularAuth = JSON.parse(
-        localStorage.getItem('spoonacularAuth')
-      )
-      if (user && spoonacularAuth) {
-        localStorage.setItem('authUser', JSON.stringify(user))
-        setUserAuth(user)
+      if (user) {
+        const userRef = ref(db, `user/${user.uid}`)
+
+        const unsubscribe = onValue(userRef, (snapshot) => {
+          if (snapshot.exists()) {
+            localStorage.setItem(
+              'user',
+              JSON.stringify({ ...snapshot.val(), ...user })
+            )
+            setUserAuth({ ...snapshot.val(), ...user })
+          } else {
+            setUserAuth(null)
+          }
+        })
+
+        return () => unsubscribe()
       } else {
-        localStorage.removeItem('authUser')
-        localStorage.removeItem('spoonacularAuth')
         setUserAuth(null)
       }
     })
@@ -170,5 +187,6 @@ function useProvideAuth() {
     signin,
     signup,
     signout,
+    googleSignIn,
   }
 }

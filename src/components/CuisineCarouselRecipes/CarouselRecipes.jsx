@@ -48,8 +48,8 @@ const CarouselRecipes = ({
                 readyInMinutes,
                 nutrition,
               }) => (
-                <div className={style.cusines_recipes__wrapper}>
-                  <Link to={`/recipe/${id}`} key={id}>
+                <div className={style.cusines_recipes__wrapper} key={id}>
+                  <Link to={`/recipe/${id}`}>
                     <div className={style.cusines_recipes__card}>
                       <div>
                         <img

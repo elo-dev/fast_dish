@@ -17,8 +17,7 @@ import {
   message,
 } from 'antd'
 
-import cn from 'classnames'
-
+import { useAuth } from '../../hooks/useAuth'
 import useUploadImage from '../../hooks/useUploadImage'
 
 import { useAddRecipeMutation } from '../../redux-query/services/recipe'
@@ -27,6 +26,8 @@ import PreviewImage from '../../components/PreviewImage/PreviewImage'
 import DatePicker from '../../components/DatePicker/DatePicker'
 
 import { getBase64 } from '../../utils/getBase64'
+
+import cn from 'classnames'
 
 import style from './CreateMealPlan.module.scss'
 
@@ -37,6 +38,8 @@ const { Option } = Select
 const { Dragger } = Upload
 
 const CreateMealPlan = () => {
+  const { userAuth } = useAuth()
+
   const [image, setImage] = useState(null)
   const [form] = Form.useForm()
 
@@ -57,6 +60,8 @@ const CreateMealPlan = () => {
     message.loading('Adding to your meal plan')
 
     await addMeal({
+      username: userAuth.spoonacularUsername,
+      hash: userAuth.hash,
       title: recipeName,
       slot: meal,
       date: date.utc(true).unix(),

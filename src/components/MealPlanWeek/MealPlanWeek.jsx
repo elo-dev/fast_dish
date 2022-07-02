@@ -10,6 +10,8 @@ import {
   useGetMealPlanWeekQuery,
 } from '../../redux-query/services/mealPlan'
 
+import { useAuth } from '../../hooks/useAuth'
+
 import DatePicker from '../DatePicker/DatePicker'
 
 import style from './MealPlanWeek.module.scss'
@@ -17,21 +19,23 @@ import style from './MealPlanWeek.module.scss'
 const { Text } = Typography
 
 const MealPlanWeek = () => {
+  const { userAuth } = useAuth()
+
   const today = dayjs().format('YYYY-MM-DD')
   const [date, setDate] = useState(today)
 
-  const { spoonacularUsername: username, hash } = JSON.parse(
-    localStorage.getItem('spoonacularAuth')
-  )
+  const [deleteMealPlans] = useDeleteMealPlanMutation()
 
-  const [deleteMealPlans, { isLoading: deleteIsLoading }] =
-    useDeleteMealPlanMutation()
   const {
     data: mealPlan,
     isLoading,
     isError,
     error,
-  } = useGetMealPlanWeekQuery({ username, hash, date })
+  } = useGetMealPlanWeekQuery({
+    username: userAuth.spoonacularUsername,
+    hash: userAuth.hash,
+    date,
+  })
 
   const changeDate = (day) => {
     const formattedDate = day.format('YYYY-MM-DD')
@@ -41,7 +45,12 @@ const MealPlanWeek = () => {
   const handleDeletePlan = async (recipes) => {
     await Promise.all(
       recipes.map(
-        async ({ id }) => await deleteMealPlans({ id, username, hash })
+        async ({ id }) =>
+          await deleteMealPlans({
+            id,
+            username: userAuth.spoonacularUsername,
+            hash: userAuth.hash,
+          })
       )
     )
   }
@@ -74,6 +83,7 @@ const MealPlanWeek = () => {
                 <Row>
                   {items.slice(0, 3).map((recipe) => (
                     <Col
+                      key={recipe.id}
                       span={
                         items.length === 3
                           ? 8
