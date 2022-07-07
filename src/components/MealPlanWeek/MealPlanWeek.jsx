@@ -8,7 +8,7 @@ import { DeleteOutlined, LoadingOutlined } from '@ant-design/icons'
 import {
   useDeleteMealPlanMutation,
   useGetMealPlanWeekQuery,
-} from '../../redux-query/services/mealPlan'
+} from '../../redux/services/mealPlan'
 
 import { useAuth } from '../../hooks/useAuth'
 

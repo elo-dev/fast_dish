@@ -2,14 +2,27 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-import { Layout, Typography, Row, Col, Space, Menu, Dropdown } from 'antd'
 import {
-  FacebookOutlined,
-  TwitterOutlined,
-  InstagramOutlined,
+  Layout,
+  Dropdown,
+  Typography,
+  Row,
+  Col,
+  Space,
+  Menu,
+  Badge,
+  Avatar,
+} from 'antd'
+import {
   SearchOutlined,
-  MenuOutlined,
+  LoginOutlined,
+  LogoutOutlined,
+  ShoppingOutlined,
+  StarOutlined,
+  SettingOutlined,
 } from '@ant-design/icons'
+
+import { useGetShoppingListQuery } from '../../redux/services/shoppingList'
 
 import { useAuth } from '../../hooks/useAuth'
 
@@ -18,38 +31,47 @@ import SearchInput from '../SearchInput/SearchInput'
 import style from './Header.module.scss'
 
 const { Header } = Layout
-const { Title, Text } = Typography
+const { Title } = Typography
 
 const MainHeader = () => {
   const [isInputView, setIsInputView] = useState(false)
 
   const { userAuth, signout } = useAuth()
-  const { username } = useSelector((state) => state.user)
+  const { avatar } = useSelector((state) => state.user)
+
+  const { data: shoppingList } = useGetShoppingListQuery(
+    {
+      username: userAuth?.spoonacularUsername,
+      hash: userAuth?.hash,
+    },
+    { skip: !userAuth }
+  )
+
+  const itemInShoppingList = shoppingList?.aisles
+    .map(({ items }) => items.length)
+    .reduce((acc, curr) => acc + curr, 0)
 
   const menu = (
-    <Menu>
-      <Menu.Item key="0">
-        <Link to="/recipes-menus">Recipes & Menu</Link>
+    <Menu mode="vertical">
+      <Menu.Item>
+        <Link to="account/settings">
+          <Space>
+            <SettingOutlined /> Edit profile
+          </Space>
+        </Link>
       </Menu.Item>
-      <Menu.Item key="1">
-        <a href="#">My Saved Recipes</a>
+      <Menu.Item>
+        <Link to="account/favourites">
+          <Space>
+            <StarOutlined />
+            My favourites
+          </Space>
+        </Link>
       </Menu.Item>
-      <Menu.Divider />
-      {userAuth && (
-        <Menu.Item key="2">
-          <Link to="/account">
-            {username ? username : userAuth.displayName}
-          </Link>
-        </Menu.Item>
-      )}
-      <Menu.Item key="3">
-        {userAuth ? (
-          <p className={style.menu__signout} onClick={signout}>
-            Logout
-          </p>
-        ) : (
-          <Link to="/signup">Sign Up</Link>
-        )}
+      <Menu.Item onClick={signout}>
+        <Space>
+          <LogoutOutlined /> Logout
+        </Space>
       </Menu.Item>
     </Menu>
   )
@@ -57,37 +79,57 @@ const MainHeader = () => {
   return (
     <>
       <Header className={style.header}>
-        <Row className={style.header__row} gutter={16}>
-          <Col span={6}>
-            <Dropdown overlay={menu} trigger={['click']}>
-              <a
-                className="ant-dropdown-link"
-                onClick={(e) => e.preventDefault()}
-              >
-                <MenuOutlined className={style.header__menu_icon} />
-              </a>
-            </Dropdown>
-          </Col>
-          <Col span={12} className={style.header__title}>
+        <Row
+          className={style.header__row}
+          gutter={16}
+          align="middle"
+          justify="space-between"
+        >
+          <Col span={4} className={style.header__title}>
             <Link to="/">
               <Title className={style.title} level={1}>
                 Fast Dish
               </Title>
             </Link>
           </Col>
-          <Col span={6}>
-            <Space>
-              <Text className={style.header__text}>Follow</Text>
-              <FacebookOutlined className={style.header__icon} />
-              <TwitterOutlined className={style.header__icon} />
-              <InstagramOutlined className={style.header__icon} />
-              <div
-                className={style.header__search}
+          <Col span={14}>
+            <Menu mode="horizontal">
+              <Menu.Item key="0">
+                <Link to="/recipes-menus">Recipes & Menu</Link>
+              </Menu.Item>
+              <Menu.Item key="1">
+                <a href="#">My Saved Recipes</a>
+              </Menu.Item>
+            </Menu>
+          </Col>
+          <Col span={userAuth ? 3 : 4}>
+            <Space size="large">
+              <SearchOutlined
+                className={style.icon__search}
                 onClick={() => setIsInputView(true)}
-              >
-                <Text className={style.header__text}>Search</Text>
-                <SearchOutlined className={style.icon__search} />
-              </div>
+              />
+              {userAuth ? (
+                <>
+                  <Link to="account/shopping-list">
+                    <Badge count={itemInShoppingList} size="small">
+                      <ShoppingOutlined className={style.icon__shopping} />
+                    </Badge>
+                  </Link>
+                  <Dropdown overlay={menu}>
+                    <Link to="/account">
+                      <Avatar
+                        size="large"
+                        src={avatar ? avatar : userAuth.photoURL}
+                      />
+                    </Link>
+                  </Dropdown>
+                </>
+              ) : (
+                <Link to="signin" className={style.header__login_link}>
+                  <LoginOutlined className={style.icon__link} />
+                  Login
+                </Link>
+              )}
             </Space>
           </Col>
         </Row>

@@ -3,7 +3,7 @@ import { Button, message, Modal, Transfer } from 'antd'
 
 import { useAuth } from '../../hooks/useAuth'
 
-import { useAddShoppingItemMutation } from '../../redux-query/services/shoppingList'
+import { useAddShoppingItemMutation } from '../../redux/services/shoppingList'
 
 const ShoppingModal = ({ isModalVisible, setIsModalVisible, recipeInfo }) => {
   const { userAuth } = useAuth()

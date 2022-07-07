@@ -10,8 +10,8 @@ import { db } from '../../firebase'
 import { useAuth } from '../../hooks/useAuth'
 import { getTimeFromMins } from '../../utils/timeTransform'
 
-import { useGetRecipeByIdQuery } from '../../redux-query/services/recipe'
-import { useGetSimilarRecipesQuery } from '../../redux-query/services/recipes'
+import { useGetRecipeByIdQuery } from '../../redux/services/recipe'
+import { useGetSimilarRecipesQuery } from '../../redux/services/recipes'
 
 import Loading from '../../components/Loading/Loading'
 import ShoppingModal from '../../components/ShoppingModal/ShoppingModal'

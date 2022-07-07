@@ -1,0 +1,9 @@
+.joke {
+  background-color: white !important;
+  &__title {
+    margin-bottom: 10px !important;
+  }
+  &__text {
+    font-size: 1.2em;
+  }
+}

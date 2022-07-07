@@ -20,7 +20,7 @@ import {
 import { useAuth } from '../../hooks/useAuth'
 import useUploadImage from '../../hooks/useUploadImage'
 
-import { useAddRecipeMutation } from '../../redux-query/services/recipe'
+import { useAddRecipeMutation } from '../../redux/services/recipe'
 
 import PreviewImage from '../../components/PreviewImage/PreviewImage'
 import DatePicker from '../../components/DatePicker/DatePicker'

@@ -24,7 +24,7 @@ import {
   excludeIngridient,
   includeIngridient,
   removeTagItem,
-} from '../../redux-query/toolkitSlice/filterSlice'
+} from '../../redux/toolkitSlice/filterSlice'
 
 import DropDownMenu from '../../components/DropDownMenu/DropDownMenu'
 

@@ -20,6 +20,8 @@ import MealPlanDay from './components/MealPlanDay/MealPlanDay'
 import ShoppingList from './components/ShoppingList/ShoppingList'
 import Favourites from './components/Favourites/Favourites'
 import Settings from './components/Settings/Settings'
+import Joke from './components/Joke/Joke'
+import Chat from './components/Chat/Chat'
 
 function App() {
   const { userAuth } = useAuth()
@@ -29,58 +31,62 @@ function App() {
   }
 
   return (
-    <Routes>
-      <Route path="/" element={<MainLayout />}>
-        <Route
-          element={<RecipesByCategoryContainer />}
-          path="category/:category"
-        />
-        <Route element={<DishRecipe />} path="recipe/:id" />
+    <>
+      <Routes>
+        <Route path="/" element={<MainLayout />}>
+          <Route
+            element={<RecipesByCategoryContainer />}
+            path="category/:category"
+          />
+          <Route element={<DishRecipe />} path="recipe/:id" />
 
-        <Route element={<RecipesAndMenu />} path="recipes-menus" />
+          <Route element={<RecipesAndMenu />} path="recipes-menus" />
 
-        <Route
-          element={
-            <RequiereAuth>
-              <Account />
-            </RequiereAuth>
-          }
-          path="account"
-        >
-          <Route element={<MealPlanWeek />} path="meal-week" />
-          <Route element={<MealPlanDay />} path="meal-day" />
-          <Route element={<ShoppingList />} path="shopping-list" />
-          <Route element={<Favourites />} path="favourites" />
-          <Route element={<Settings />} path="settings" />
+          <Route
+            element={
+              <RequiereAuth>
+                <Account />
+              </RequiereAuth>
+            }
+            path="account"
+          >
+            <Route element={<Joke />} index />
+            <Route element={<MealPlanWeek />} path="meal-week" />
+            <Route element={<MealPlanDay />} path="meal-day" />
+            <Route element={<ShoppingList />} path="shopping-list" />
+            <Route element={<Favourites />} path="favourites" />
+            <Route element={<Settings />} path="settings" />
+          </Route>
+
+          <Route
+            element={
+              <RequiereAuth>
+                <CreateMealPlan />
+              </RequiereAuth>
+            }
+            path="account/menu"
+          />
+        </Route>
+
+        <Route index element={<Home />} />
+
+        <Route element={<Search />} path="search">
+          <Route element={<Search />} path=":recipe" />
         </Route>
 
         <Route
-          element={
-            <RequiereAuth>
-              <CreateMealPlan />
-            </RequiereAuth>
-          }
-          path="account/menu"
+          element={userAuth ? <Navigate to="/" /> : <Registration />}
+          path="/signup"
         />
-      </Route>
 
-      <Route index element={<Home />} />
-
-      <Route element={<Search />} path="search">
-        <Route element={<Search />} path=":recipe" />
-      </Route>
-
-      <Route
-        element={userAuth ? <Navigate to="/" /> : <Registration />}
-        path="/signup"
-      />
-
-      <Route
-        element={userAuth ? <Navigate to="/" /> : <Authorization />}
-        path="/signin"
-      />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+        <Route
+          element={userAuth ? <Navigate to="/" /> : <Authorization />}
+          path="/signin"
+        />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      <Chat />
+    </>
   )
 }
 

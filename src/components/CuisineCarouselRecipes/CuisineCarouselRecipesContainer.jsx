@@ -3,7 +3,7 @@ import { Spin } from 'antd'
 
 import CarouselRecipes from './CarouselRecipes'
 
-import { useGetRecipesByCuisineQuery } from '../../redux-query/services/recipes'
+import { useGetRecipesByCuisineQuery } from '../../redux/services/recipes'
 
 const CuisineCarouselRecipesContainer = () => {
   const [countryCuisines, setCountryCuisines] = useState('European')

@@ -1,7 +1,7 @@
 import { Divider } from 'antd'
 
-import { useGetRandomRecipesQuery } from '../../redux-query/services/recipes'
-import { useGetRandomImageQuery } from '../../redux-query/services/randomImage'
+import { useGetRandomRecipesQuery } from '../../redux/services/recipes'
+import { useGetRandomImageQuery } from '../../redux/services/randomImage'
 
 import MainHeader from '../../components/Header/Header'
 import SearchRecipeBanner from '../../components/SearchRecipeBanner/SearchRecipeBanner'

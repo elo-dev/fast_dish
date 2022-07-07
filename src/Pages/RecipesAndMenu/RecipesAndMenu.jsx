@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Col, Divider, Input, Layout, Row, Space, Typography } from 'antd'
 import { CaretRightFilled } from '@ant-design/icons'
 
-import { useGetRandomRecipesQuery } from '../../redux-query/services/recipes'
+import { useGetRandomRecipesQuery } from '../../redux/services/recipes'
 
 import RandomRecipe from '../../components/RandomRecipe/RandomRecipe'
 import CardMini from '../../components/CardMini/CardMini'

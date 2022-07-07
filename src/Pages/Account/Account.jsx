@@ -7,7 +7,7 @@ import { UserOutlined } from '@ant-design/icons'
 import { onValue, ref } from 'firebase/database'
 import { db } from '../../firebase'
 
-import { setAboutMe } from '../../redux-query/toolkitSlice/userSlice'
+import { setAboutMe } from '../../redux/toolkitSlice/userSlice'
 
 import { useAuth } from '../../hooks/useAuth'
 

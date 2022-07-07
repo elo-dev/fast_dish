@@ -4,7 +4,7 @@ import { useParams } from 'react-router'
 import { useSearchParams } from 'react-router-dom'
 import { Col, Layout, Pagination, Row, Select } from 'antd'
 
-import { useGetRecipeQuery } from '../../redux-query/services/searchRecipe'
+import { useGetRecipeQuery } from '../../redux/services/searchRecipe'
 
 import RecipeCard from '../../components/RecipeCard/RecipeCard'
 import SearchHeader from '../../components/SearchHeader/SearchHeader'

@@ -4,7 +4,7 @@ import {
   useGetDietRecipesQuery,
   useGetFastRecipesQuery,
   useGetLowCaloriesRecipesQuery,
-} from '../../redux-query/services/recipes'
+} from '../../redux/services/recipes'
 
 import {
   breakfastCategory,

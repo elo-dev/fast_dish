@@ -16,7 +16,7 @@ import {
   setAboutMe,
   setAvatar,
   setUsername,
-} from '../../redux-query/toolkitSlice/userSlice'
+} from '../../redux/toolkitSlice/userSlice'
 
 import { useAuth } from '../../hooks/useAuth'
 import useUploadImage from '../../hooks/useUploadImage'

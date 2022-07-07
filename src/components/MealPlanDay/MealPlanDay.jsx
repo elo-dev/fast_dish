@@ -17,7 +17,7 @@ import { DeleteOutlined, LoadingOutlined } from '@ant-design/icons'
 import {
   useDeleteMealPlanMutation,
   useGetMealPlanDayQuery,
-} from '../../redux-query/services/mealPlan'
+} from '../../redux/services/mealPlan'
 
 import { useAuth } from '../../hooks/useAuth'
 

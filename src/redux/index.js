@@ -8,6 +8,8 @@ import { mealPlan } from './services/mealPlan'
 import filterSlice from './toolkitSlice/filterSlice'
 import userSlice from './toolkitSlice/userSlice'
 import { shoppingList } from './services/shoppingList'
+import { joke } from './services/joke'
+import { chat } from './services/chat'
 
 const rootReducer = combineReducers({
   filter: filterSlice,
@@ -19,6 +21,8 @@ const rootReducer = combineReducers({
   [connectUser.reducerPath]: connectUser.reducer,
   [mealPlan.reducerPath]: mealPlan.reducer,
   [shoppingList.reducerPath]: shoppingList.reducer,
+  [joke.reducerPath]: joke.reducer,
+  [chat.reducerPath]: chat.reducer,
 })
 
 export default configureStore({

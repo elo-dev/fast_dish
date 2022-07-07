@@ -5,7 +5,7 @@ import { useAuth } from '../../hooks/useAuth'
 import {
   useDeleteShoppingItemMutation,
   useGetShoppingListQuery,
-} from '../../redux-query/services/shoppingList'
+} from '../../redux/services/shoppingList'
 
 import style from './ShoppingList.module.scss'
 

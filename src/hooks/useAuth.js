@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router'
 import { set, ref, onValue } from 'firebase/database'
 import { db } from '../firebase'
 
-import { setUser } from '../redux-query/toolkitSlice/userSlice'
-import { useConnectUserMutation } from '../redux-query/services/connectUser'
+import { setUser } from '../redux/toolkitSlice/userSlice'
+import { useConnectUserMutation } from '../redux/services/connectUser'
 
 import {
   createUserWithEmailAndPassword,
@@ -43,10 +43,9 @@ function useProvideAuth() {
   const dispatch = useDispatch()
 
   const signin = async (email, password) => {
-    setIsLoading(true)
-    setError(false)
-
     try {
+      setIsLoading(true)
+      setError(false)
       const { user } = await signInWithEmailAndPassword(auth, email, password)
 
       dispatch(
@@ -67,10 +66,9 @@ function useProvideAuth() {
   }
 
   const signup = async (name, username, email, password) => {
-    setIsLoading(true)
-    setError(false)
-
     try {
+      setIsLoading(true)
+      setError(false)
       const { user } = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -118,8 +116,8 @@ function useProvideAuth() {
   }
 
   const googleSignIn = async () => {
-    setIsLoading(true)
     try {
+      setIsLoading(true)
       const provider = new GoogleAuthProvider()
       const { user } = await signInWithPopup(auth, provider)
 
@@ -140,9 +138,9 @@ function useProvideAuth() {
   }
 
   const signout = async () => {
-    setIsLoading(true)
-    setError(false)
     try {
+      setIsLoading(true)
+      setError(false)
       await signOut(auth)
       localStorage.removeItem('user')
       setUserAuth(null)
