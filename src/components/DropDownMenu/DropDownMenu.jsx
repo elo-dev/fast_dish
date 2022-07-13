@@ -1,8 +1,10 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Checkbox } from 'antd'
 import { DownOutlined } from '@ant-design/icons'
 
-import MoreFilters from './MoreFilters/MoreFilters'
+import useOutsideClick from '../../hooks/useOutsideClick'
+
+import cn from 'classnames'
 
 import style from './DropDownMenu.module.scss'
 
@@ -15,10 +17,19 @@ const DropDownMenu = ({
 }) => {
   const [isVisibleCheckbox, setIsVisibleCheckbox] = useState(false)
   const [isAllFilters, setIsAllFilters] = useState(false)
+  const [filters, setFilters] = useState([])
+  const dropdownRef = useRef()
+
+  useOutsideClick(dropdownRef, setIsVisibleCheckbox, isAllFilters)
 
   const onChange = (item) => {
     setList(item)
     setSearchParams(item)
+  }
+
+  const applyFilters = () => {
+    onChange(filters)
+    setIsAllFilters(false)
   }
 
   const isVisible = () => {
@@ -27,6 +38,7 @@ const DropDownMenu = ({
 
   const isInvisible = () => {
     setIsVisibleCheckbox(false)
+    setIsAllFilters(false)
   }
 
   const openAllFilters = () => {
@@ -34,42 +46,57 @@ const DropDownMenu = ({
   }
 
   return (
-    <>
-      <div
-        className={style.dropdown}
-        onMouseEnter={isVisible}
-        onMouseLeave={isInvisible}
-      >
-        <p className={style.dropdown__label}>{label}</p>{' '}
-        <DownOutlined className={style.dropdown__icon} />
-        {isVisibleCheckbox && (
-          <div className={style.dropdown__content}>
-            <Checkbox.Group
-              onChange={onChange}
-              defaultValue={menuItems}
-              className={style.checkbox_group}
-            >
-              {menuOptions.slice(0, 8).map(({ label, value }, index) => (
-                <Checkbox key={index} className={style.checkbox} value={value}>
-                  {label}
-                </Checkbox>
-              ))}
-            </Checkbox.Group>
+    <div
+      className={style.dropdown}
+      onMouseEnter={isVisible}
+      onMouseLeave={isInvisible}
+      ref={dropdownRef}
+    >
+      <p className={style.dropdown__label}>{label}</p>{' '}
+      <DownOutlined className={style.dropdown__icon} />
+      {isVisibleCheckbox && (
+        <Checkbox.Group
+          onChange={isAllFilters ? setFilters : onChange}
+          defaultValue={menuItems}
+          className={cn(style.checkbox_group, {
+            [style.checkbox_group__reduced]: !isAllFilters,
+            [style.checkbox_group__expanded]: isAllFilters,
+          })}
+        >
+          <div className={cn({ [style.checkbox__expanded]: isAllFilters })}>
+            {menuOptions.map(({ value, label }, index) => (
+              <Checkbox
+                key={index}
+                value={value}
+                className={cn(style.checkbox, {
+                  [style.checkbox__reduced]: !isAllFilters && index >= 8,
+                })}
+              >
+                {label}
+              </Checkbox>
+            ))}
+          </div>
+          {!isAllFilters && menuOptions.length > 8 && (
             <button className={style.btn_more_filters} onClick={openAllFilters}>
               more filters
             </button>
-          </div>
-        )}
-      </div>
-
-      <MoreFilters
-        menuOptions={menuOptions}
-        menuItems={menuItems}
-        onChange={onChange}
-        isAllFilters={isAllFilters}
-        setIsAllFilters={setIsAllFilters}
-      />
-    </>
+          )}
+          {isAllFilters && (
+            <div className={style.btn__wrapper}>
+              <button className={style.btn_apply} onClick={applyFilters}>
+                apply
+              </button>
+              <button
+                className={style.btn_cancel}
+                onClick={() => setIsAllFilters(false)}
+              >
+                cancel
+              </button>
+            </div>
+          )}
+        </Checkbox.Group>
+      )}
+    </div>
   )
 }
 

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Affix, Divider, Input, Spin, Typography } from 'antd'
 import { QuestionOutlined } from '@ant-design/icons'
@@ -6,6 +6,7 @@ import { QuestionOutlined } from '@ant-design/icons'
 import { useGetAnswerQuery } from '../../redux/services/chat'
 
 import useDebounce from '../../hooks/useDebounce'
+import useOutsideClick from '../../hooks/useOutsideClick'
 
 import cn from 'classnames'
 
@@ -18,20 +19,7 @@ const Chat = () => {
   const [isOpenChat, setIsOpenChat] = useState(false)
   const chatRef = useRef()
 
-  useEffect(() => {
-    if (!isOpenChat) return
-
-    const handleClick = (e) => {
-      if (!chatRef.current) return
-      if (!chatRef.current.contains(e.target)) {
-        setIsOpenChat(false)
-      }
-    }
-
-    document.addEventListener('click', handleClick)
-
-    return () => document.removeEventListener('click', handleClick)
-  }, [isOpenChat])
+  useOutsideClick(chatRef, setIsOpenChat, isOpenChat)
 
   const debouncedQuestion = useDebounce(question)
 
@@ -68,38 +56,47 @@ const Chat = () => {
               <Spin className={style.loading} />
             ) : (
               <>
-                <div className={style.answer}>
-                  <div className={style.answer__outer}>
-                    <div className={style.answer__inner}>
-                      <div className={style.answer__bubble}>
-                        {debouncedQuestion ? answer?.answerText : ''}
-                      </div>
-                      <div className={style.answer__spacer}></div>
-                    </div>
-                  </div>
-                  {answer?.media.map(({ title, image, link }) => (
+                {debouncedQuestion ? (
+                  <div className={style.answer}>
                     <div className={style.answer__outer}>
                       <div className={style.answer__inner}>
-                        <div className={style.answer__media}>
-                          <Link
-                            onClick={() => setIsOpenChat(false)}
-                            to={`/recipe/${link
-                              .split('-')
-                              .slice(-1)
-                              .toString()}`}
-                            className={style.answer__link}
-                          >
-                            <img
-                              className={style.media}
-                              src={image}
-                              alt={title}
-                            />
-                          </Link>
+                        <div className={style.answer__bubble}>
+                          {debouncedQuestion ? answer?.answerText : ''}
                         </div>
+                        <div className={style.answer__spacer}></div>
                       </div>
                     </div>
-                  ))}
-                </div>
+                    {answer?.media.map(({ title, image, link }, index) => (
+                      <div className={style.answer__outer} key={index}>
+                        <div className={style.answer__inner}>
+                          <div className={style.answer__media}>
+                            <Link
+                              onClick={() => setIsOpenChat(false)}
+                              to={`/recipe/${link
+                                .split('-')
+                                .slice(-1)
+                                .toString()}`}
+                              className={style.answer__link}
+                            >
+                              <img
+                                className={style.media}
+                                src={image}
+                                alt={title}
+                              />
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <Text className={style.empty}>
+                    Ask the bot:
+                    <span className={style.empty__question}>
+                      Tell me a fact about food
+                    </span>
+                  </Text>
+                )}
               </>
             )}
           </div>

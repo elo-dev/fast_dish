@@ -16,6 +16,7 @@ import { useGetSimilarRecipesQuery } from '../../redux/services/recipes'
 import Loading from '../../components/Loading/Loading'
 import ShoppingModal from '../../components/ShoppingModal/ShoppingModal'
 import RequiredAuthModal from '../../components/RequiredAuthModal/RequiredAuthModal'
+import NotFound from '../NotFound/NotFound'
 
 import cn from 'classnames'
 
@@ -46,8 +47,11 @@ const DishRecipe = () => {
     }
   }, [])
 
-  const { data: recipeInfo, isLoading: isLoadingRecipeById } =
-    useGetRecipeByIdQuery(id)
+  const {
+    data: recipeInfo,
+    isLoading: isLoadingRecipeById,
+    error,
+  } = useGetRecipeByIdQuery(id)
   const { data: recipeSimilar, isLoadingSimilarRecipes } =
     useGetSimilarRecipesQuery(id)
 
@@ -96,6 +100,8 @@ const DishRecipe = () => {
   }
 
   if (isLoadingRecipeById || isLoadingSimilarRecipes) return <Loading />
+
+  if (error?.originalStatus === 404) return <NotFound />
 
   return (
     <Layout className={style.dish_recipe}>

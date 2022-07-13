@@ -1,0 +1,24 @@
+.searchVideo {
+  background-color: white !important;
+}
+
+.filters {
+  &__wrapper {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+  }
+  &__input {
+    width: 50% !important;
+    margin: 0 auto;
+  }
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+}
+
+.divider {
+  margin: 0 0 20px !important;
+}

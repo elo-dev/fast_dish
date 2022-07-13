@@ -1,17 +1,47 @@
-@import '../../index.scss';
+@mixin button {
+  padding: 10px 40px;
+  text-transform: uppercase;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}
 
 .checkbox_group {
-  .checkbox {
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  background-color: white;
+  padding: 10px 15px !important;
+  box-shadow: 0px 5px 6px 1px rgba(0, 0, 0, 0.1);
+  &__reduced {
+    position: absolute;
+    width: 170px;
+  }
+  &__expanded {
     width: 100%;
-    margin-left: 0 !important;
-    &:not(:last-child) {
-      margin-bottom: 20px;
-    }
+    min-height: 350px;
+    left: 0;
+  }
+}
+
+.checkbox {
+  width: 100%;
+  margin-left: 0 !important;
+  &:not(:last-child) {
+    margin-bottom: 20px !important;
+  }
+  &__expanded {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 10px;
+  }
+  &__reduced {
+    display: none !important;
   }
 }
 
 .dropdown {
-  position: relative;
   display: flex;
   align-items: center;
   padding: 10px;
@@ -28,20 +58,11 @@
     font-size: 1.1em;
     margin: 0 10px 0 0;
   }
-  &__content {
-    position: absolute;
-    width: 170px;
-    z-index: 1000;
-    top: 100%;
-    left: 0;
-    background-color: white !important;
-    padding: 10px 20px !important;
-  }
 }
 
 .btn_more_filters {
   position: relative;
-  margin: 20px 0 5px 0;
+  margin: 10px 0 5px 0;
   left: 50%;
   cursor: pointer;
   padding: 5px 10px;
@@ -53,4 +74,23 @@
   &:hover {
     text-decoration: underline;
   }
+}
+
+.btn__wrapper {
+  width: 100%;
+}
+
+.btn_apply {
+  @include button;
+  color: white;
+  border: 1px solid transparent;
+  background-color: #1b1b1b;
+}
+
+.btn_cancel {
+  @include button;
+  margin-left: 15px;
+  border: 1px solid var(--main-color);
+  color: var(--main-color);
+  background: none;
 }

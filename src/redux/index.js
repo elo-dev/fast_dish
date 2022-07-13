@@ -10,6 +10,7 @@ import userSlice from './toolkitSlice/userSlice'
 import { shoppingList } from './services/shoppingList'
 import { joke } from './services/joke'
 import { chat } from './services/chat'
+import { videoRecipe } from './services/videoRecipe'
 
 const rootReducer = combineReducers({
   filter: filterSlice,
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   [shoppingList.reducerPath]: shoppingList.reducer,
   [joke.reducerPath]: joke.reducer,
   [chat.reducerPath]: chat.reducer,
+  [videoRecipe.reducerPath]: videoRecipe.reducer,
 })
 
 export default configureStore({

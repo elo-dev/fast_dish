@@ -44,7 +44,7 @@ const Search = () => {
   const [offsetPage, setOffsetPage] = useState(0)
   const [pageSize, setPageSize] = useState(10)
 
-  const { data: recipes, isLoading } = useGetRecipeQuery({
+  const { data: recipes, isFetching } = useGetRecipeQuery({
     query: searchTerms,
     cuisine: cuisineParams.toString(),
     type: dishTypeParams.toString(),
@@ -105,48 +105,51 @@ const Search = () => {
         filters={filters}
         setSearchParams={setSearchParams}
       />
-      {isLoading && <Loading />}
-      <div className={style.search__container}>
-        <div className={style.search__sort}>
-          <div>
-            <p className={style.search__matchResults}>
-              {recipes?.totalResults} matching results
-            </p>
+      {isFetching ? (
+        <Loading />
+      ) : (
+        <div className={style.search__container}>
+          <div className={style.search__sort}>
+            <div>
+              <p className={style.search__matchResults}>
+                {recipes?.totalResults} matching results
+              </p>
+            </div>
+            <div>
+              <Select
+                defaultValue={sort}
+                className={style.search__select}
+                onChange={sortChange}
+              >
+                {sortOptions.map((item, index) => (
+                  <Option key={index} value={item}>
+                    {item}
+                  </Option>
+                ))}
+              </Select>
+            </div>
           </div>
-          <div>
-            <Select
-              defaultValue={sort}
-              className={style.search__select}
-              onChange={sortChange}
-            >
-              {sortOptions.map((item, index) => (
-                <Option key={index} value={item}>
-                  {item}
-                </Option>
-              ))}
-            </Select>
+          <Row gutter={16}>
+            {recipes?.results.map(({ id, image, title, dishTypes }) => (
+              <Col span={8} key={id}>
+                <RecipeCard
+                  id={id}
+                  image={image}
+                  title={title}
+                  dishTypes={dishTypes}
+                />
+              </Col>
+            ))}
+          </Row>
+          <div className={style.pagination}>
+            <Pagination
+              current={currentPageParams ? currentPageParams : currentPage}
+              total={recipes?.totalResults}
+              onChange={changePage}
+            />
           </div>
         </div>
-        <Row gutter={16}>
-          {recipes?.results.map(({ id, image, title, dishTypes }) => (
-            <Col span={8} key={id}>
-              <RecipeCard
-                id={id}
-                image={image}
-                title={title}
-                dishTypes={dishTypes}
-              />
-            </Col>
-          ))}
-        </Row>
-        <div className={style.pagination}>
-          <Pagination
-            current={currentPageParams ? currentPageParams : currentPage}
-            total={recipes?.totalResults}
-            onChange={changePage}
-          />
-        </div>
-      </div>
+      )}
     </Layout>
   )
 }

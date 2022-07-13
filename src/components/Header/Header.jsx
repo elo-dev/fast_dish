@@ -100,6 +100,9 @@ const MainHeader = () => {
               <Menu.Item key="1">
                 <a href="#">My Saved Recipes</a>
               </Menu.Item>
+              <Menu.Item key="2">
+                <Link to="/video">Video</Link>
+              </Menu.Item>
             </Menu>
           </Col>
           <Col span={userAuth ? 3 : 4}>

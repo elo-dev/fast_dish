@@ -1,6 +1,7 @@
 .layout {
   background-color: white !important;
   width: 63rem;
+  min-height: calc(100vh - 64px) !important;
   margin: 0 auto;
   padding: 3rem 0;
 }
