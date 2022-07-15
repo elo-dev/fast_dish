@@ -9,6 +9,7 @@ import { addItem } from '../../redux/toolkitSlice/filterSlice'
 
 import useUpdateSearchParam from '../../hooks/useUpdateSearchParam'
 import useDebounce from '../../hooks/useDebounce'
+import usePagination from '../../hooks/usePagination'
 
 import { cuisines, dietaryConcerns, dishType } from '../../data/filters'
 
@@ -23,15 +24,15 @@ const SearchVideo = () => {
   const updateSearchParams = useUpdateSearchParam()
 
   const [searchParams, setSearchParams] = useSearchParams()
+  const [itemPerPage, setItemPerPage] = useState(12)
+
+  const { currentPage, currentPageParams, offsetPage, changePage } =
+    usePagination({ setItemPerPage, itemPerPage })
 
   const cuisineParams = searchParams.getAll('cuisine')
   const dishTypeParams = searchParams.getAll('dish type')
   const dietaryConcernsParams = searchParams.getAll('dietary concerns')
   const searchTermParam = searchParams.get('q')
-  const currentPageParams = +searchParams.get('page')
-
-  const [currentPage, setCurrentPage] = useState(1)
-  const [offsetPage, setOffsetPage] = useState(0)
 
   const [searchTerm, setSearchTerm] = useState(
     searchTermParam ? searchTermParam : ''
@@ -57,33 +58,13 @@ const SearchVideo = () => {
     })
   }, [searchParams])
 
-  useEffect(() => {
-    if (currentPage > 1) {
-      updateSearchParams('page', currentPage)
-    }
-  }, [currentPage])
-
-  useEffect(() => {
-    if (currentPageParams) {
-      setOffsetPage(currentPageParams * 12 - 12)
-    }
-  }, [])
-
-  const changePage = (page, pageSize) => {
-    if (page === 1) {
-      searchParams.delete('page')
-      setSearchParams(searchParams)
-    }
-    setCurrentPage(page)
-    setOffsetPage(page * pageSize - pageSize)
-  }
-
   const { data: video, isFetching } = useGetVideoRecipeQuery({
     query: debouncedSearchTerm,
     type: dishTypeParams.toString(),
     cuisine: cuisineParams.toString(),
     diet: dietaryConcernsParams.toString(),
     offset: offsetPage,
+    number: itemPerPage,
   })
 
   const arrDropDownMenu = [
@@ -159,7 +140,7 @@ const SearchVideo = () => {
               <div className={style.pagination}>
                 <Pagination
                   current={currentPageParams ? currentPageParams : currentPage}
-                  pageSize={12}
+                  pageSize={itemPerPage}
                   onChange={changePage}
                   total={video.totalResults}
                   showSizeChanger={false}

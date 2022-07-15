@@ -6,24 +6,19 @@ import { Col, Layout, Pagination, Row, Select } from 'antd'
 
 import { useGetRecipeQuery } from '../../redux/services/searchRecipe'
 
+import useUpdateSearchParam from '../../hooks/useUpdateSearchParam'
+import usePagination from '../../hooks/usePagination'
+
 import RecipeCard from '../../components/RecipeCard/RecipeCard'
 import SearchHeader from '../../components/SearchHeader/SearchHeader'
 import Loading from '../../components/Loading/Loading'
-
-import useUpdateSearchParam from '../../hooks/useUpdateSearchParam'
 
 import style from './Search.module.scss'
 
 const { Option } = Select
 
 const Search = () => {
-  const sortOptions = ['popularity', 'healthiness', 'price', 'time']
-
-  const filters = useSelector((state) => state.filter.filters)
-
   const [searchParams, setSearchParams] = useSearchParams()
-
-  const updateSearchParams = useUpdateSearchParam()
 
   const cuisineParams = searchParams.getAll('cuisine')
   const dishTypeParams = searchParams.getAll('dish type')
@@ -32,17 +27,21 @@ const Search = () => {
   const includeIngridientParams = searchParams.getAll('include')
   const excludeIngridientParams = searchParams.getAll('exclude')
   const sortParams = searchParams.getAll('sort').join('')
-  const currentPageParams = +searchParams.get('page')
+
+  const sortOptions = ['popularity', 'healthiness', 'price', 'time']
 
   const { recipe } = useParams()
 
+  const [itemPerPage, setItemPerPage] = useState(12)
   const [searchTerms, setSearchTerms] = useState(recipe ? recipe : '')
-
   const [sort, setSort] = useState(sortParams ? sortParams : sortOptions[0])
 
-  const [currentPage, setCurrentPage] = useState(1)
-  const [offsetPage, setOffsetPage] = useState(0)
-  const [pageSize, setPageSize] = useState(10)
+  const filters = useSelector((state) => state.filter.filters)
+
+  const updateSearchParams = useUpdateSearchParam()
+
+  const { currentPage, currentPageParams, offsetPage, changePage } =
+    usePagination({ setItemPerPage, itemPerPage })
 
   const { data: recipes, isFetching } = useGetRecipeQuery({
     query: searchTerms,
@@ -54,7 +53,7 @@ const Search = () => {
     includeIngredients: includeIngridientParams.toString(),
     excludeIngredients: excludeIngridientParams.toString(),
     offset: offsetPage,
-    number: pageSize,
+    number: itemPerPage,
   })
 
   useEffect(() => {
@@ -66,28 +65,6 @@ const Search = () => {
   const sortChange = (sortItem) => {
     setSort(sortItem)
     updateSearchParams('sort', sortItem)
-  }
-
-  useEffect(() => {
-    if (currentPage > 1) {
-      updateSearchParams('page', currentPage)
-    }
-  }, [currentPage])
-
-  useEffect(() => {
-    if (currentPageParams) {
-      setOffsetPage(currentPageParams * pageSize - pageSize)
-    }
-  }, [])
-
-  const changePage = (page, pageSize) => {
-    if (page === 1) {
-      searchParams.delete('page')
-      setSearchParams(searchParams)
-    }
-    setOffsetPage(page * pageSize - pageSize)
-    setCurrentPage(page)
-    setPageSize(pageSize)
   }
 
   return (
@@ -144,6 +121,7 @@ const Search = () => {
           <div className={style.pagination}>
             <Pagination
               current={currentPageParams ? currentPageParams : currentPage}
+              pageSize={itemPerPage}
               total={recipes?.totalResults}
               onChange={changePage}
             />
