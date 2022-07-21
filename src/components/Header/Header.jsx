@@ -98,7 +98,7 @@ const MainHeader = () => {
                 <Link to="/recipes-menus">Recipes & Menu</Link>
               </Menu.Item>
               <Menu.Item key="1">
-                <a href="#">My Saved Recipes</a>
+                <Link to="/visualize">Visualize Recipe</Link>
               </Menu.Item>
               <Menu.Item key="2">
                 <Link to="/video">Video</Link>

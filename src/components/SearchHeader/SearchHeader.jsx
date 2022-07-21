@@ -246,12 +246,12 @@ const SearchHeader = ({
           </Col>
           <Col span={24} className={style.tags}>
             <div className={style.tags__wrapper}>
-              {tags?.map((item, index) => (
+              {tags?.map((item) => (
                 <Tag
+                  key={item}
                   className={style.tags__item}
                   closable
-                  onClick={() => removeTag(item)}
-                  key={index}
+                  onClose={() => removeTag(item)}
                 >
                   {item}
                 </Tag>

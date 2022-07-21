@@ -1,9 +1,7 @@
-.createMealPlan {
-  &__wrapper {
-    background-color: white;
-    box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.2);
-    padding: 30px 0;
-  }
+.visualize {
+  background-color: white !important;
+  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.2);
+  padding: 30px 0;
   &__title {
     font-size: 1.3em !important;
     text-align: center;
@@ -24,6 +22,10 @@
   }
 }
 
+.servings_input {
+  width: 100% !important;
+}
+
 .label {
   font-size: 1.2em;
   font-weight: 700;
@@ -31,13 +33,35 @@
   letter-spacing: 1px;
 }
 
-.input_span {
-  padding: 0 10px;
-  font-weight: bold;
+.button {
+  border: none !important;
+  background-color: var(--main-color) !important;
+  border-radius: 5px !important;
+  color: white !important;
+  &:hover {
+    opacity: 0.7;
+  }
+  &:disabled {
+    opacity: 0.7;
+  }
 }
 
-.upload_container {
-  margin: 50px 0 !important;
+.submit_btn {
+  border: none !important;
+  background-color: var(--main-color) !important;
+  border-radius: 5px !important;
+  color: white !important;
+  padding: 0 50px !important;
+  &:hover {
+    opacity: 0.7;
+  }
+  &:disabled {
+    opacity: 0.7;
+  }
+}
+
+.ingredients_tags {
+  margin-bottom: 20px;
 }
 
 .upload {
@@ -82,57 +106,21 @@
   }
 }
 
-.datePicker {
-  width: 100%;
-}
-
-.submit_btn {
-  border: none !important;
-  background-color: var(--main-color) !important;
-  border-radius: 5px !important;
-  color: white !important;
-  padding: 0 50px !important;
-  &:hover {
-    opacity: 0.7;
+.instruction {
+  display: block;
+  margin: 10px 0;
+  &:last-child {
+    margin-bottom: 20px;
   }
-  &:disabled {
-    opacity: 0.7;
+  &__delete {
+    cursor: pointer;
+    margin-right: 5px;
+    &:hover {
+      color: rgb(211, 23, 23);
+    }
   }
-}
-
-.preview {
-  position: relative;
-  &__body {
-    position: absolute;
-    z-index: 3;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    display: none;
+  &__step {
+    font-size: 1.2em;
+    font-weight: bold;
   }
-  &__image {
-    max-height: 350px;
-  }
-  &__progress {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 5;
-    pointer-events: none;
-  }
-}
-
-.text {
-  color: white;
-  font-size: 1.2em;
-}
-
-.icon_upload {
-  font-size: 1.5em;
-  color: var(--main-color) !important;
-}
-
-.input {
-  width: 100% !important;
 }

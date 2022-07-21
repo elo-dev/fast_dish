@@ -24,6 +24,7 @@ import Joke from './components/Joke/Joke'
 import Chat from './components/Chat/Chat'
 import SearchVideo from './Pages/SearchVideo/SearchVideo'
 import VideoModal from './components/VideoModal/VideoModal'
+import VisualizeRecipe from './Pages/VisualizeRecipe/VisualizeRecipe'
 
 function App() {
   const { userAuth } = useAuth()
@@ -68,6 +69,8 @@ function App() {
             }
             path="account/menu"
           />
+
+          <Route element={<VisualizeRecipe />} path="visualize" />
 
           <Route element={<SearchVideo />} path="video">
             <Route element={<VideoModal />} path=":id" />

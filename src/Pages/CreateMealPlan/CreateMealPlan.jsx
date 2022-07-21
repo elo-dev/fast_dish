@@ -24,6 +24,7 @@ import { useAddRecipeMutation } from '../../redux/services/recipe'
 
 import PreviewImage from '../../components/PreviewImage/PreviewImage'
 import DatePicker from '../../components/DatePicker/DatePicker'
+import TimeInput from '../../components/TimeInput/TimeInput'
 
 import { getBase64 } from '../../utils/getBase64'
 
@@ -86,6 +87,13 @@ const CreateMealPlan = () => {
           layout="vertical"
           onFinish={onFinish}
           form={form}
+          initialValues={{
+            servings: 1,
+            time: {
+              hour: 0,
+              min: 0,
+            },
+          }}
         >
           <Form.Item
             name="recipeName"
@@ -109,8 +117,29 @@ const CreateMealPlan = () => {
           <Row justify="space-between" gutter={16}>
             <Col span={12}>
               <Form.Item
+                name="time"
+                label={<span className={style.label}>Time for preparing</span>}
+                rules={[
+                  {
+                    required: true,
+                    validateTrigger: 'onSubmit',
+                    validator: async (_, value) => {
+                      if (value.hour === 0 && value.min === 0) {
+                        return Promise.reject(
+                          new Error('Specify the correct time')
+                        )
+                      }
+                    },
+                  },
+                ]}
+              >
+                <TimeInput />
+              </Form.Item>
+            </Col>
+
+            <Col span={12}>
+              <Form.Item
                 name="servings"
-                initialValue={1}
                 label={<span className={style.label}>Servings</span>}
                 rules={[
                   {
@@ -119,37 +148,13 @@ const CreateMealPlan = () => {
                   },
                 ]}
               >
-                <InputNumber type="number" size="large" min={1} max={10} />
-              </Form.Item>
-            </Col>
-
-            <Col span={12}>
-              <Form.Item
-                label={<span className={style.label}>Time for preparing</span>}
-              >
-                <Input.Group>
-                  <Space align="baseline">
-                    <Form.Item name={['time', 'hour']} initialValue={0}>
-                      <InputNumber
-                        type="number"
-                        min={0}
-                        max={10}
-                        size="large"
-                      />
-                    </Form.Item>
-                    <span className={style.input_span}>hour</span>
-
-                    <Form.Item name={['time', 'min']} initialValue={0}>
-                      <InputNumber
-                        type="number"
-                        min={0}
-                        max={59}
-                        size="large"
-                      />
-                    </Form.Item>
-                    <span className={style.input_span}>min</span>
-                  </Space>
-                </Input.Group>
+                <InputNumber
+                  className={style.input}
+                  type="number"
+                  size="large"
+                  min={1}
+                  max={10}
+                />
               </Form.Item>
             </Col>
           </Row>

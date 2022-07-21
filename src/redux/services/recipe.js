@@ -41,7 +41,18 @@ export const recipe = createApi({
         },
       }),
     }),
+    createRecipeCard: builder.mutation({
+      query: (data) => ({
+        url: `recipes/visualizeRecipe?apiKey=${API_KEY}`,
+        method: 'POST',
+        body: data,
+      }),
+    }),
   }),
 })
 
-export const { useGetRecipeByIdQuery, useAddRecipeMutation } = recipe
+export const {
+  useGetRecipeByIdQuery,
+  useAddRecipeMutation,
+  useCreateRecipeCardMutation,
+} = recipe
