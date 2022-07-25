@@ -24,7 +24,8 @@ import Joke from './components/Joke/Joke'
 import Chat from './components/Chat/Chat'
 import SearchVideo from './Pages/SearchVideo/SearchVideo'
 import VideoModal from './components/VideoModal/VideoModal'
-import VisualizeRecipe from './Pages/VisualizeRecipe/VisualizeRecipe'
+import VisualizeRecipeForm from './Pages/VisualizeRecipeForm/VisualizeRecipeForm'
+import VisualizeCard from './Pages/VisualizeCard/VisualizeCard'
 
 function App() {
   const { userAuth } = useAuth()
@@ -70,7 +71,16 @@ function App() {
             path="account/menu"
           />
 
-          <Route element={<VisualizeRecipe />} path="visualize" />
+          <Route
+            element={
+              <RequiereAuth>
+                <VisualizeRecipeForm />
+              </RequiereAuth>
+            }
+            path="visualize/create"
+          />
+
+          <Route element={<VisualizeCard />} path="/visualize" />
 
           <Route element={<SearchVideo />} path="video">
             <Route element={<VideoModal />} path=":id" />

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { addDoc, collection } from 'firebase/firestore'
 
 import {
   Layout,
@@ -18,6 +19,10 @@ import { DeleteOutlined, PlusCircleOutlined } from '@ant-design/icons'
 
 import { useCreateRecipeCardMutation } from '../../redux/services/recipe'
 
+import { firestoreDb } from '../../firebase'
+
+import { useAuth } from '../../hooks/useAuth'
+
 import { getBase64 } from '../../utils/getBase64'
 
 import PreviewImage from '../../components/PreviewImage/PreviewImage'
@@ -25,12 +30,12 @@ import TimeInput from '../../components/TimeInput/TimeInput'
 
 import cn from 'classnames'
 
-import style from './VisualizeRecipe.module.scss'
+import style from './VisualizeRecipeForm.module.scss'
 
 const { Title, Text } = Typography
 const { Dragger } = Upload
 
-const VisualizeRecipe = () => {
+const VisualizeRecipeForm = () => {
   const [file, setFile] = useState(null)
   const [ingredientValue, setIngredientValue] = useState('')
   const [ingredients, setIngredients] = useState([])
@@ -38,6 +43,7 @@ const VisualizeRecipe = () => {
   const [instructions, setInstructions] = useState([])
   const [image, setImage] = useState(null)
   const [form] = Form.useForm()
+  const { userAuth } = useAuth()
 
   const [createCard, { isLoading }] = useCreateRecipeCardMutation()
 
@@ -67,7 +73,19 @@ const VisualizeRecipe = () => {
 
     message.loading('Loading card')
 
-    await createCard(data).unwrap()
+    const { url } = await createCard(data).unwrap()
+
+    await addDoc(collection(firestoreDb, 'posts'), {
+      title: info.title,
+      url,
+      likes: 0,
+      liked: [],
+      author: {
+        id: userAuth.uid,
+        name: userAuth.displayName,
+        avatar: userAuth.photoURL,
+      },
+    })
 
     form.resetFields()
     setIngredients([])
@@ -391,4 +409,4 @@ const VisualizeRecipe = () => {
   )
 }
 
-export default VisualizeRecipe
+export default VisualizeRecipeForm

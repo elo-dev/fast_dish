@@ -53,14 +53,14 @@ const MainHeader = () => {
 
   const menu = (
     <Menu mode="vertical">
-      <Menu.Item>
+      <Menu.Item key="0">
         <Link to="account/settings">
           <Space>
             <SettingOutlined /> Edit profile
           </Space>
         </Link>
       </Menu.Item>
-      <Menu.Item>
+      <Menu.Item key="1">
         <Link to="account/favourites">
           <Space>
             <StarOutlined />
@@ -68,7 +68,7 @@ const MainHeader = () => {
           </Space>
         </Link>
       </Menu.Item>
-      <Menu.Item onClick={signout}>
+      <Menu.Item key="2" onClick={signout}>
         <Space>
           <LogoutOutlined /> Logout
         </Space>
@@ -98,10 +98,13 @@ const MainHeader = () => {
                 <Link to="/recipes-menus">Recipes & Menu</Link>
               </Menu.Item>
               <Menu.Item key="1">
-                <Link to="/visualize">Visualize Recipe</Link>
+                <Link to="/visualize/create">Visualize Recipe</Link>
               </Menu.Item>
               <Menu.Item key="2">
                 <Link to="/video">Video</Link>
+              </Menu.Item>
+              <Menu.Item key="3">
+                <Link to="/visualize">Visualize</Link>
               </Menu.Item>
             </Menu>
           </Col>
