@@ -21,7 +21,6 @@
   }
 
   &__title {
-    max-width: 400px;
     font-size: 1.2em !important;
     color: var(--main-color) !important;
     padding-bottom: 10px;
@@ -45,10 +44,32 @@
       color: rgb(255, 85, 85) !important;
     }
   }
+
+  &__body_wrapper {
+    margin: 10px auto;
+  }
 }
 
 .search {
   width: 50% !important;
   margin: 0 auto !important;
   margin-bottom: 20px !important;
+}
+
+@media screen and (max-width: 992px) {
+  .favourites {
+    &__recipe {
+      display: block;
+    }
+  }
+  .recipe {
+    &__image {
+      width: 200px;
+      height: 200px;
+    }
+    &__title {
+      width: 200px;
+      margin: 0 auto !important;
+    }
+  }
 }

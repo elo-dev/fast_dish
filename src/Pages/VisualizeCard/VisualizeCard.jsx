@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import {
   arrayRemove,
   arrayUnion,
@@ -9,22 +10,13 @@ import {
   runTransaction,
 } from 'firebase/firestore'
 
-import {
-  Avatar,
-  Card,
-  Col,
-  Empty,
-  Image,
-  Layout,
-  Row,
-  Space,
-  Typography,
-} from 'antd'
+import { Avatar, Card, Col, Empty, Image, Row, Space, Typography } from 'antd'
 import { DeleteOutlined, HeartOutlined } from '@ant-design/icons'
 
 import { firestoreDb } from '../../firebase'
 
 import { useAuth } from '../../hooks/useAuth'
+import useMediaMatch from '../../hooks/useMediaQuery'
 
 import RequiredAuthModal from '../../components/RequiredAuthModal/RequiredAuthModal'
 import Loading from '../../components/Loading/Loading'
@@ -40,6 +32,8 @@ const VisualizeCard = () => {
   const [isModalSignUp, setIsModalSignUp] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const { userAuth } = useAuth()
+
+  const isSmallMediaMatch = useMediaMatch('(max-width: 992px)')
 
   useEffect(() => {
     const unsub = onSnapshot(collection(firestoreDb, 'posts'), (snapshot) => {
@@ -102,16 +96,26 @@ const VisualizeCard = () => {
   if (isLoading) return <Loading />
 
   return (
-    <Layout className={style.visualizeCard}>
+    <>
+      <header className={style.header}>
+        <Title className={style.title} level={1}>
+          Visualize
+        </Title>
+        {isSmallMediaMatch && (
+          <Link className={style.link__create} to="/visualize/create">
+            Create a visualization
+          </Link>
+        )}
+      </header>
       {!cards.length && <Empty description="No visualized cards" />}
-      <Row gutter={16}>
+      <Row gutter={[16, 16]}>
         {cards?.map((item) => (
-          <Col span={8} key={item.id}>
+          <Col xs={24} sm={12} lg={8} xxl={6} key={item.id}>
             <Card
               className={style.card}
               cover={
                 <Image
-                  alt="example"
+                  alt={item.title}
                   src={item.url}
                   className={style.card__img}
                 />
@@ -123,7 +127,7 @@ const VisualizeCard = () => {
                   className={style.card__avatar}
                 />
                 <div>
-                  <Title level={1} className={style.card__title}>
+                  <Title level={2} className={style.card__title}>
                     {item.title}
                   </Title>
                   <p>{item.author.name}</p>
@@ -155,7 +159,7 @@ const VisualizeCard = () => {
         text="After logging in, you will be able to mark your favorite posts"
         title="Mark your favorites in your account"
       />
-    </Layout>
+    </>
   )
 }
 

@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { addDoc, collection } from 'firebase/firestore'
 
 import {
-  Layout,
   Form,
   Typography,
   Input,
@@ -22,6 +21,7 @@ import { useCreateRecipeCardMutation } from '../../redux/services/recipe'
 import { firestoreDb } from '../../firebase'
 
 import { useAuth } from '../../hooks/useAuth'
+import useMediaMatch from '../../hooks/useMediaQuery'
 
 import { getBase64 } from '../../utils/getBase64'
 
@@ -42,6 +42,9 @@ const VisualizeRecipeForm = () => {
   const [instructionsValue, setInstructionsValue] = useState('')
   const [instructions, setInstructions] = useState([])
   const [image, setImage] = useState(null)
+
+  const isSmallMediaMatch = useMediaMatch('(max-width: 992px)')
+
   const [form] = Form.useForm()
   const { userAuth } = useAuth()
 
@@ -96,7 +99,10 @@ const VisualizeRecipeForm = () => {
   }
 
   const handleAddIngredient = () => {
-    if (ingredientValue && !ingredients.includes(ingredientValue)) {
+    if (
+      !!ingredientValue?.trim() &&
+      !ingredients.includes(ingredientValue.trim())
+    ) {
       setIngredients([...ingredients, ingredientValue])
       setIngredientValue('')
       form.resetFields(['ingredients'])
@@ -104,7 +110,10 @@ const VisualizeRecipeForm = () => {
   }
 
   const handleAddInstruction = () => {
-    if (instructionsValue && !instructions.includes(instructionsValue)) {
+    if (
+      !!instructionsValue?.trim() &&
+      !instructions.includes(instructionsValue.trim())
+    ) {
       setInstructions([...instructions, instructionsValue])
       setInstructionsValue('')
       form.resetFields(['instructions'])
@@ -124,7 +133,7 @@ const VisualizeRecipeForm = () => {
   }
 
   return (
-    <Layout className={style.visualize}>
+    <div className={style.visualize}>
       <Title className={style.visualize__title} level={1}>
         Visualize your recipe:
       </Title>
@@ -132,6 +141,12 @@ const VisualizeRecipeForm = () => {
         className={style.visualize__form}
         layout="vertical"
         onFinish={onFinish}
+        scrollToFirstError={{
+          behavior: 'smooth',
+          scrollMode: 'always',
+          block: 'center',
+          inline: 'center',
+        }}
         form={form}
         initialValues={{
           time: {
@@ -147,7 +162,18 @@ const VisualizeRecipeForm = () => {
           rules={[
             {
               required: true,
+              validateTrigger: 'onSubmit',
               message: 'Please enter a visualize recipe name',
+            },
+            {
+              required: true,
+              message: 'Symbols should not be in the name',
+              pattern: /^[A-Za-z0-9/\s]*$/,
+            },
+            {
+              required: true,
+              message: 'The name cannot be empty',
+              whitespace: true,
             },
           ]}
           wrapperCol={{
@@ -155,6 +181,7 @@ const VisualizeRecipeForm = () => {
           }}
         >
           <Input
+            type="text"
             className={style.visualize__input}
             placeholder="Visualize recipe name"
             autoComplete="off"
@@ -162,7 +189,7 @@ const VisualizeRecipeForm = () => {
         </Form.Item>
 
         <Row gutter={16}>
-          <Col span={12}>
+          <Col xs={24} lg={12}>
             <Form.Item
               name="ingredients"
               label={<span className={style.label}>Ingredients</span>}
@@ -181,7 +208,7 @@ const VisualizeRecipeForm = () => {
                 {
                   validateTrigger: 'onChange',
                   validator: async () => {
-                    if (ingredients.includes(ingredientValue)) {
+                    if (ingredients.includes(ingredientValue.trim())) {
                       return Promise.reject(
                         new Error('There is already such an ingredient')
                       )
@@ -218,7 +245,7 @@ const VisualizeRecipeForm = () => {
             </div>
           </Col>
 
-          <Col span={12}>
+          <Col xs={24} lg={12}>
             <Form.Item
               name="instructions"
               required
@@ -237,7 +264,7 @@ const VisualizeRecipeForm = () => {
                 {
                   validateTrigger: 'onChange',
                   validator: async () => {
-                    if (instructions.includes(instructionsValue)) {
+                    if (instructions.includes(instructionsValue.trim())) {
                       return Promise.reject(
                         new Error('There is already such an instruction')
                       )
@@ -263,9 +290,11 @@ const VisualizeRecipeForm = () => {
             <Row justify="end">
               <Button
                 disabled={
-                  instructionsValue.length < 1 || instructions.length === 6
+                  instructionsValue.length < 1 ||
+                  instructions.length === 6 ||
+                  !instructionsValue.trim()
                 }
-                size="small"
+                size={isSmallMediaMatch ? 'middle' : 'small'}
                 className={style.button}
                 onClick={handleAddInstruction}
               >
@@ -287,8 +316,8 @@ const VisualizeRecipeForm = () => {
           </Col>
         </Row>
 
-        <Row gutter={16}>
-          <Col span={12}>
+        <Row align="middle" justify="space-between" gutter={16}>
+          <Col xs={24} lg={12}>
             <Form.Item
               name="time"
               label={<span className={style.label}>Time for preparing</span>}
@@ -310,7 +339,7 @@ const VisualizeRecipeForm = () => {
             </Form.Item>
           </Col>
 
-          <Col span={12}>
+          <Col xs={24} lg={12}>
             <Form.Item
               name="servings"
               label={<span className={style.label}>Servings</span>}
@@ -363,10 +392,16 @@ const VisualizeRecipeForm = () => {
         </Form.Item>
 
         <Row gutter={16}>
-          <Col span={12}>
+          <Col xs={24} lg={12}>
             <Form.Item
               name="author"
               label={<span className={style.label}>Author</span>}
+              rules={[
+                {
+                  required: true,
+                  message: 'Please specify the author',
+                },
+              ]}
             >
               <Input
                 placeholder="Specify the author"
@@ -376,7 +411,7 @@ const VisualizeRecipeForm = () => {
             </Form.Item>
           </Col>
 
-          <Col span={12}>
+          <Col xs={24} lg={12}>
             <Form.Item
               name="fontColor"
               label={<span className={style.label}>Font color</span>}
@@ -405,7 +440,7 @@ const VisualizeRecipeForm = () => {
           </Form.Item>
         </Row>
       </Form>
-    </Layout>
+    </div>
   )
 }
 

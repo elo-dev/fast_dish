@@ -106,9 +106,9 @@ const Search = () => {
               </Select>
             </div>
           </div>
-          <Row gutter={16}>
+          <Row gutter={[16, 16]}>
             {recipes?.results.map(({ id, image, title, dishTypes }) => (
-              <Col span={8} key={id}>
+              <Col xs={24} sm={12} lg={8} xl={6} xxl={4} key={id}>
                 <RecipeCard
                   id={id}
                   image={image}

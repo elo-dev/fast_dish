@@ -51,9 +51,8 @@
 
 .recipe_ingridients {
   &__wrapper {
-    &:not(:last-child) {
-      margin-bottom: 1rem;
-    }
+    margin-bottom: 1rem;
+    text-align: center;
   }
   &__servings {
     font-size: 1.2em;
@@ -79,9 +78,8 @@
 
 .recipe_steps {
   &__wrapper {
-    &:not(:last-child) {
-      margin-bottom: 2rem;
-    }
+    width: 100%;
+    margin-bottom: 2rem;
   }
   &__text {
     font-weight: 400;
@@ -96,12 +94,21 @@
 
 .recipe_nutrition {
   &__name {
+    display: block;
     font-size: 1.2em;
     font-weight: 300;
   }
   &__amount {
     color: grey;
     margin-left: 10px;
+  }
+  &__showMore {
+    border-color: var(--main-color) !important;
+    border-radius: 5px !important;
+    color: var(--main-color) !important;
+    &:hover {
+      opacity: 0.7;
+    }
   }
 }
 
@@ -111,4 +118,18 @@
 
 .text {
   font-size: 1.2em;
+}
+
+.btn_showMore__wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+@media screen and (max-width: 1200px) {
+  .recipe_nutrition {
+    &__name {
+      text-align: center;
+    }
+  }
 }

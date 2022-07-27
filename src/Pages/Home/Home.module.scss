@@ -7,7 +7,14 @@
 }
 
 .home_page {
-  width: 63rem;
+  width: 80%;
   margin: 0 auto;
   padding: 3rem 0;
+}
+
+@media screen and (max-width: 768px) {
+  .home_page {
+    width: 100%;
+    padding: 3rem 25px;
+  }
 }

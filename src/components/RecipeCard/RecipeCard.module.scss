@@ -3,7 +3,7 @@
 .recipeCard {
   background-color: white;
   margin-bottom: 2rem;
-  height: 450px;
+  height: 100%;
   cursor: pointer;
   &:hover {
     outline: 4px solid var(--main-color);
@@ -16,6 +16,12 @@
   }
   &__footer {
     padding: 10px;
+  }
+  &__title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 }
 

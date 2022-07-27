@@ -10,6 +10,7 @@ import { db } from '../../firebase'
 import { setAboutMe } from '../../redux/toolkitSlice/userSlice'
 
 import { useAuth } from '../../hooks/useAuth'
+import useMediaMatch from '../../hooks/useMediaQuery'
 
 import cn from 'classnames'
 
@@ -21,6 +22,10 @@ const Account = () => {
   const dispatch = useDispatch()
   const { userAuth } = useAuth()
   const { username, aboutMe, avatar } = useSelector((state) => state.user)
+
+  const isSmallMediaMatch = useMediaMatch('(max-width: 768px)')
+  const isMediumMediaMatch = useMediaMatch('(max-width: 1200px)')
+  const isLargeMediaMatch = useMediaMatch('(min-width: 1200px)')
 
   useEffect(() => {
     if (userAuth !== null) {
@@ -39,10 +44,19 @@ const Account = () => {
 
   return (
     <Layout className={style.account}>
-      <Row justify="space-between" gutter={24}>
-        <Col span={8}>
+      <Row justify="space-between" gutter={[24, 24]}>
+        <Col xs={24} xl={8}>
           <div className={cn(style.info, style.account__container)}>
-            <Space direction="vertical" size="middle">
+            <Space
+              direction={
+                isSmallMediaMatch
+                  ? 'vertical'
+                  : isMediumMediaMatch
+                  ? 'horizontal'
+                  : 'vertical'
+              }
+              size="middle"
+            >
               {userAuth?.photoURL ? (
                 <Image
                   src={avatar ? avatar : userAuth.photoURL}
@@ -52,10 +66,18 @@ const Account = () => {
               ) : (
                 <UserOutlined className={style.info__without_img} />
               )}
-              <Title className={style.info__name}>
-                {username ? username : userAuth?.displayName}
-              </Title>
-              <Text className={style.info__description}>{aboutMe}</Text>
+              <Space
+                direction={
+                  isSmallMediaMatch
+                    ? 'vertical'
+                    : isLargeMediaMatch
+                    ? 'vertical'
+                    : 'horizontal'
+                }
+              >
+                <Title>{username ? username : userAuth?.displayName}</Title>
+                <Text className={style.info__description}>{aboutMe}</Text>
+              </Space>
               <Link to="settings" className={style.info__link_settings}>
                 Settings
               </Link>
@@ -63,7 +85,7 @@ const Account = () => {
           </div>
         </Col>
 
-        <Col span={16}>
+        <Col xs={24} xl={16}>
           <div className={cn(style.content, style.account__container)}>
             <div className={style.content__header}>
               <Space split={<Divider type="vertical" />}>

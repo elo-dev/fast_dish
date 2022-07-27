@@ -8,7 +8,6 @@
   left: 0;
   z-index: 1000;
   background: rgba(255, 255, 255, 0.9) !important;
-  transition: opacity 200ms ease-in;
   backdrop-filter: blur(5px);
 }
 
@@ -40,8 +39,14 @@
   background-color: rgb(219, 219, 219);
 }
 
-.close{
+.close {
   float: right;
   font-size: 20px;
   color: grey;
+}
+
+@media screen and (max-width: 768px) {
+  .input {
+    width: 100% !important;
+  }
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Divider, Input, Layout } from 'antd'
 import { SearchOutlined, CloseOutlined } from '@ant-design/icons'

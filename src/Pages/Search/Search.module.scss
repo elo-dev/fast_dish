@@ -3,7 +3,7 @@
   min-height: 100vh !important;
   &__container {
     margin: 3rem auto;
-    width: 1170px;
+    width: 90%;
   }
   &__matchResults {
     color: white;
@@ -30,4 +30,5 @@
 .pagination {
   display: flex;
   justify-content: center;
+  margin-top: 30px;
 }

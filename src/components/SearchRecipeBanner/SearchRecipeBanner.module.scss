@@ -1,7 +1,6 @@
 .banner {
   justify-content: center;
   text-align: center;
-  min-height: 500px !important;
   &__image {
     height: 500px;
     object-fit: cover;
@@ -19,10 +18,9 @@
     letter-spacing: 1px;
   }
   &__search {
-    width: 100%;
     height: 50px;
     opacity: 0.5;
-    border: none;
+    border: none !important;
     input {
       cursor: pointer;
     }
@@ -37,7 +35,23 @@
 }
 
 .search_form {
+  max-width: 570px;
   cursor: pointer;
   margin: 0 auto;
-  width: 500px;
+}
+
+@media screen and (max-width: 768px) {
+  .banner {
+    &__search {
+      width: 85% !important;
+    }
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  .banner {
+    &__image {
+      height: 700px;
+    }
+  }
 }

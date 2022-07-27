@@ -1,13 +1,14 @@
-@import '../../index.scss';
-
 .header {
+  background-color: var(--main-color);
   &__wrapper {
-    background-color: var(--main-color);
+    width: 90%;
+    margin: 0 auto;
     padding: 1.5rem 0;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
   }
+}
+
+.title {
+  text-align: center;
 }
 
 .input {
@@ -17,11 +18,13 @@
 }
 
 .btnAddOrRemoveIngredients {
-  background: none !important;
-  border: 0 !important;
+  display: flex;
+  margin: 0 auto;
+  background: none;
+  border: 0;
   cursor: pointer;
   font-family: var(--main-font);
-  font-size: 1.1em !important;
+  font-size: 1.1em;
   text-transform: uppercase;
 }
 
@@ -29,21 +32,11 @@
   background-color: #555;
   display: flex;
   justify-content: space-around;
-
-  &__item {
-    text-transform: uppercase;
-    font-family: var(--main-font);
-    font-size: 1.1em;
-    color: rgb(182, 182, 182);
-  }
 }
 
 .tags {
-  background-color: var(--main-color);
-  &__wrapper {
-    max-width: 700px;
-    margin: 0 auto;
-  }
+  width: 85%;
+  margin: 0 auto;
   &__item {
     margin-bottom: 1rem !important;
     color: white !important;
@@ -70,4 +63,10 @@
   border: none;
   margin: 0 10px;
   cursor: pointer;
+}
+
+@media screen and (max-width: 990px) {
+  .input {
+    margin: 10px 0;
+  }
 }

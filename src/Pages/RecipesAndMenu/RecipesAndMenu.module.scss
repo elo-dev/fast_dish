@@ -7,32 +7,21 @@
 
 .recipesAndMenu {
   background-color: white !important;
+  &__wrapper {
+    margin: 4rem 0;
+  }
   &__title {
     font-size: 2em !important;
     text-transform: uppercase;
   }
   &__search {
     width: 300px;
-  }
-  &__row {
-    margin: 4rem 0;
-  }
-  &__col {
-    position: relative;
-    &::before {
-      position: absolute;
-      content: '';
-      top: 0;
-      left: 0;
-      bottom: 0;
-      border-left: 0.5px solid rgb(198, 198, 198);
-    }
+    text-align: center;
   }
 }
 
 .findRecipe {
   text-align: center;
-  width: 500px;
   &__title {
     @include title;
     color: var(--title-color) !important;
@@ -41,7 +30,7 @@
 
 .createMenu {
   text-align: center;
-  width: 500px;
+  position: relative;
   &__title {
     @include title;
     color: var(--main-color) !important;
@@ -69,6 +58,44 @@
     color: var(--title-color);
     &:hover {
       text-decoration: underline;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .createMenu {
+    margin-top: 50px;
+  }
+  .recipesAndMenu {
+    &__search {
+      width: 100%;
+    }
+  }
+  .space {
+    width: 100%;
+  }
+  .createMenu {
+    &::before {
+      position: absolute;
+      content: '';
+      width: 25%;
+      top: -10%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-top: 1px solid rgb(198, 198, 198);
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .createMenu {
+    &::before {
+      position: absolute;
+      content: '';
+      top: 0;
+      left: 0;
+      bottom: 0;
+      border-left: 0.5px solid rgb(198, 198, 198);
     }
   }
 }

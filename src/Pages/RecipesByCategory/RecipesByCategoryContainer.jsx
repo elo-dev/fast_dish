@@ -6,6 +6,8 @@ import {
   useGetLowCaloriesRecipesQuery,
 } from '../../redux/services/recipes'
 
+import useMediaQuery from '../../hooks/useMediaQuery'
+
 import {
   breakfastCategory,
   HeaderImage,
@@ -17,12 +19,23 @@ import RecipesByCategory from './RecipesByCategory'
 import Loading from '../../components/Loading/Loading'
 
 export const RecipesByCategoryContainer = () => {
+  const isSmallMediaMatch = useMediaQuery('(max-width: 550px)')
+  const isMediumMediaMatch = useMediaQuery('(max-width: 768px)')
+  const isLargeMediaMatch = useMediaQuery('(max-width: 1170px)')
+
   const settings = {
     dots: false,
+    autoplay: true,
     draggable: true,
     infinite: true,
     speed: 800,
-    slidesToShow: 5,
+    slidesToShow: isSmallMediaMatch
+      ? 2
+      : isMediumMediaMatch
+      ? 3
+      : isLargeMediaMatch
+      ? 4
+      : 5,
     slidesToScroll: 1,
   }
 
@@ -30,10 +43,16 @@ export const RecipesByCategoryContainer = () => {
     dots: false,
     draggable: true,
     infinite: true,
-    // autoplay: true,
+    autoplay: true,
     autoplaySpeed: 3000,
     speed: 800,
-    slidesToShow: 4,
+    slidesToShow: isSmallMediaMatch
+      ? 1
+      : isMediumMediaMatch
+      ? 2
+      : isLargeMediaMatch
+      ? 3
+      : 4,
     slidesToScroll: 1,
     pauseOnHover: true,
   }

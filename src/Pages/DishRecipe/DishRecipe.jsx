@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
+import HTMLParser from 'html-react-parser'
 import { Card, Col, Divider, Layout, Row, Space, Typography } from 'antd'
 import { PlusOutlined, StarOutlined } from '@ant-design/icons'
-import HTMLParser from 'html-react-parser'
 
 import { set, push, child, ref, remove, get, onValue } from 'firebase/database'
 import { db } from '../../firebase'
 
 import { useAuth } from '../../hooks/useAuth'
+import useMediaQuery from '../../hooks/useMediaQuery'
 import { getTimeFromMins } from '../../utils/timeTransform'
 
 import { useGetRecipeByIdQuery } from '../../redux/services/recipe'
@@ -16,6 +17,7 @@ import { useGetSimilarRecipesQuery } from '../../redux/services/recipes'
 import Loading from '../../components/Loading/Loading'
 import ShoppingModal from '../../components/ShoppingModal/ShoppingModal'
 import RequiredAuthModal from '../../components/RequiredAuthModal/RequiredAuthModal'
+import ReadMoreText from '../../components/ReadMoreText/ReadMoreText'
 import NotFound from '../NotFound/NotFound'
 
 import cn from 'classnames'
@@ -28,6 +30,8 @@ const { Meta } = Card
 const DishRecipe = () => {
   const { id } = useParams()
   const { userAuth } = useAuth()
+  const isMediaMatch = useMediaQuery('(max-width: 768px)')
+
   const [isFavourite, setIsFavourite] = useState(false)
   const [isModalShopping, setIsModalShopping] = useState(false)
   const [isModalSignUpShopping, setIsModalSignUpShopping] = useState(false)
@@ -105,8 +109,8 @@ const DishRecipe = () => {
 
   return (
     <Layout className={style.dish_recipe}>
-      <Row className={style.header} gutter={16}>
-        <Col span={12}>
+      <Row className={style.header} gutter={16} justify="center">
+        <Col xl={12}>
           <div
             className={cn(style.dish_recipe__header_info, style.header_info)}
           >
@@ -135,7 +139,7 @@ const DishRecipe = () => {
             </div>
           </div>
         </Col>
-        <Col span={12}>
+        <Col xl={12}>
           <div className={style.dish_recipe__header_image}>
             <img
               className={style.image}
@@ -149,13 +153,17 @@ const DishRecipe = () => {
         <Row className={style.recipe_info}>
           <Col span={24}>
             <Text className={cn(style.recipe_info__text, style.text)}>
-              {HTMLParser(recipeInfo.summary)}
+              {isMediaMatch ? (
+                <ReadMoreText limit={350}>{recipeInfo.summary}</ReadMoreText>
+              ) : (
+                HTMLParser(recipeInfo.summary)
+              )}
             </Text>
           </Col>
         </Row>
         <Divider />
-        <Row className={style.recipe_ingridients}>
-          <Col span={24}>
+        <Row className={style.recipe_ingridients} justify="center">
+          <Col xl={24}>
             <Title level={3}>Ingredients</Title>
           </Col>
           <Col className={style.recipe_ingridients__servings} span={24}>
@@ -164,7 +172,8 @@ const DishRecipe = () => {
           {recipeInfo.extendedIngredients.map(({ id, name, amount }) => (
             <Col
               className={style.recipe_ingridients__wrapper}
-              span={6}
+              xs={24}
+              md={6}
               key={id}
             >
               <Space direction="horizontal">
@@ -190,11 +199,7 @@ const DishRecipe = () => {
         <Row className={style.recipe_steps} justify="space-between">
           {recipeInfo.analyzedInstructions.map(({ steps }) =>
             steps.map(({ number, step }) => (
-              <Col
-                className={style.recipe_steps__wrapper}
-                span={10}
-                key={number}
-              >
+              <Col className={style.recipe_steps__wrapper} xl={10} key={number}>
                 <Title className={style.recipe_steps__title} level={4}>
                   Step {number}
                 </Title>
@@ -206,13 +211,15 @@ const DishRecipe = () => {
           )}
         </Row>
         <Divider />
-        <Row className={style.recipe_nutrition} justify="space-between">
-          <Col span={24}>
+        <Row justify="center">
+          <Col xl={24}>
             <Title level={3}>Nutrition</Title>
           </Col>
+        </Row>
+        <Row justify="space-between" gutter={16}>
           {recipeInfo.nutrition.nutrients.map(
             ({ name, amount, unit }, index) => (
-              <Col span={5} key={index}>
+              <Col xs={24} md={12} xl={5} key={index}>
                 <Text className={style.recipe_nutrition__name}>
                   {name}
                   <span className={style.recipe_nutrition__amount}>
@@ -226,17 +233,19 @@ const DishRecipe = () => {
           )}
         </Row>
         <Divider />
-        <Row justify="center" gutter={16}>
-          <Col span={24}>
+        <Row justify="center">
+          <Col xl={24}>
             <Title level={3}>Similar recipes</Title>
           </Col>
+        </Row>
+        <Row gutter={[16, 16]}>
           {recipeSimilar?.map(
             ({ id, readyInMinutes, imageType, title, sourceUrl }) => (
-              <Col span={6} key={id}>
+              <Col sm={12} md={6} key={id}>
                 <a href={sourceUrl} target="_blank">
                   <Card
                     hoverable
-                    style={{ width: 240 }}
+                    style={{ maxWidth: '100%' }}
                     cover={
                       <img
                         alt={title}

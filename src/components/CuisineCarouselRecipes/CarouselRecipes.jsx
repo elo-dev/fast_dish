@@ -61,23 +61,21 @@ const CarouselRecipes = ({
                       <div
                         className={cn(style.cusines_recipes__body, style.body)}
                       >
-                        <Row className={style.body__header}>
-                          <Col span={24}>
-                            <span className={style.tag}>
-                              Health Score: {healthScore}/100
-                            </span>
-                            <Title className={style.title} level={2}>
-                              {title}
-                            </Title>
-                            <span className={style.time}>
-                              Ready in{' '}
-                              {readyInMinutes > 59
-                                ? getTimeFromMins(readyInMinutes)
-                                : readyInMinutes}{' '}
-                              minutes
-                            </span>
-                          </Col>
-                        </Row>
+                        <div className={style.body__header}>
+                          <span className={style.tag}>
+                            Health Score: {healthScore}/100
+                          </span>
+                          <Title className={style.title} level={2}>
+                            {title}
+                          </Title>
+                          <span className={style.time}>
+                            Ready in{' '}
+                            {readyInMinutes > 59
+                              ? getTimeFromMins(readyInMinutes)
+                              : readyInMinutes}{' '}
+                            minutes
+                          </span>
+                        </div>
                         <Row className={style.body__footer}>
                           {nutrition.nutrients
                             .slice(0, 3)

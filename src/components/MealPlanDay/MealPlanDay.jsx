@@ -20,6 +20,7 @@ import {
 } from '../../redux/services/mealPlan'
 
 import { useAuth } from '../../hooks/useAuth'
+import useMediaMatch from '../../hooks/useMediaQuery'
 
 import { getTimeFromMins } from '../../utils/timeTransform'
 
@@ -32,6 +33,7 @@ const { Meta } = Card
 
 const MealPlanDay = () => {
   const { userAuth } = useAuth()
+  const isSmallMediaMatch = useMediaMatch('(max-width: 992px)')
 
   const today = dayjs().format('YYYY-MM-DD')
   const [date, setDate] = useState(today)
@@ -83,6 +85,7 @@ const MealPlanDay = () => {
           defaultValue={dayjs(date)}
           onChange={changeDate}
           placeholder="Select day"
+          size={isSmallMediaMatch ? 'large' : 'middle'}
         />
       </Row>
       {isError && <Empty description={error?.data.message} />}
@@ -94,7 +97,7 @@ const MealPlanDay = () => {
               slot,
               value: { title, readyInMinutes, servings, image },
             }) => (
-              <Col span={12} key={id}>
+              <Col xs={24} md={12} xxl={8} key={id}>
                 <Card
                   cover={
                     <Image
@@ -113,6 +116,7 @@ const MealPlanDay = () => {
                     />,
                   ]}
                   hoverable
+                  bodyStyle={{ padding: '24px 0' }}
                 >
                   <Meta
                     title={<Text className={style.title}>{title}</Text>}

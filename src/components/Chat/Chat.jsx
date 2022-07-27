@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Affix, Divider, Input, Spin, Typography } from 'antd'
 import { QuestionOutlined } from '@ant-design/icons'
 
@@ -18,6 +18,10 @@ const Chat = () => {
   const [question, setQuestion] = useState('')
   const [isOpenChat, setIsOpenChat] = useState(false)
   const chatRef = useRef()
+
+  const { pathname } = useLocation()
+
+  const required = pathname === '/signin' || pathname === '/signup'
 
   useOutsideClick(chatRef, setIsOpenChat, isOpenChat)
 
@@ -111,7 +115,10 @@ const Chat = () => {
         </div>
       </div>
 
-      <Affix offsetBottom={40} style={{ position: 'fixed', right: 40 }}>
+      <Affix
+        className={style.affix}
+        style={{ display: required && 'none', position: 'fixed' }}
+      >
         <div
           className={style.btn_wrapper}
           onClick={() => setIsOpenChat((open) => !open)}

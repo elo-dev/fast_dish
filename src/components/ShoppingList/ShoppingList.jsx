@@ -41,7 +41,7 @@ const ShoppingList = () => {
               items.map(
                 (ingredient) =>
                   ingredient.name && (
-                    <Col span={8} key={ingredient.id}>
+                    <Col xs={24} sm={12} md={8} key={ingredient.id}>
                       <div className={style.shoppingList__content}>
                         <Space direction="vertical">
                           <p className={style.cost}>${ingredient.cost}</p>

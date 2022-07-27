@@ -89,13 +89,16 @@ const Favourites = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       )}
-      <Row gutter={[0, 16]}>
+      <Row
+        gutter={[16, { xs: 8, sm: 16, md: 24, lg: 32 }]}
+        justify="space-around"
+      >
         {currentFavourites.map(({ id, dishTypes, image, title }) => (
-          <Col span={24} key={id}>
+          <Col md={12} lg={24} key={id}>
             <Link to={`/recipe/${id}`}>
               <div className={cn(style.favourites__recipe, style.recipe)}>
                 <img className={style.recipe__image} src={image} alt={title} />
-                <div>
+                <div className={style.recipe__body_wrapper}>
                   <Title className={style.recipe__title}>{title}</Title>
                   {dishTypes?.slice(0, 3).map((type, index) => (
                     <Text className={style.recipe__types} key={index}>

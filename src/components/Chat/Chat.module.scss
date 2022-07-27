@@ -146,3 +146,15 @@
     opacity: 0.5;
   }
 }
+
+.affix {
+  right: 40px;
+  bottom: 40px;
+}
+
+@media screen and (max-width: 768px) {
+  .affix {
+    right: 10%;
+    bottom: 10%;
+  }
+}

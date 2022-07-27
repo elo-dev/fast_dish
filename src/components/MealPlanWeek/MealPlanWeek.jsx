@@ -11,6 +11,7 @@ import {
 } from '../../redux/services/mealPlan'
 
 import { useAuth } from '../../hooks/useAuth'
+import useMediaMatch from '../../hooks/useMediaQuery'
 
 import DatePicker from '../DatePicker/DatePicker'
 
@@ -20,6 +21,7 @@ const { Text } = Typography
 
 const MealPlanWeek = () => {
   const { userAuth } = useAuth()
+  const isSmallMediaMatch = useMediaMatch('(max-width: 992px)')
 
   const today = dayjs().format('YYYY-MM-DD')
   const [date, setDate] = useState(today)
@@ -66,6 +68,7 @@ const MealPlanWeek = () => {
           defaultValue={dayjs(date)}
           onChange={changeDate}
           placeholder="Start date"
+          size={isSmallMediaMatch ? 'large' : 'middle'}
         />
       </Row>
       {(isError || mealPlan?.days?.length === 0) && (
@@ -77,7 +80,7 @@ const MealPlanWeek = () => {
       )}
       <Row gutter={[16, 16]}>
         {mealPlan?.days?.map(({ day, items }, index) => (
-          <Col span={12} key={index}>
+          <Col xs={24} sm={12} xxl={8} key={index}>
             <div className={style.card}>
               <div className={style.card__header}>
                 <Row>

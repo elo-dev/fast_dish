@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 import { Col, Divider, Row } from 'antd'
 
@@ -8,15 +7,15 @@ import style from './CardMini.module.scss'
 
 const CardMini = ({ content }) => {
   return (
-    <Row gutter={20} className={style.recipe_row}>
+    <Row gutter={[20, 20]} className={style.recipe_row}>
       {content?.recipes.map((recipe) => (
-        <Col span={10} key={recipe.id} className={style.recipe_col}>
+        <Col xs={24} md={10} key={recipe.id} className={style.recipe_col}>
           <Link to={`/recipe/${recipe.id}`}>
             <div className={style.recipe_content}>
               <div>
                 <img
                   src={recipe.image}
-                  alt="#"
+                  alt={recipe.title}
                   className={style.recipe_content__photo}
                 />
               </div>

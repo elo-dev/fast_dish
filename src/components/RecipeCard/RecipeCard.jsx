@@ -22,7 +22,7 @@ const RecipeCard = ({ id, image, title, dishTypes }) => {
               </p>
             ))}
           </div>
-          <Title className={style.recipe_name} level={2}>
+          <Title className={style.recipeCard__title} level={2} title={title}>
             {title}
           </Title>
         </div>

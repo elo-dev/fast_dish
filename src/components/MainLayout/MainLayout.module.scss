@@ -1,7 +1,14 @@
 .layout {
   background-color: white !important;
-  width: 63rem;
+  width: 80%;
   min-height: calc(100vh - 64px) !important;
   margin: 0 auto;
   padding: 3rem 0;
+}
+
+@media screen and (max-width: 768px) {
+  .layout {
+    width: 100%;
+    padding: 3rem 25px;
+  }
 }

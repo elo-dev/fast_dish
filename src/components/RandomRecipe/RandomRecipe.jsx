@@ -12,7 +12,7 @@ const RandomRecipe = ({ content }) => {
       {content?.recipes
         .slice(0, 1)
         .map(({ id, image, title, readyInMinutes, creditsText }) => (
-          <Col span={16} key={id} className={style.random_recipe__col}>
+          <Col xs={24} md={16} key={id} className={style.random_recipe__col}>
             <Link to={`/recipe/${id}`}>
               <div className={style.random_recipe__content}>
                 {image ? (

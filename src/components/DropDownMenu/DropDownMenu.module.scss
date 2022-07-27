@@ -94,3 +94,15 @@
   color: var(--main-color);
   background: none;
 }
+
+@media screen and (max-width: 990px) {
+  .checkbox_group {
+    &__reduced {
+      width: 100% !important;
+      left: 0 !important;
+    }
+  }
+  .checkbox {
+    margin-bottom: 20px !important;
+  }
+}

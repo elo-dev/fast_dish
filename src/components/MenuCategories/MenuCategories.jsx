@@ -1,6 +1,5 @@
-import React from 'react'
-import { Card, Col, Layout, Row, Typography } from 'antd'
 import { Link } from 'react-router-dom'
+import { Card, Col, Layout, Row, Typography } from 'antd'
 
 import style from './MenuCategories.module.scss'
 
@@ -21,27 +20,25 @@ const categories = [
 const MenuCategories = () => {
   return (
     <Layout className={style.menu_categories}>
-      <Row>
+      <Row gutter={[16, 16]}>
         {categories.map((category) => (
-          <Col span={6} key={category.id}>
-            <div className={style.card__wrapper}>
-              <Link to={`/category/${category.title}`}>
-                <Card
-                  className={style.menu_categories__card}
-                  cover={
-                    <img
-                      className={style.card__img}
-                      alt={category.title}
-                      src={category.img}
-                    />
-                  }
-                >
-                  <Title level={3} className={style.card__title}>
-                    {category.title}
-                  </Title>
-                </Card>
-              </Link>
-            </div>
+          <Col xs={24} md={12} xl={6} key={category.id}>
+            <Link to={`/category/${category.title}`}>
+              <Card
+                className={style.menu_categories__card}
+                cover={
+                  <img
+                    className={style.card__img}
+                    alt={category.title}
+                    src={category.img}
+                  />
+                }
+              >
+                <Title level={3} className={style.card__title}>
+                  {category.title}
+                </Title>
+              </Card>
+            </Link>
           </Col>
         ))}
       </Row>

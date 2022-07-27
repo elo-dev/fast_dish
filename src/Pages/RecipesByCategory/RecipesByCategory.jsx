@@ -40,7 +40,7 @@ const RecipesByCategory = ({
         </Col>
       </Row>
       {category === 'breakfast' && (
-        <Row className={style.breakfast_category} justify="center">
+        <Row className={style.breakfast_category}>
           <Col span={24}>
             <Carousel {...settings}>
               {breakfastCategory.map((category) => (

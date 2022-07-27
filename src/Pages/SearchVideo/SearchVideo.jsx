@@ -87,74 +87,72 @@ const SearchVideo = () => {
 
   return (
     <>
-      <div className={style.searchVideo}>
-        <div className={style.filters}>
-          <Row>
-            <Input
-              size="large"
-              placeholder="Enter a request"
-              prefix={<SearchOutlined />}
-              className={style.filters__input}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              value={searchTerm}
-            />
-            <Col span={24}>
-              <div className={style.filters__wrapper}>
-                {arrDropDownMenu.map(
-                  ({ label, menuItems, menuOptions }, index) => (
-                    <DropDownMenu
-                      key={index}
-                      label={label}
-                      menuItems={menuItems}
-                      setList={(val) =>
-                        dispatch(addItem({ filterName: label, val }))
-                      }
-                      setSearchParams={(val) => updateSearchParams(label, val)}
-                      menuOptions={menuOptions}
-                    />
-                  )
-                )}
-              </div>
-            </Col>
-          </Row>
-          <Divider className={style.divider} />
-        </div>
-        {isFetching ? (
-          <Loading />
-        ) : video?.videos.length ? (
-          <Row gutter={[24, 24]}>
-            {video.videos.map(
-              ({ length, title, thumbnail, views, youTubeId }) => (
-                <Col span={6} key={youTubeId}>
-                  <VideoCard
-                    length={length}
-                    title={title}
-                    youTubeId={youTubeId}
-                    thumbnail={thumbnail}
-                    views={views}
+      <div className={style.filters}>
+        <Row>
+          <Input
+            size="large"
+            placeholder="Enter a request"
+            prefix={<SearchOutlined />}
+            className={style.filters__input}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            value={searchTerm}
+          />
+          <Col span={24}>
+            <div className={style.filters__wrapper}>
+              {arrDropDownMenu.map(
+                ({ label, menuItems, menuOptions }, index) => (
+                  <DropDownMenu
+                    key={index}
+                    label={label}
+                    menuItems={menuItems}
+                    setList={(val) =>
+                      dispatch(addItem({ filterName: label, val }))
+                    }
+                    setSearchParams={(val) => updateSearchParams(label, val)}
+                    menuOptions={menuOptions}
                   />
-                </Col>
-              )
-            )}
-            <Col span={24}>
-              <div className={style.pagination}>
-                <Pagination
-                  current={currentPageParams ? currentPageParams : currentPage}
-                  pageSize={itemPerPage}
-                  onChange={changePage}
-                  total={video.totalResults}
-                  showSizeChanger={false}
-                />
-              </div>
-            </Col>
-          </Row>
-        ) : (
-          <div className={style.empty}>
-            <Empty />
-          </div>
-        )}
-        <Outlet />
+                )
+              )}
+            </div>
+          </Col>
+        </Row>
+        <Divider className={style.divider} />
       </div>
+      {isFetching ? (
+        <Loading />
+      ) : video?.videos.length ? (
+        <Row justify="space-between" gutter={[24, 24]}>
+          {video.videos.map(
+            ({ length, title, thumbnail, views, youTubeId }) => (
+              <Col xs={24} sm={12} lg={8} xl={6} xxl={4} key={youTubeId}>
+                <VideoCard
+                  length={length}
+                  title={title}
+                  youTubeId={youTubeId}
+                  thumbnail={thumbnail}
+                  views={views}
+                />
+              </Col>
+            )
+          )}
+          <Col span={24}>
+            <div className={style.pagination}>
+              <Pagination
+                current={currentPageParams ? currentPageParams : currentPage}
+                pageSize={itemPerPage}
+                onChange={changePage}
+                total={video.totalResults}
+                showSizeChanger={false}
+              />
+            </div>
+          </Col>
+        </Row>
+      ) : (
+        <div className={style.empty}>
+          <Empty />
+        </div>
+      )}
+      <Outlet />
     </>
   )
 }
