@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 import { Provider } from 'react-redux'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, HashRouter } from 'react-router-dom'
 import store from './redux/index'
 import { ProvideAuth } from './hooks/useAuth'
 import ThemeProvider from './context/ThemeProvider'
@@ -12,7 +12,7 @@ import './index.scss'
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <HashRouter>
       <Provider store={store}>
         <ProvideAuth>
           <ThemeProvider>
@@ -20,7 +20,7 @@ ReactDOM.render(
           </ThemeProvider>
         </ProvideAuth>
       </Provider>
-    </BrowserRouter>
+    </HashRouter>
   </React.StrictMode>,
   document.getElementById('root')
 )

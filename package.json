@@ -2,6 +2,7 @@
   "name": "fastdish",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://elo-dev.github.io/fast_dish/",
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@reduxjs/toolkit": "^1.8.0",
@@ -15,22 +16,21 @@
     "html-react-parser": "^1.4.8",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-error-boundary": "^3.1.4",
-    "react-player": "^2.10.1",
     "react-redux": "^7.2.6",
     "react-router": "^6.2.1",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
-    "react-select": "^5.3.0",
     "sass": "^1.49.9",
     "unsplash-js": "^7.0.15",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
+    "deploy": "npm run build && npm run build-gh-pages",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build-gh-pages": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -49,5 +49,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^4.0.0"
   }
 }
