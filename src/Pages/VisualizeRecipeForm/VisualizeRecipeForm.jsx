@@ -182,7 +182,7 @@ const VisualizeRecipeForm = () => {
         >
           <Input
             type="text"
-            className={style.visualize__input}
+            className={cn(style.visualize__input, style.input)}
             placeholder="Visualize recipe name"
             autoComplete="off"
           />
@@ -224,6 +224,7 @@ const VisualizeRecipeForm = () => {
                 disabled={ingredients.length === 9}
                 placeholder="Ingredients"
                 size="large"
+                className={style.input}
                 autoComplete="off"
                 suffix={<PlusCircleOutlined onClick={handleAddIngredient} />}
                 value={ingredientValue}
@@ -279,6 +280,7 @@ const VisualizeRecipeForm = () => {
               <Input.TextArea
                 disabled={instructions.length === 6}
                 showCount
+                className={style.input}
                 maxLength={250}
                 placeholder="Specify the instructions"
                 size="large"
@@ -351,7 +353,7 @@ const VisualizeRecipeForm = () => {
               ]}
             >
               <InputNumber
-                className={style.servings_input}
+                className={cn(style.servings_input, style.input)}
                 type="number"
                 size="large"
                 min={1}
@@ -407,6 +409,7 @@ const VisualizeRecipeForm = () => {
                 placeholder="Specify the author"
                 size="large"
                 autoComplete="off"
+                className={style.input}
               />
             </Form.Item>
           </Col>
@@ -417,6 +420,7 @@ const VisualizeRecipeForm = () => {
               label={<span className={style.label}>Font color</span>}
             >
               <Input
+                className={style.input}
                 type="color"
                 placeholder="Specify the font color"
                 size="large"

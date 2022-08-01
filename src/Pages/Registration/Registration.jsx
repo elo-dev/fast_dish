@@ -69,7 +69,9 @@ const Registration = () => {
                   </Title>
                 </Link>
               )}
-              <Title level={1}>Sign up to Fast Dish</Title>
+              <Title level={1} className={style.subTitle}>
+                Sign up to Fast Dish
+              </Title>
               <div
                 className={style.form__signInGoogle}
                 onClick={handleGoogleSignIn}
@@ -139,7 +141,7 @@ const Registration = () => {
                   />
                 </Form.Item>
                 <Form.Item>
-                  <Checkbox>
+                  <Checkbox className={style.agreements}>
                     Creating an account means you`re okay with our Terms of
                     Service, Privacy Policy, and our default Notification
                     Settings.

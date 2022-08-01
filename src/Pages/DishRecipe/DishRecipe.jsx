@@ -164,7 +164,9 @@ const DishRecipe = () => {
         <Divider />
         <Row className={style.recipe_ingridients} justify="center">
           <Col xl={24}>
-            <Title level={3}>Ingredients</Title>
+            <Title level={3} className={style.subTitle}>
+              Ingredients
+            </Title>
           </Col>
           <Col className={style.recipe_ingridients__servings} span={24}>
             <Text>{recipeInfo.servings} servings</Text>
@@ -213,7 +215,9 @@ const DishRecipe = () => {
         <Divider />
         <Row justify="center">
           <Col xl={24}>
-            <Title level={3}>Nutrition</Title>
+            <Title level={3} className={style.subTitle}>
+              Nutrition
+            </Title>
           </Col>
         </Row>
         <Row justify="space-between" gutter={16}>
@@ -235,7 +239,9 @@ const DishRecipe = () => {
         <Divider />
         <Row justify="center">
           <Col xl={24}>
-            <Title level={3}>Similar recipes</Title>
+            <Title level={3} className={style.subTitle}>
+              Similar recipes
+            </Title>
           </Col>
         </Row>
         <Row gutter={[16, 16]}>

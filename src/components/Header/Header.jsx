@@ -12,7 +12,9 @@ import {
   Menu,
   Badge,
   Avatar,
+  Switch,
 } from 'antd'
+
 import {
   SearchOutlined,
   LoginOutlined,
@@ -32,8 +34,11 @@ import { useGetShoppingListQuery } from '../../redux/services/shoppingList'
 
 import { useAuth } from '../../hooks/useAuth'
 import useMediaQuery from '../../hooks/useMediaQuery'
+import { useTheme } from '../../context/ThemeProvider'
 
 import SearchInput from '../SearchInput/SearchInput'
+
+import cn from 'classnames'
 
 import style from './Header.module.scss'
 
@@ -43,6 +48,7 @@ const { Title } = Typography
 const MainHeader = () => {
   const [isInputView, setIsInputView] = useState(false)
   const isSmallMediaMatch = useMediaQuery('(max-width: 992px)')
+  const { isDarkMode, changeTheme } = useTheme()
 
   const { userAuth, signout } = useAuth()
   const { avatar } = useSelector((state) => state.user)
@@ -154,7 +160,7 @@ const MainHeader = () => {
           align="middle"
           justify="space-between"
         >
-          <Col md={4}>
+          <Col md={4} lg={5} xl={4}>
             <Link to="/">
               <Title className={style.title} level={1}>
                 Fast Dish
@@ -163,27 +169,42 @@ const MainHeader = () => {
           </Col>
           {!isSmallMediaMatch ? (
             <>
-              <Col md={15} xl={14}>
-                <Menu mode="horizontal">
+              <Col md={15} lg={12} xl={11}>
+                <Menu mode="horizontal" className={style.header__menu}>
                   <Menu.Item key="0">
-                    <Link to="/recipes-menus">Recipes & Menu</Link>
+                    <Link to="/recipes-menus" className={style.menu__item}>
+                      Recipes & Menu
+                    </Link>
                   </Menu.Item>
                   <Menu.Item key="1">
-                    <Link to="/visualize/create">Visualize Recipe</Link>
+                    <Link to="/visualize/create" className={style.menu__item}>
+                      Visualize Recipe
+                    </Link>
                   </Menu.Item>
                   <Menu.Item key="2">
-                    <Link to="/video">Video</Link>
+                    <Link to="/video" className={style.menu__item}>
+                      Video
+                    </Link>
                   </Menu.Item>
                   <Menu.Item key="3">
-                    <Link to="/visualize">Visualize</Link>
+                    <Link to="/visualize" className={style.menu__item}>
+                      Visualize
+                    </Link>
                   </Menu.Item>
                 </Menu>
               </Col>
-              <Col md={userAuth ? 3 : 5}>
+              <Col md={userAuth ? 5 : 5} lg={userAuth ? 5 : 7} xl={5}>
                 <Space size="large">
                   <SearchOutlined
                     className={style.icon__search}
                     onClick={() => setIsInputView(true)}
+                  />
+                  <Switch
+                    className={cn(style.toggleSwitch, {
+                      [style.toggleSwitch__dark]: isDarkMode,
+                    })}
+                    onChange={changeTheme}
+                    checked={isDarkMode}
                   />
                   {userAuth ? (
                     <>

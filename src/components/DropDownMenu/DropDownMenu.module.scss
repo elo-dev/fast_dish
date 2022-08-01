@@ -49,10 +49,14 @@
     background: white;
     .dropdown__label,
     .dropdown__icon {
-      color: var(--main-color);
+      color: var(--main-color) !important;
     }
   }
+  &__icon {
+    color: var(--second-color) !important;
+  }
   &__label {
+    color: var(--second-color);
     cursor: pointer;
     text-transform: uppercase;
     font-size: 1.1em;

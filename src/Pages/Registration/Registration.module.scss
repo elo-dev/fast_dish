@@ -8,8 +8,12 @@
   font-size: 2.5em !important;
 }
 
+.subTitle {
+  color: var(--title-color) !important;
+}
+
 .registration {
-  background-color: white !important;
+  background-color: transparent !important;
   &__sidebar {
     position: fixed !important;
     z-index: 1;
@@ -47,6 +51,7 @@
 }
 
 .label {
+  color: var(--main-color);
   font-size: 1.2em;
   font-weight: bold;
 }
@@ -72,10 +77,11 @@
     border: 1px solid rgb(188, 188, 188);
     border-radius: 15px;
     padding: 8px 20px;
+    color: var(--second-color);
     &:hover {
       background-color: var(--main-color);
       border-color: transparent;
-      color: white;
+      color: var(--background);
     }
   }
   &__wrapper {
@@ -92,6 +98,7 @@
 }
 
 .signIn_btn {
+  color: var(--second-color);
   font-size: 1.1em;
 }
 
@@ -136,6 +143,10 @@
     background-position: center center;
     background-size: contain;
   }
+}
+
+.agreements {
+  color: var(--second-color) !important;
 }
 
 @media screen and (max-width: 992px) {

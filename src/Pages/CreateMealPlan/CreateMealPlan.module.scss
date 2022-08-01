@@ -1,10 +1,11 @@
 .createMealPlan {
   &__wrapper {
-    background-color: white;
+    background-color: var(--background);
     box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.2);
     padding: 30px 0;
   }
   &__title {
+    color: var(--title-color) !important;
     font-size: 1.3em !important;
     text-align: center;
     text-transform: uppercase;
@@ -24,7 +25,12 @@
   }
 }
 
+.input {
+  width: 100% !important;
+}
+
 .label {
+  color: var(--main-color);
   font-size: 1.2em;
   font-weight: 700;
   text-transform: uppercase;
@@ -82,10 +88,6 @@
   }
 }
 
-.datePicker {
-  width: 100%;
-}
-
 .submit_btn {
   border: none !important;
   background-color: var(--main-color) !important;
@@ -131,8 +133,4 @@
 .icon_upload {
   font-size: 1.5em;
   color: var(--main-color) !important;
-}
-
-.input {
-  width: 100% !important;
 }

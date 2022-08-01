@@ -5,8 +5,9 @@ import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import store from './redux/index'
 import { ProvideAuth } from './hooks/useAuth'
-import 'antd/dist/antd.css'
+import ThemeProvider from './context/ThemeProvider'
 import './firebase'
+import 'antd/dist/antd.css'
 import './index.scss'
 
 ReactDOM.render(
@@ -14,7 +15,9 @@ ReactDOM.render(
     <BrowserRouter>
       <Provider store={store}>
         <ProvideAuth>
-          <App />
+          <ThemeProvider>
+            <App />
+          </ThemeProvider>
         </ProvideAuth>
       </Provider>
     </BrowserRouter>

@@ -15,8 +15,26 @@ h2 {
 :root {
   --main-font: 'Mukta', sans-serif;
   --main-color: #e27d60;
+  --second-color: black;
   --title-color: #41b3a3;
+  --sub-title: black;
   --border-color: #e8a87c;
+  --background: white;
+  --input-background: white;
+  --placeholder-color: rgba(172, 172, 172, 0.65);
+}
+
+[data-theme='dark'] {
+  --background: #1b2430;
+  --title-color: #d6d5a8;
+  --sub-title: rgba(255, 255, 255, 0.75);
+  --second-color: rgba(255, 255, 255, 0.75);
+  --input-background: rgba(255, 255, 255, 0.75);
+  --placeholder-color: #1b2430;
+}
+
+.app {
+  background-color: var(--background) !important;
 }
 
 @mixin textNoWrap {

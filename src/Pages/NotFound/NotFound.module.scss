@@ -1,6 +1,8 @@
 .notfound {
+  background-color: var(--background) !important;
   min-height: 100vh !important;
   &__title {
+    color: var(--title-color) !important;
     font-size: 1.3em;
   }
   &__text {

@@ -64,7 +64,9 @@ const Authorization = () => {
                   </Title>
                 </Link>
               )}
-              <Title level={1}>Sign in to Fast Dish</Title>
+              <Title level={1} className={style.subTitle}>
+                Sign in to Fast Dish
+              </Title>
               <div
                 className={style.form__signInGoogle}
                 onClick={handleGoogleSignIn}
@@ -72,7 +74,9 @@ const Authorization = () => {
                 <GoogleOutlined />
                 <p className={style.form__text}>Continue with Google</p>
               </div>
-              <Divider plain>Or</Divider>
+              <Divider plain className={style.divider}>
+                Or
+              </Divider>
               <Form layout="vertical" onFinish={onFinish}>
                 <Form.Item
                   name="email"

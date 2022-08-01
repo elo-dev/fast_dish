@@ -73,7 +73,7 @@ const TimeInput = ({ value = {}, onChange }) => {
         onChange={onHourChange}
         className={style.input_time}
       />
-      <span>hour</span>
+      <span className={style.input_span}>hour</span>
 
       <Input
         size="large"
@@ -84,7 +84,7 @@ const TimeInput = ({ value = {}, onChange }) => {
         onChange={onMinChange}
         className={style.input_time}
       />
-      <span>min</span>
+      <span className={style.input_span}>min</span>
     </Space>
   )
 }

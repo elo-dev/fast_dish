@@ -122,7 +122,7 @@ const CreateMealPlan = () => {
           }}
         >
           <Input
-            className={style.createMealPlan__input}
+            className={cn(style.createMealPlan__input, style.input)}
             placeholder="Recipe name"
             autoComplete="off"
           />
@@ -222,7 +222,11 @@ const CreateMealPlan = () => {
                 },
               ]}
             >
-              <Select size="large" placeholder="Select a meal">
+              <Select
+                size="large"
+                placeholder="Select a meal"
+                className={style.input}
+              >
                 <Option value="1">Breakfast</Option>
                 <Option value="2">Lunch</Option>
                 <Option value="3">Dinner</Option>
@@ -242,7 +246,10 @@ const CreateMealPlan = () => {
                 },
               ]}
             >
-              <DatePicker size="large" className={style.datePicker} />
+              <DatePicker
+                size="large"
+                className={cn(style.datePicker, style.input)}
+              />
             </Form.Item>
           </Col>
         </Row>

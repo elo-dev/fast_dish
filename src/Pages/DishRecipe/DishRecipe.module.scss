@@ -1,5 +1,5 @@
 .dish_recipe {
-  background-color: white !important;
+  background-color: transparent !important;
   &__header_info {
     display: flex;
     height: 100%;
@@ -21,6 +21,7 @@
       text-align: center;
     }
     &__title {
+      color: var(--title-color);
       margin-bottom: 20px !important;
       font-size: 3em !important;
     }
@@ -28,11 +29,13 @@
       color: rgba(128, 128, 128, 0.8);
     }
     &__healthScore {
+      color: var(--second-color);
       letter-spacing: 1px;
       font-size: 1.2em;
       font-weight: 400;
     }
     &__price {
+      color: var(--second-color);
       font-size: 1.2em;
     }
     &__isVegan {
@@ -40,6 +43,7 @@
       color: var(--main-color);
     }
     &__favourite {
+      color: var(--second-color);
       cursor: pointer;
       font-size: 2em;
       &:hover {
@@ -66,10 +70,15 @@
     justify-content: center;
     margin: 5px auto;
     cursor: pointer;
+    color: var(--second-color);
     &:hover * {
       color: var(--main-color) !important;
     }
   }
+}
+
+.subTitle {
+  color: var(--sub-title) !important;
 }
 
 .content {
@@ -77,6 +86,9 @@
 }
 
 .recipe_steps {
+  &__title {
+    color: var(--main-color) !important;
+  }
   &__wrapper {
     width: 100%;
     margin-bottom: 2rem;
@@ -95,6 +107,7 @@
 .recipe_nutrition {
   &__name {
     display: block;
+    color: var(--second-color) !important;
     font-size: 1.2em;
     font-weight: 300;
   }
@@ -117,6 +130,7 @@
 }
 
 .text {
+  color: var(--second-color) !important;
   font-size: 1.2em;
 }
 
