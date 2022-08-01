@@ -232,9 +232,18 @@ const MainHeader = () => {
               </Col>
             </>
           ) : (
-            <Dropdown overlay={smallMenu}>
-              <MenuOutlined className={style.icon__menu} />
-            </Dropdown>
+            <Space size="large" align='center'>
+              <Switch
+                className={cn(style.toggleSwitch, {
+                  [style.toggleSwitch__dark]: isDarkMode,
+                })}
+                onChange={changeTheme}
+                checked={isDarkMode}
+              />
+              <Dropdown overlay={smallMenu}>
+                <MenuOutlined className={style.icon__menu} />
+              </Dropdown>
+            </Space>
           )}
         </Row>
       </Header>
